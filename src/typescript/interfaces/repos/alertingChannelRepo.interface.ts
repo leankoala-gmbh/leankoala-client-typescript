@@ -29,12 +29,12 @@ export interface IRAlertResponseList {
   }
 }
 
-// export interface IRAlertCreate {
-//   name: string
-//   type: string
-//   language?: string
-//   options: IAlertCreateOptions
-// }
+export interface IRAlertCreate {
+  name: string
+  type: string
+  language?: string
+  options: IAlertCreateOptions
+}
 
 export interface IRAlertResponseCreate {
   channel: {
@@ -47,12 +47,12 @@ export interface IRAlertResponseCreate {
   }
 }
 
-// export interface IRAlertUpdate {
-//   name?: string
-//   type: string
-//   language?: string
-//   options?: IAlertCreateOptions
-// }
+export interface IRAlertUpdate {
+  name?: string
+  type: string
+  language?: string
+  options?: IAlertCreateOptions
+}
 
 export interface IAlertResponseUpdate {
   channel: IAlertChannel

@@ -1,20 +1,20 @@
 import {IRAlertingChannel} from './repos/alertingChannelRepo.interface'
-// import {IRepoSubscription} from './repos/subscriptionRepo.interface'
-// import {IRWebsocket} from './repos/websocketRepo.interface'
-// import {IRAlertingPolicy} from './repos/alertingPolicyRepo.interface'
-// import {IRAuth} from './repos/authRepo.interface'
-// import {IRCheckA11Y} from './repos/checkA11YRepo.interface'
-// import {IRCheckBrokenResource} from './repos/checkBrokenResourceRepo.interface'
-// import {IRCheckCertificate} from './repos/checkCertificateRepo.interfaces'
-// import {IRCheckCookies} from './repos/checkCookiesRepo.interface'
-// import {IRCheckDeadlinks} from './repos/checkDeadlinksRepo.interface'
-// import {IRCheckFilesize} from './repos/checkFilesizeRepo.interface'
-// import {IRCheckHealthCheck} from './repos/checkHealthCheckRepo.interface'
-// import {IRCheckInsecureContent} from './repos/checkInsecureContentRepo.interface'
-// import {IRCheckJSErrors} from './repos/checkJSErrorsRepo.interface'
-// import {IRCheckLighthouse} from './repos/checkLighthouseRepo.interface'
-// import {IRCheckMobileFriendly} from './repos/checkMobileFriendlyRepo.interface'
-// import {IRCheck} from './repos/checkRepo.interface'
+import {IRAuth} from './repos/authRepo.interface'
+import {IRepoSubscription} from './repos/subscriptionRepo.interface'
+import {IRWebsocket} from './repos/websocketRepo.interface'
+import {IRAlertingPolicy} from './repos/alertingPolicyRepo.interface'
+import {IRCheckA11Y} from './repos/checkA11YRepo.interface'
+import {IRCheckBrokenResource} from './repos/checkBrokenResourceRepo.interface'
+import {IRCheckCertificate} from './repos/checkCertificateRepo.interfaces'
+import {IRCheckCookies} from './repos/checkCookiesRepo.interface'
+import {IRCheckDeadlinks} from './repos/checkDeadlinksRepo.interface'
+import {IRCheckFilesize} from './repos/checkFilesizeRepo.interface'
+import {IRCheckHealthCheck} from './repos/checkHealthCheckRepo.interface'
+import {IRCheckInsecureContent} from './repos/checkInsecureContentRepo.interface'
+import {IRCheckJSErrors} from './repos/checkJSErrorsRepo.interface'
+import {IRCheckLighthouse} from './repos/checkLighthouseRepo.interface'
+import {IRCheckMobileFriendly} from './repos/checkMobileFriendlyRepo.interface'
+import {IRCheck} from './repos/checkRepo.interface'
 
 export enum EEnvironment {
   Local = 'local',
@@ -38,42 +38,42 @@ export enum ConnectionType {
 
 export interface IRepositoryCollectionRepos {
   alertingchannel: IRAlertingChannel
-  // sequence: IRepositoryCollectionRepo
-  // marketplace: IRepositoryCollectionRepo
-  // subscription: IRepoSubscription
-  // crawler: IRepositoryCollectionRepo
-  // customerhaendlerbund: IRepositoryCollectionRepo
-  // customerhaendlerbundmetric: IRepositoryCollectionRepo
-  // customermehrwertsteuercheck: IRepositoryCollectionRepo
-  // memory: IRepositoryCollectionRepo
-  // score: IRepositoryCollectionRepo
-  // alertingpolicy: IRAlertingPolicy
-  // websocket: IRWebsocket
-  // metric: IRepositoryCollectionRepo
-  // auth: IRAuth
-  // clusteruser: IRepositoryCollectionRepo
-  // user: IRepositoryCollectionRepo
-  // invitation: IRepositoryCollectionRepo
-  // component: IRepositoryCollectionRepo
-  // project: IRepositoryCollectionRepo
-  // system: IRepositoryCollectionRepo
-  // screenshot: IRepositoryCollectionRepo
-  // tool: IRepositoryCollectionRepo
-  // check: IRCheck
-  // checklighthouse: IRCheckLighthouse
-  // checka11y: IRCheckA11Y
-  // checkbrokenresource: IRCheckBrokenResource
-  // checkjavascripterrors: IRCheckJSErrors
-  // checkfilesize: IRCheckFilesize
-  // checksitemap: IRepositoryCollectionRepo
-  // checkmobilefriendly: IRCheckMobileFriendly
-  // checkcertificate: IRCheckCertificate
-  // checkinsecurecontent: IRCheckInsecureContent
-  // checkcookie: IRCheckCookies
-  // checkdeadlinks: IRCheckDeadlinks
-  // checkhealthcheck: IRCheckHealthCheck
-  // nixstats: IRepositoryCollectionRepo
-  // incident: IRepositoryCollectionRepo
+  auth: IRAuth
+  sequence: IRepositoryCollectionRepo
+  marketplace: IRepositoryCollectionRepo
+  subscription: IRepoSubscription
+  crawler: IRepositoryCollectionRepo
+  customerhaendlerbund: IRepositoryCollectionRepo
+  customerhaendlerbundmetric: IRepositoryCollectionRepo
+  customermehrwertsteuercheck: IRepositoryCollectionRepo
+  memory: IRepositoryCollectionRepo
+  score: IRepositoryCollectionRepo
+  alertingpolicy: IRAlertingPolicy
+  websocket: IRWebsocket
+  metric: IRepositoryCollectionRepo
+  clusteruser: IRepositoryCollectionRepo
+  user: IRepositoryCollectionRepo
+  invitation: IRepositoryCollectionRepo
+  component: IRepositoryCollectionRepo
+  project: IRepositoryCollectionRepo
+  system: IRepositoryCollectionRepo
+  screenshot: IRepositoryCollectionRepo
+  tool: IRepositoryCollectionRepo
+  check: IRCheck
+  checklighthouse: IRCheckLighthouse
+  checka11y: IRCheckA11Y
+  checkbrokenresource: IRCheckBrokenResource
+  checkjavascripterrors: IRCheckJSErrors
+  checkfilesize: IRCheckFilesize
+  checksitemap: IRepositoryCollectionRepo
+  checkmobilefriendly: IRCheckMobileFriendly
+  checkcertificate: IRCheckCertificate
+  checkinsecurecontent: IRCheckInsecureContent
+  checkcookie: IRCheckCookies
+  checkdeadlinks: IRCheckDeadlinks
+  checkhealthcheck: IRCheckHealthCheck
+  nixstats: IRepositoryCollectionRepo
+  incident: IRepositoryCollectionRepo
 }
 
 export interface IRepositoryCollection {

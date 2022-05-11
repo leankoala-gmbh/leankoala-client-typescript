@@ -19,7 +19,8 @@
     "test": "jest",
     "generateTypes": "tsc --emitDeclarationOnly --declaration --project tsconfig.json",
     "prePublish": "npm run generateTypes && esbuild src/360ApiClient.ts --bundle --minify --format=esm --target=esnext --outfile=dist/360ApiClient.js",
-    "lint": "eslint --format=pretty --cache --max-warnings 0 --fix --ext .ts ."
+    "lint": "eslint --format=pretty --cache --max-warnings 0 --fix --ext .ts .",
+    "typedoc": "typedoc --out docs src/360ApiClient.ts"
   },
   "dependencies": {
     "axios": "^0.21.1",
