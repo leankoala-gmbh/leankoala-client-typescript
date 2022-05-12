@@ -36,6 +36,7 @@ import CheckDeadLinksRepository from './Entities/CheckDeadLinksRepository'
 import CheckHealthCheckRepository from './Entities/CheckHealthCheckRepository'
 import NixstatsRepository from './Entities/NixstatsRepository'
 import IncidentRepository from './Entities/IncidentRepository'
+import Connection from "../Connection/Connection";
 
 /**
  * This class was created by the LeanApiBundle.
@@ -97,15 +98,15 @@ class RepositoryCollection {
     
   }
 
-  setClusterConnection(connection) {
+  setClusterConnection(connection: Connection) {
     this.clusterConnection = connection
   }
 
-  setMasterConnection(connection) {
+  setMasterConnection(connection: Connection) {
     this.masterConnection = connection
   }
 
-  getRepository(entityType) {
+  getRepository(entityType: string) {
     const repositoryName = entityType.toLowerCase()
     if (this.repositories.hasOwnProperty(repositoryName)) {
       const repo = this.repositories[repositoryName]
