@@ -1,4 +1,4 @@
-const Repository = require('../Repository')
+import Repository from '../Repository'
 
 
 export interface ISetArguments {
@@ -7,15 +7,19 @@ export interface ISetArguments {
 }
 
 
-
 /**
  * This class was created by the LeanApiBundle.
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class MemoryRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * request url: /kapi/v1/memory/{objectType}/{objectId}
@@ -27,9 +31,9 @@ class MemoryRepository extends Repository {
    */
   async getAll(objectType, objectId): Promise<any> {
     const route = { path: 'memory/{objectType}/{objectId}', method: 'GET', version: 1 }
-    const argList = Object.assign({ objectType, objectId }, args)
+    const argList = Object.assign({ objectType, objectId }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -48,9 +52,9 @@ class MemoryRepository extends Repository {
     const requiredArguments = ['key', 'value']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }
 
-module.exports = MemoryRepository
+export default MemoryRepository

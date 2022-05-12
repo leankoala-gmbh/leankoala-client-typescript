@@ -1,8 +1,8 @@
-const Repository = require('../Repository')
+import Repository from '../Repository'
 
 
 export interface IAddByChecklistArguments {
-  checklist: mixed
+  checklist: any
   clear_before?: boolean
   activate_checks?: boolean
 }
@@ -21,10 +21,9 @@ export interface IShowActiveCollectionsArguments {
 }
 
 export interface IUpdateCollectionsArguments {
-  collections?: list
+  collections?: any[]
   group?: string
 }
-
 
 
 /**
@@ -32,9 +31,14 @@ export interface IUpdateCollectionsArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class CheckRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * request url: /kapi/v1/check/checks/{system}/checklist
@@ -52,7 +56,7 @@ class CheckRepository extends Repository {
     const requiredArguments = ['checklist']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -63,13 +67,13 @@ class CheckRepository extends Repository {
    * @param {Number} args.component 
    * @param {Number} args.cookbook 
    */
-  async addByRecipe(, args: IAddByRecipeArguments): Promise<any> {
+  async addByRecipe(args: IAddByRecipeArguments): Promise<any> {
     const route = { path: 'check/checks/cookbook', method: 'POST', version: 1 }
     const argList = Object.assign({  }, args)
     const requiredArguments = ['component', 'cookbook']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -84,9 +88,9 @@ class CheckRepository extends Repository {
    */
   async runChecksForSystem(system, toolIdentifier): Promise<any> {
     const route = { path: 'check/checks/run/{system}/{toolIdentifier}', method: 'POST', version: 1 }
-    const argList = Object.assign({ system, toolIdentifier }, args)
+    const argList = Object.assign({ system, toolIdentifier }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -104,7 +108,7 @@ class CheckRepository extends Repository {
     const route = { path: 'check/collections/{project}/{toolIdentifier}', method: 'POST', version: 1 }
     const argList = Object.assign({ project, toolIdentifier }, args)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -122,7 +126,7 @@ class CheckRepository extends Repository {
     const route = { path: 'check/collections/system/active/{system}/{toolIdentifier}', method: 'POST', version: 1 }
     const argList = Object.assign({ system, toolIdentifier }, args)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -140,9 +144,9 @@ class CheckRepository extends Repository {
     const route = { path: 'check/collections/system/{system}', method: 'PUT', version: 1 }
     const argList = Object.assign({ system }, args)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }
 
-module.exports = CheckRepository
+export default CheckRepository

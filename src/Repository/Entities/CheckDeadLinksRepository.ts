@@ -1,8 +1,8 @@
-const Repository = require('../Repository')
+import Repository from '../Repository'
 
 
 export interface IIgnorePatternArguments {
-  patterns: list
+  patterns: any[]
 }
 
 export interface IUnignorePatternArguments {
@@ -10,15 +10,19 @@ export interface IUnignorePatternArguments {
 }
 
 
-
 /**
  * This class was created by the LeanApiBundle.
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class CheckDeadLinksRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * Return a list of dead links for every component attached to the given system.
@@ -31,9 +35,9 @@ class CheckDeadLinksRepository extends Repository {
    */
   async getResults(system): Promise<any> {
     const route = { path: 'check/checks/{system}/deadlinks', method: 'GET', version: 1 }
-    const argList = Object.assign({ system }, args)
+    const argList = Object.assign({ system }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -45,9 +49,9 @@ class CheckDeadLinksRepository extends Repository {
    */
   async getBlockedPatterns(): Promise<any> {
     const route = { path: 'check/checks/deadlinks/blocked', method: 'GET', version: 1 }
-    const argList = Object.assign({  }, args)
+    const argList = Object.assign({  }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -61,9 +65,9 @@ class CheckDeadLinksRepository extends Repository {
    */
   async getResultsByCompany(company): Promise<any> {
     const route = { path: 'check/checks/company/{company}/deadlinks', method: 'GET', version: 1 }
-    const argList = Object.assign({ company }, args)
+    const argList = Object.assign({ company }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -77,9 +81,9 @@ class CheckDeadLinksRepository extends Repository {
    */
   async getConfiguration(system): Promise<any> {
     const route = { path: 'check/checks/{system}/deadlinks/config', method: 'GET', version: 1 }
-    const argList = Object.assign({ system }, args)
+    const argList = Object.assign({ system }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -98,7 +102,7 @@ class CheckDeadLinksRepository extends Repository {
     const requiredArguments = ['patterns']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -117,9 +121,9 @@ class CheckDeadLinksRepository extends Repository {
     const requiredArguments = ['pattern_id']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }
 
-module.exports = CheckDeadLinksRepository
+export default CheckDeadLinksRepository

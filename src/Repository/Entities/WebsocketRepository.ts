@@ -1,5 +1,4 @@
-const Repository = require('../Repository')
-
+import Repository from '../Repository'
 
 
 
@@ -8,9 +7,14 @@ const Repository = require('../Repository')
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class WebsocketRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * Return a websocket server with the room names for the given user.
@@ -21,9 +25,9 @@ class WebsocketRepository extends Repository {
    */
   async getRooms(): Promise<any> {
     const route = { path: 'websockets/rooms', method: 'POST', version: 1 }
-    const argList = Object.assign({  }, args)
+    const argList = Object.assign({  }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -35,11 +39,11 @@ class WebsocketRepository extends Repository {
    */
   async getAllRooms(): Promise<any> {
     const route = { path: 'websockets/rooms/all', method: 'POST', version: 1 }
-    const argList = Object.assign({  }, args)
+    const argList = Object.assign({  }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }
 
-module.exports = WebsocketRepository
+export default WebsocketRepository

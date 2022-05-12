@@ -1,11 +1,11 @@
 export default class Repository {
-  protected _connectionType: string
-  protected _connection: any
+  protected connectionType: string
+  protected connection: any
 
   constructor() {
-    this._connectionType = 'MasterConnection'
+    this.connectionType = 'MasterConnection'
   }
-s
+
   /**
    * Throw an exception if a mandatory argument is not set.
    *
@@ -24,10 +24,10 @@ s
   }
 
   setConnection(connection) {
-    this._connection = connection
+    this.connection = connection
   }
 
   getConnectionType() {
-    return this._connectionType
+    return this.connectionType
   }
 }

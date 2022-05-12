@@ -1,162 +1,277 @@
-import {TRepositories} from '../typescript/interfaces/global/repos'
-import {IRepositoryCollectionRepos} from '../typescript/interfaces/360ApiClient.interface'
-
-import AlertingChannel from './Entities/AlertingChannelRepository'
-// import AlertingPolicy from './Entities/AlertingPolicyRepository'
-// import Auth from './Entities/AuthRepository'
-// import CheckA11y from './Entities/CheckA11yRepository'
-// import CheckBrokenResource from './Entities/CheckBrokenResourceRepository'
-// import CheckCertificate from './Entities/CheckCertificateRepository'
-// import CheckCookie from './Entities/CheckCookieRepository'
-// import CheckDeadLinks from './Entities/CheckDeadLinksRepository'
-// import CheckFileSize from './Entities/CheckFileSizeRepository'
-// import CheckHealthCheck from './Entities/CheckHealthCheckRepository'
-// import CheckInsecureContent from './Entities/CheckInsecureContentRepository'
-// import CheckJavaScriptErrors from './Entities/CheckJavaScriptErrorsRepository'
-// import CheckLighthouse from './Entities/CheckLighthouseRepository'
-// import CheckMobileFriendly from './Entities/CheckMobileFriendlyRepository'
-// import Check from './Entities/CheckRepository'
-// import Subscription from './Entities/SubscriptionRepository'
-// import Websocket from './Entities/WebsocketRepository'
-
-
-
-// import Sequence from './Entities/SequenceRepository'
-// import Marketplace from './Entities/MarketplaceRepository'
-
-// import Incident from './Entities/IncidentRepository'
-// import CustomerHaendlerbund from './Entities/CustomerHaendlerbundRepository'
-// import CustomerHaendlerbundMetric from './Entities/CustomerHaendlerbundMetricRepository'
-// import Crawler from './Entities/CrawlerRepository'
-// import CustomerMehrwertsteuercheck from './Entities/CustomerMehrwertsteuercheckRepository'
-// import Memory from './Entities/MemoryRepository'
-// import Score from './Entities/ScoreRepository'
-
-
-
-// import Metric from './Entities/MetricRepository'
-
-// import ClusterUser from './Entities/ClusterUserRepository'
-// import User from './Entities/UserRepository'
-// import Invitation from './Entities/InvitationRepository'
-// import Component from './Entities/ComponentRepository'
-// import Project from './Entities/ProjectRepository'
-// import System from './Entities/SystemRepository'
-// import Screenshot from './Entities/ScreenshotRepository'
-// import Tool from './Entities/ToolRepository'
-//
-//
-//
-//
-//
-//
-// import CheckSitemap from './Entities/CheckSitemapRepository'
-//
-//
-//
-//
-//
-// import Nixstats from './Entities/NixstatsRepository'
+import SequenceRepository from './Entities/SequenceRepository'
+import MarketplaceRepository from './Entities/MarketplaceRepository'
+import SubscriptionRepository from './Entities/SubscriptionRepository'
+import CrawlerRepository from './Entities/CrawlerRepository'
+import CustomerHaendlerbundRepository from './Entities/CustomerHaendlerbundRepository'
+import CustomerHaendlerbundMetricRepository from './Entities/CustomerHaendlerbundMetricRepository'
+import CustomerMehrwertsteuercheckRepository from './Entities/CustomerMehrwertsteuercheckRepository'
+import MemoryRepository from './Entities/MemoryRepository'
+import ScoreRepository from './Entities/ScoreRepository'
+import AlertingPolicyRepository from './Entities/AlertingPolicyRepository'
+import AlertingChannelRepository from './Entities/AlertingChannelRepository'
+import WebsocketRepository from './Entities/WebsocketRepository'
+import MetricRepository from './Entities/MetricRepository'
+import AuthRepository from './Entities/AuthRepository'
+import ClusterUserRepository from './Entities/ClusterUserRepository'
+import UserRepository from './Entities/UserRepository'
+import InvitationRepository from './Entities/InvitationRepository'
+import ClusterCompanyRepository from './Entities/ClusterCompanyRepository'
+import ComponentRepository from './Entities/ComponentRepository'
+import ProjectRepository from './Entities/ProjectRepository'
+import SystemRepository from './Entities/SystemRepository'
+import ScreenshotRepository from './Entities/ScreenshotRepository'
+import ToolRepository from './Entities/ToolRepository'
+import CheckRepository from './Entities/CheckRepository'
+import CheckLighthouseRepository from './Entities/CheckLighthouseRepository'
+import CheckA11yRepository from './Entities/CheckA11yRepository'
+import CheckBrokenResourceRepository from './Entities/CheckBrokenResourceRepository'
+import CheckJavaScriptErrorsRepository from './Entities/CheckJavaScriptErrorsRepository'
+import CheckFileSizeRepository from './Entities/CheckFileSizeRepository'
+import CheckSitemapRepository from './Entities/CheckSitemapRepository'
+import CheckMobileFriendlyRepository from './Entities/CheckMobileFriendlyRepository'
+import CheckCertificateRepository from './Entities/CheckCertificateRepository'
+import CheckInsecureContentRepository from './Entities/CheckInsecureContentRepository'
+import CheckCookieRepository from './Entities/CheckCookieRepository'
+import CheckDeadLinksRepository from './Entities/CheckDeadLinksRepository'
+import CheckHealthCheckRepository from './Entities/CheckHealthCheckRepository'
+import NixstatsRepository from './Entities/NixstatsRepository'
+import IncidentRepository from './Entities/IncidentRepository'
 
 /**
  * This class was created by the LeanApiBundle.
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-02-14
+ * @created 2022-05-12
  */
-export default class RepositoryCollection {
-  private readonly _repositories: any
-  private _masterConnection: any
-  private _clusterConnection: any
+class RepositoryCollection {
+
+  private readonly repositories: object
+  private masterConnection: any
+  private clusterConnection: any
 
   constructor() {
-    this._masterConnection = false
-    this._clusterConnection = false
-    this._repositories = {}
 
-    this._repositories.alertingchannel = new AlertingChannel()
-    // this._repositories.alertingpolicy = new AlertingPolicy()
-    // this._repositories.auth = new Auth()
-    // this._repositories.checka11y = new CheckA11y()
-    // this._repositories.checkbrokenresource = new CheckBrokenResource()
-    // this._repositories.checkcertificate = new CheckCertificate()
-    // this._repositories.checkcookie = new CheckCookie()
-    // this._repositories.checkdeadlinks = new CheckDeadLinks()
-    // this._repositories.checkfilesize = new CheckFileSize()
-    // this._repositories.checkhealthcheck = new CheckHealthCheck()
-    // this._repositories.checkinsecurecontent = new CheckInsecureContent()
-    // this._repositories.checkjavascripterrors = new CheckJavaScriptErrors()
-    // this._repositories.checklighthouse = new CheckLighthouse()
-    // this._repositories.checkmobilefriendly = new CheckMobileFriendly()
-    // this._repositories.check = new Check()
-    // this._repositories.subscription = new Subscription()
-    // this._repositories.websocket = new Websocket()
+    this.masterConnection = false
+    this.clusterConnection = false
 
-
-
-
-    // this._repositories['sequence'] = new Sequence()
-    // this._repositories['marketplace'] = new Marketplace()
-
-    // this._repositories['crawler'] = new Crawler()
-    // this._repositories['customerhaendlerbund'] = new CustomerHaendlerbund()
-    // this._repositories['customerhaendlerbundmetric'] = new CustomerHaendlerbundMetric()
-    // this._repositories['customermehrwertsteuercheck'] = new CustomerMehrwertsteuercheck()
-    // this._repositories['memory'] = new Memory()
-    // this._repositories['score'] = new Score()
-    //
-
-
-    // this._repositories['metric'] = new Metric()
-    //
-    // this._repositories['clusteruser'] = new ClusterUser()
-    // this._repositories['user'] = new User()
-    // this._repositories['invitation'] = new Invitation()
-    // this._repositories['component'] = new Component()
-    // this._repositories['project'] = new Project()
-    // this._repositories['system'] = new System()
-    // this._repositories['screenshot'] = new Screenshot()
-    // this._repositories['tool'] = new Tool()
-    //
-    //
-    //
-    //
-    //
-    //
-    // this._repositories['checksitemap'] = new CheckSitemap()
-    //
-    // this._repositories['checkcertificate'] = new CheckCertificate()
-    //
-    //
-    //
-    //
-    // this._repositories['nixstats'] = new Nixstats()
-    // this._repositories['incident'] = new Incident()
+    this.repositories = {}
+    this.repositories[ 'sequence' ] = new SequenceRepository()
+    this.repositories[ 'marketplace' ] = new MarketplaceRepository()
+    this.repositories[ 'subscription' ] = new SubscriptionRepository()
+    this.repositories[ 'crawler' ] = new CrawlerRepository()
+    this.repositories[ 'customerhaendlerbund' ] = new CustomerHaendlerbundRepository()
+    this.repositories[ 'customerhaendlerbundmetric' ] = new CustomerHaendlerbundMetricRepository()
+    this.repositories[ 'customermehrwertsteuercheck' ] = new CustomerMehrwertsteuercheckRepository()
+    this.repositories[ 'memory' ] = new MemoryRepository()
+    this.repositories[ 'score' ] = new ScoreRepository()
+    this.repositories[ 'alertingpolicy' ] = new AlertingPolicyRepository()
+    this.repositories[ 'alertingchannel' ] = new AlertingChannelRepository()
+    this.repositories[ 'websocket' ] = new WebsocketRepository()
+    this.repositories[ 'metric' ] = new MetricRepository()
+    this.repositories[ 'auth' ] = new AuthRepository()
+    this.repositories[ 'clusteruser' ] = new ClusterUserRepository()
+    this.repositories[ 'user' ] = new UserRepository()
+    this.repositories[ 'invitation' ] = new InvitationRepository()
+    this.repositories[ 'clustercompany' ] = new ClusterCompanyRepository()
+    this.repositories[ 'component' ] = new ComponentRepository()
+    this.repositories[ 'project' ] = new ProjectRepository()
+    this.repositories[ 'system' ] = new SystemRepository()
+    this.repositories[ 'screenshot' ] = new ScreenshotRepository()
+    this.repositories[ 'tool' ] = new ToolRepository()
+    this.repositories[ 'check' ] = new CheckRepository()
+    this.repositories[ 'checklighthouse' ] = new CheckLighthouseRepository()
+    this.repositories[ 'checka11y' ] = new CheckA11yRepository()
+    this.repositories[ 'checkbrokenresource' ] = new CheckBrokenResourceRepository()
+    this.repositories[ 'checkjavascripterrors' ] = new CheckJavaScriptErrorsRepository()
+    this.repositories[ 'checkfilesize' ] = new CheckFileSizeRepository()
+    this.repositories[ 'checksitemap' ] = new CheckSitemapRepository()
+    this.repositories[ 'checkmobilefriendly' ] = new CheckMobileFriendlyRepository()
+    this.repositories[ 'checkcertificate' ] = new CheckCertificateRepository()
+    this.repositories[ 'checkinsecurecontent' ] = new CheckInsecureContentRepository()
+    this.repositories[ 'checkcookie' ] = new CheckCookieRepository()
+    this.repositories[ 'checkdeadlinks' ] = new CheckDeadLinksRepository()
+    this.repositories[ 'checkhealthcheck' ] = new CheckHealthCheckRepository()
+    this.repositories[ 'nixstats' ] = new NixstatsRepository()
+    this.repositories[ 'incident' ] = new IncidentRepository()
+    
   }
 
   setClusterConnection(connection) {
-    this._clusterConnection = connection
+    this.clusterConnection = connection
   }
 
   setMasterConnection(connection) {
-    this._masterConnection = connection
+    this.masterConnection = connection
   }
 
-  getRepository(entityType: TRepositories): IRepositoryCollectionRepos | Error {
+  getRepository(entityType) {
     const repositoryName = entityType.toLowerCase()
-    if (repositoryName in this._repositories) {
-      const repo = this._repositories[repositoryName]
+    if (this.repositories.hasOwnProperty(repositoryName)) {
+      const repo = this.repositories[repositoryName]
       if (repo.getConnectionType() === 'ClusterConnection') {
-        repo.setConnection(this._clusterConnection)
+        repo.setConnection(this.clusterConnection)
       } else {
-        repo.setConnection(this._masterConnection)
+        repo.setConnection(this.masterConnection)
       }
-      return this._repositories[repositoryName]
+      return this.repositories[repositoryName]
+    } else {
+      throw new Error('No repository with name ' + repositoryName + ' found. Registered repositories are: ' + JSON.stringify(Object.keys(this.repositories)))
     }
-      throw new Error(`No repository with name ${repositoryName} found. Registered repositories are:
-         ${JSON.stringify(Object.keys(this._repositories))}
-        `)
-
   }
+
+  getSequenceRepository(): SequenceRepository {
+      return this.getRepository("Sequence")
+  }
+
+  getMarketplaceRepository(): MarketplaceRepository {
+      return this.getRepository("Marketplace")
+  }
+
+  getSubscriptionRepository(): SubscriptionRepository {
+      return this.getRepository("Subscription")
+  }
+
+  getCrawlerRepository(): CrawlerRepository {
+      return this.getRepository("Crawler")
+  }
+
+  getCustomerHaendlerbundRepository(): CustomerHaendlerbundRepository {
+      return this.getRepository("CustomerHaendlerbund")
+  }
+
+  getCustomerHaendlerbundMetricRepository(): CustomerHaendlerbundMetricRepository {
+      return this.getRepository("CustomerHaendlerbundMetric")
+  }
+
+  getCustomerMehrwertsteuercheckRepository(): CustomerMehrwertsteuercheckRepository {
+      return this.getRepository("CustomerMehrwertsteuercheck")
+  }
+
+  getMemoryRepository(): MemoryRepository {
+      return this.getRepository("Memory")
+  }
+
+  getScoreRepository(): ScoreRepository {
+      return this.getRepository("Score")
+  }
+
+  getAlertingPolicyRepository(): AlertingPolicyRepository {
+      return this.getRepository("AlertingPolicy")
+  }
+
+  getAlertingChannelRepository(): AlertingChannelRepository {
+      return this.getRepository("AlertingChannel")
+  }
+
+  getWebsocketRepository(): WebsocketRepository {
+      return this.getRepository("Websocket")
+  }
+
+  getMetricRepository(): MetricRepository {
+      return this.getRepository("Metric")
+  }
+
+  getAuthRepository(): AuthRepository {
+      return this.getRepository("Auth")
+  }
+
+  getClusterUserRepository(): ClusterUserRepository {
+      return this.getRepository("ClusterUser")
+  }
+
+  getUserRepository(): UserRepository {
+      return this.getRepository("User")
+  }
+
+  getInvitationRepository(): InvitationRepository {
+      return this.getRepository("Invitation")
+  }
+
+  getClusterCompanyRepository(): ClusterCompanyRepository {
+      return this.getRepository("ClusterCompany")
+  }
+
+  getComponentRepository(): ComponentRepository {
+      return this.getRepository("Component")
+  }
+
+  getProjectRepository(): ProjectRepository {
+      return this.getRepository("Project")
+  }
+
+  getSystemRepository(): SystemRepository {
+      return this.getRepository("System")
+  }
+
+  getScreenshotRepository(): ScreenshotRepository {
+      return this.getRepository("Screenshot")
+  }
+
+  getToolRepository(): ToolRepository {
+      return this.getRepository("Tool")
+  }
+
+  getCheckRepository(): CheckRepository {
+      return this.getRepository("Check")
+  }
+
+  getCheckLighthouseRepository(): CheckLighthouseRepository {
+      return this.getRepository("CheckLighthouse")
+  }
+
+  getCheckA11yRepository(): CheckA11yRepository {
+      return this.getRepository("CheckA11y")
+  }
+
+  getCheckBrokenResourceRepository(): CheckBrokenResourceRepository {
+      return this.getRepository("CheckBrokenResource")
+  }
+
+  getCheckJavaScriptErrorsRepository(): CheckJavaScriptErrorsRepository {
+      return this.getRepository("CheckJavaScriptErrors")
+  }
+
+  getCheckFileSizeRepository(): CheckFileSizeRepository {
+      return this.getRepository("CheckFileSize")
+  }
+
+  getCheckSitemapRepository(): CheckSitemapRepository {
+      return this.getRepository("CheckSitemap")
+  }
+
+  getCheckMobileFriendlyRepository(): CheckMobileFriendlyRepository {
+      return this.getRepository("CheckMobileFriendly")
+  }
+
+  getCheckCertificateRepository(): CheckCertificateRepository {
+      return this.getRepository("CheckCertificate")
+  }
+
+  getCheckInsecureContentRepository(): CheckInsecureContentRepository {
+      return this.getRepository("CheckInsecureContent")
+  }
+
+  getCheckCookieRepository(): CheckCookieRepository {
+      return this.getRepository("CheckCookie")
+  }
+
+  getCheckDeadLinksRepository(): CheckDeadLinksRepository {
+      return this.getRepository("CheckDeadLinks")
+  }
+
+  getCheckHealthCheckRepository(): CheckHealthCheckRepository {
+      return this.getRepository("CheckHealthCheck")
+  }
+
+  getNixstatsRepository(): NixstatsRepository {
+      return this.getRepository("Nixstats")
+  }
+
+  getIncidentRepository(): IncidentRepository {
+      return this.getRepository("Incident")
+  }
+
 }
+
+export default RepositoryCollection

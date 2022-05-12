@@ -1,4 +1,4 @@
-const Repository = require('../Repository')
+import Repository from '../Repository'
 
 
 export interface IGetChangedConfigurationArguments {
@@ -12,15 +12,19 @@ export interface IOverwriteArguments {
 }
 
 
-
 /**
  * This class was created by the LeanApiBundle.
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class ToolRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * Get the tool configurations for all tools that changed.
@@ -32,13 +36,13 @@ class ToolRepository extends Repository {
    * @param {Number} args.newerThan 
    * @param {Boolean} args.minifyOutput  (default: false)
    */
-  async getChangedConfiguration(, args: IGetChangedConfigurationArguments): Promise<any> {
+  async getChangedConfiguration(args: IGetChangedConfigurationArguments): Promise<any> {
     const route = { path: 'check/tools/changed', method: 'POST', version: 1 }
     const argList = Object.assign({  }, args)
     const requiredArguments = ['newerThan']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -52,9 +56,9 @@ class ToolRepository extends Repository {
    */
   async findByProject(project): Promise<any> {
     const route = { path: 'check/tools/{project}', method: 'POST', version: 1 }
-    const argList = Object.assign({ project }, args)
+    const argList = Object.assign({ project }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -69,9 +73,9 @@ class ToolRepository extends Repository {
    */
   async getConfiguration(project, toolIdentifier): Promise<any> {
     const route = { path: 'check/tools/{project}/{toolIdentifier}', method: 'GET', version: 1 }
-    const argList = Object.assign({ project, toolIdentifier }, args)
+    const argList = Object.assign({ project, toolIdentifier }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -90,9 +94,9 @@ class ToolRepository extends Repository {
     const route = { path: 'check/tools/{project}/{toolIdentifier}', method: 'PUT', version: 1 }
     const argList = Object.assign({ project, toolIdentifier }, args)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }
 
-module.exports = ToolRepository
+export default ToolRepository

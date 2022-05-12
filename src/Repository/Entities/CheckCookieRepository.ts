@@ -1,5 +1,4 @@
-const Repository = require('../Repository')
-
+import Repository from '../Repository'
 
 
 
@@ -8,9 +7,14 @@ const Repository = require('../Repository')
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class CheckCookieRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * This endpoint returns a list of domains that set cookies for the given system. As array elements it
@@ -25,11 +29,11 @@ class CheckCookieRepository extends Repository {
    */
   async getDomains(system): Promise<any> {
     const route = { path: 'check/checks/{system}/cookies/domains', method: 'GET', version: 1 }
-    const argList = Object.assign({ system }, args)
+    const argList = Object.assign({ system }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }
 
-module.exports = CheckCookieRepository
+export default CheckCookieRepository

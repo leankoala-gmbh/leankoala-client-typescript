@@ -1,18 +1,17 @@
-const Repository = require('../Repository')
+import Repository from '../Repository'
 
 
 export interface ICreateSequenceArguments {
   name: string
   startUrl: string
-  steps?: list
+  steps?: any[]
 }
 
 export interface IUpdateSequenceArguments {
   name?: string
   startUrl?: string
-  steps?: list
+  steps?: any[]
 }
-
 
 
 /**
@@ -20,9 +19,14 @@ export interface IUpdateSequenceArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class SequenceRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * Get a list of possible commands
@@ -35,9 +39,9 @@ class SequenceRepository extends Repository {
    */
   async getCommands(project): Promise<any> {
     const route = { path: 'sequences/{project}/commands', method: 'GET', version: 1 }
-    const argList = Object.assign({ project }, args)
+    const argList = Object.assign({ project }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -51,9 +55,9 @@ class SequenceRepository extends Repository {
    */
   async getSequences(project): Promise<any> {
     const route = { path: 'sequences/{project}/sequences', method: 'GET', version: 1 }
-    const argList = Object.assign({ project }, args)
+    const argList = Object.assign({ project }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -74,7 +78,7 @@ class SequenceRepository extends Repository {
     const requiredArguments = ['name', 'startUrl']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -93,7 +97,7 @@ class SequenceRepository extends Repository {
     const route = { path: 'sequences/{project}/sequence', method: 'PUT', version: 1 }
     const argList = Object.assign({ project }, args)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -107,9 +111,9 @@ class SequenceRepository extends Repository {
    */
   async activateSequence(sequence): Promise<any> {
     const route = { path: 'sequences/{sequence}/activate', method: 'PUT', version: 1 }
-    const argList = Object.assign({ sequence }, args)
+    const argList = Object.assign({ sequence }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -123,9 +127,9 @@ class SequenceRepository extends Repository {
    */
   async deactivateSequence(sequence): Promise<any> {
     const route = { path: 'sequences/{sequence}/deactivate', method: 'PUT', version: 1 }
-    const argList = Object.assign({ sequence }, args)
+    const argList = Object.assign({ sequence }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -139,11 +143,11 @@ class SequenceRepository extends Repository {
    */
   async getRecentRuns(sequence): Promise<any> {
     const route = { path: 'sequences/{sequence}/recent', method: 'GET', version: 1 }
-    const argList = Object.assign({ sequence }, args)
+    const argList = Object.assign({ sequence }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }
 
-module.exports = SequenceRepository
+export default SequenceRepository

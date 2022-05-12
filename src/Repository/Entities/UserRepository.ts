@@ -1,4 +1,4 @@
-const Repository = require('../Repository')
+import Repository from '../Repository'
 
 
 export interface IUpdateArguments {
@@ -6,15 +6,19 @@ export interface IUpdateArguments {
 }
 
 
-
 /**
  * This class was created by the LeanApiBundle.
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class UserRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * Update the subscription for a given user.
@@ -32,9 +36,9 @@ class UserRepository extends Repository {
     const requiredArguments = ['system_count']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }
 
-module.exports = UserRepository
+export default UserRepository

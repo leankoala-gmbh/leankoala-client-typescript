@@ -1,10 +1,9 @@
-const Repository = require('../Repository')
+import Repository from '../Repository'
 
 
 export interface IIgnorePatternArguments {
-  patterns: list
+  patterns: any[]
 }
-
 
 
 /**
@@ -12,9 +11,14 @@ export interface IIgnorePatternArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class CheckFileSizeRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * request url: /kapi/v1/check/checks/{system}/performance/big
@@ -25,9 +29,9 @@ class CheckFileSizeRepository extends Repository {
    */
   async getResults(system): Promise<any> {
     const route = { path: 'check/checks/{system}/performance/big', method: 'GET', version: 1 }
-    const argList = Object.assign({ system }, args)
+    const argList = Object.assign({ system }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -46,9 +50,9 @@ class CheckFileSizeRepository extends Repository {
     const requiredArguments = ['patterns']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }
 
-module.exports = CheckFileSizeRepository
+export default CheckFileSizeRepository

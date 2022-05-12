@@ -1,16 +1,15 @@
-const Repository = require('../Repository')
+import Repository from '../Repository'
 
 
 export interface IGetScoresByUserArguments {
-  scores: list
+  scores: any[]
   with_sub_scores?: boolean
   filter_empty_projects?: boolean
 }
 
 export interface IGetScoresArguments {
-  scores: list
+  scores: any[]
 }
-
 
 
 /**
@@ -18,9 +17,14 @@ export interface IGetScoresArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class ScoreRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * Return a list of scores by the given score names for all projects and systems the user is part of.
@@ -41,7 +45,7 @@ class ScoreRepository extends Repository {
     const requiredArguments = ['scores']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -56,9 +60,9 @@ class ScoreRepository extends Repository {
    */
   async getScore(system, scoreName): Promise<any> {
     const route = { path: 'score/scores/{system}/{scoreName}', method: 'POST', version: 1 }
-    const argList = Object.assign({ system, scoreName }, args)
+    const argList = Object.assign({ system, scoreName }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -77,9 +81,9 @@ class ScoreRepository extends Repository {
     const requiredArguments = ['scores']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }
 
-module.exports = ScoreRepository
+export default ScoreRepository

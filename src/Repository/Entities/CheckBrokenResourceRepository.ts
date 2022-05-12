@@ -1,5 +1,4 @@
-const Repository = require('../Repository')
-
+import Repository from '../Repository'
 
 
 
@@ -8,9 +7,14 @@ const Repository = require('../Repository')
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class CheckBrokenResourceRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * request url: /kapi/v1/check/checks/{system}/brokenresources
@@ -21,11 +25,11 @@ class CheckBrokenResourceRepository extends Repository {
    */
   async getBrokenResources(system): Promise<any> {
     const route = { path: 'check/checks/{system}/brokenresources', method: 'GET', version: 1 }
-    const argList = Object.assign({ system }, args)
+    const argList = Object.assign({ system }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }
 
-module.exports = CheckBrokenResourceRepository
+export default CheckBrokenResourceRepository

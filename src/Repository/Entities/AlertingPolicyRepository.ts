@@ -1,20 +1,19 @@
-const Repository = require('../Repository')
+import Repository from '../Repository'
 
 
 export interface ICreateArguments {
   name: string
   interval?: 'immediately' | '7d' | '24h' | '1h'
-  severities?: list
+  severities?: any[]
   channels?: number
 }
 
 export interface IUpdateArguments {
   name?: string
   interval?: 'immediately' | '7d' | '24h' | '1h'
-  severities?: list
+  severities?: any[]
   channels?: number
 }
-
 
 
 /**
@@ -22,9 +21,14 @@ export interface IUpdateArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class AlertingPolicyRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * List all policies for the given project
@@ -37,9 +41,9 @@ class AlertingPolicyRepository extends Repository {
    */
   async list(project): Promise<any> {
     const route = { path: 'alerting/policies/{project}', method: 'GET', version: 1 }
-    const argList = Object.assign({ project }, args)
+    const argList = Object.assign({ project }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -59,7 +63,7 @@ class AlertingPolicyRepository extends Repository {
     const requiredArguments = ['name']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -74,9 +78,9 @@ class AlertingPolicyRepository extends Repository {
    */
   async delete(project, policy): Promise<any> {
     const route = { path: 'alerting/policies/{project}/{policy}', method: 'DELETE', version: 1 }
-    const argList = Object.assign({ project, policy }, args)
+    const argList = Object.assign({ project, policy }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -95,9 +99,9 @@ class AlertingPolicyRepository extends Repository {
     const route = { path: 'alerting/policies/{project}/{policy}', method: 'PUT', version: 1 }
     const argList = Object.assign({ project, policy }, args)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }
 
-module.exports = AlertingPolicyRepository
+export default AlertingPolicyRepository

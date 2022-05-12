@@ -1,4 +1,4 @@
-const Repository = require('../Repository')
+import Repository from '../Repository'
 
 
 export interface ISetCompanyCreditCardPlansArguments {
@@ -10,7 +10,7 @@ export interface ISetCompanyFreePlansArguments {
 }
 
 export interface ISetCreditCardArguments {
-  stripe_cc_source: mixed
+  stripe_cc_source: any
   last_digits: string
   brand: string
 }
@@ -30,15 +30,19 @@ export interface ISetSubscriptionPlanArguments {
 }
 
 
-
 /**
  * This class was created by the LeanApiBundle.
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class SubscriptionRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * Get the companies subscription information.
@@ -51,9 +55,9 @@ class SubscriptionRepository extends Repository {
    */
   async getCompanySubscription(company): Promise<any> {
     const route = { path: 'subscription/company/{company}/', method: 'GET', version: 1 }
-    const argList = Object.assign({ company }, args)
+    const argList = Object.assign({ company }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -72,7 +76,7 @@ class SubscriptionRepository extends Repository {
     const requiredArguments = ['quantity']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -91,7 +95,7 @@ class SubscriptionRepository extends Repository {
     const requiredArguments = ['quantity']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -112,7 +116,7 @@ class SubscriptionRepository extends Repository {
     const requiredArguments = ['stripe_cc_source', 'last_digits', 'brand']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -137,7 +141,7 @@ class SubscriptionRepository extends Repository {
     const requiredArguments = ['company_name', 'country', 'postal_code', 'city', 'street']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -151,9 +155,9 @@ class SubscriptionRepository extends Repository {
    */
   async getBillingAddress(company): Promise<any> {
     const route = { path: 'subscription/company/{company}/billingaddress', method: 'GET', version: 1 }
-    const argList = Object.assign({ company }, args)
+    const argList = Object.assign({ company }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -167,9 +171,9 @@ class SubscriptionRepository extends Repository {
    */
   async getSubscribedFeatures(company): Promise<any> {
     const route = { path: 'subscription/company/{company}/features', method: 'GET', version: 1 }
-    const argList = Object.assign({ company }, args)
+    const argList = Object.assign({ company }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -183,9 +187,9 @@ class SubscriptionRepository extends Repository {
    */
   async getCompanyInvoices(company): Promise<any> {
     const route = { path: 'subscription/company/{company}/invoices', method: 'GET', version: 1 }
-    const argList = Object.assign({ company }, args)
+    const argList = Object.assign({ company }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -204,7 +208,7 @@ class SubscriptionRepository extends Repository {
     const requiredArguments = ['identifier']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -218,11 +222,11 @@ class SubscriptionRepository extends Repository {
    */
   async endTrials(providerIdentifier): Promise<any> {
     const route = { path: 'subscription/trial/{providerIdentifier}/end', method: 'POST', version: 1 }
-    const argList = Object.assign({ providerIdentifier }, args)
+    const argList = Object.assign({ providerIdentifier }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }
 
-module.exports = SubscriptionRepository
+export default SubscriptionRepository

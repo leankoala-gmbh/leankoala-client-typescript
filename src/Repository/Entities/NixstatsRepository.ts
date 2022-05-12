@@ -1,4 +1,4 @@
-const Repository = require('../Repository')
+import Repository from '../Repository'
 
 
 export interface ICreateWebsiteMonitorArguments {
@@ -6,15 +6,19 @@ export interface ICreateWebsiteMonitorArguments {
 }
 
 
-
 /**
  * This class was created by the LeanApiBundle.
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class NixstatsRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * Create a new 360 website monitor.
@@ -32,9 +36,9 @@ class NixstatsRepository extends Repository {
     const requiredArguments = ['url']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }
 
-module.exports = NixstatsRepository
+export default NixstatsRepository

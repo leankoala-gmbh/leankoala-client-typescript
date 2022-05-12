@@ -1,11 +1,10 @@
-const Repository = require('../Repository')
+import Repository from '../Repository'
 
 
 export interface IGetResultsArguments {
-  targetGroup?: mixed
+  targetGroup?: any
   use_cache?: boolean
 }
-
 
 
 /**
@@ -13,9 +12,14 @@ export interface IGetResultsArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class CheckLighthouseRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * Return all current lighthouse results for the given systems components.
@@ -33,9 +37,9 @@ class CheckLighthouseRepository extends Repository {
     const route = { path: 'check/checks/{system}/lighthouse/results/{category}', method: 'GET', version: 1 }
     const argList = Object.assign({ system, category }, args)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }
 
-module.exports = CheckLighthouseRepository
+export default CheckLighthouseRepository

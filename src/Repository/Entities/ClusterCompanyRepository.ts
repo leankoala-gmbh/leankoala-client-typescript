@@ -1,4 +1,4 @@
-const Repository = require('../Repository')
+import Repository from '../Repository'
 
 
 export interface ICreateArguments {
@@ -23,15 +23,19 @@ export interface IUpdateMasterIdArguments {
 }
 
 
-
 /**
  * This class was created by the LeanApiBundle.
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class ClusterCompanyRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * Create a new company
@@ -50,7 +54,7 @@ class ClusterCompanyRepository extends Repository {
     const requiredArguments = ['name', 'master_id']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -62,13 +66,13 @@ class ClusterCompanyRepository extends Repository {
    * @param {Object} args
    * @param {String} args.company_name The companies name
    */
-  async exists(, args: IExistsArguments): Promise<any> {
+  async exists(args: IExistsArguments): Promise<any> {
     const route = { path: 'user/companies/exists', method: 'GET', version: 1 }
     const argList = Object.assign({  }, args)
     const requiredArguments = ['company_name']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -87,7 +91,7 @@ class ClusterCompanyRepository extends Repository {
     const requiredArguments = ['company_name']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -101,9 +105,9 @@ class ClusterCompanyRepository extends Repository {
    */
   async findAll(providerIdentifier): Promise<any> {
     const route = { path: 'user/companies/findall/{providerIdentifier}', method: 'POST', version: 1 }
-    const argList = Object.assign({ providerIdentifier }, args)
+    const argList = Object.assign({ providerIdentifier }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -121,7 +125,7 @@ class ClusterCompanyRepository extends Repository {
     const route = { path: 'user/companies/connect/{company}/{user}', method: 'POST', version: 1 }
     const argList = Object.assign({ company, user }, args)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -140,9 +144,9 @@ class ClusterCompanyRepository extends Repository {
     const requiredArguments = ['master_id']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }
 
-module.exports = ClusterCompanyRepository
+export default ClusterCompanyRepository

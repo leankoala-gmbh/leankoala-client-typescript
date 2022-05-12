@@ -1,11 +1,11 @@
-const Repository = require('../Repository')
+import Repository from '../Repository'
 
 
 export interface ICreateSystemArguments {
   project?: number
   add_standard_alerting?: boolean
   name: string
-  base_url: url
+  base_url: string
   owner: number
   system_type: number
   add_checklist_checks?: boolean
@@ -14,9 +14,8 @@ export interface ICreateSystemArguments {
 
 export interface IUpdateSystemArguments {
   name?: string
-  base_url?: url
+  base_url?: string
 }
-
 
 
 /**
@@ -24,9 +23,14 @@ export interface IUpdateSystemArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class SystemRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * Create a new system.
@@ -47,14 +51,14 @@ class SystemRepository extends Repository {
    *                                            system type are added. (default: true)
    * @param {Boolean} args.add_support_user Add the support user for support requests (default: true)
    */
-  async createSystem(, args: ICreateSystemArguments): Promise<any> {
+  async createSystem(args: ICreateSystemArguments): Promise<any> {
     const route = { path: 'project/systems/system', method: 'POST', version: 1 }
     const argList = Object.assign({  }, args)
     const requiredArguments = ['name', 'base_url', 'owner', 'system_type']
     this._assertValidArguments(requiredArguments, argList)
 
-    const result = await this._connection.send(route, argList)
-    await this._connection.refreshAccessToken(true)
+    const result = await this.connection.send(route, argList)
+    await this.connection.refreshAccessToken(true)
     return result
   }
 
@@ -73,7 +77,7 @@ class SystemRepository extends Repository {
     const route = { path: 'project/systems/system/{system}', method: 'PUT', version: 1 }
     const argList = Object.assign({ system }, args)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -87,9 +91,9 @@ class SystemRepository extends Repository {
    */
   async getComponents(system): Promise<any> {
     const route = { path: 'project/systems/{system}/components', method: 'GET', version: 1 }
-    const argList = Object.assign({ system }, args)
+    const argList = Object.assign({ system }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -103,9 +107,9 @@ class SystemRepository extends Repository {
    */
   async getComponentSuggestions(system): Promise<any> {
     const route = { path: 'project/systems/{system}/suggestions', method: 'POST', version: 1 }
-    const argList = Object.assign({ system }, args)
+    const argList = Object.assign({ system }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -120,9 +124,9 @@ class SystemRepository extends Repository {
    */
   async changeLastFullRun(system, status): Promise<any> {
     const route = { path: 'project/systems/{system}/lastFullRun/{status}', method: 'POST', version: 1 }
-    const argList = Object.assign({ system, status }, args)
+    const argList = Object.assign({ system, status }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -136,9 +140,9 @@ class SystemRepository extends Repository {
    */
   async getNextLastFullRun(system): Promise<any> {
     const route = { path: 'project/systems/{system}/nextFullRun', method: 'GET', version: 1 }
-    const argList = Object.assign({ system }, args)
+    const argList = Object.assign({ system }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -152,9 +156,9 @@ class SystemRepository extends Repository {
    */
   async getSystemTypes(providerIdentifier): Promise<any> {
     const route = { path: 'project/systems/{providerIdentifier}/systemType', method: 'GET', version: 1 }
-    const argList = Object.assign({ providerIdentifier }, args)
+    const argList = Object.assign({ providerIdentifier }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -168,9 +172,9 @@ class SystemRepository extends Repository {
    */
   async getComponentLimit(system): Promise<any> {
     const route = { path: 'project/systems/{system}/component/limit', method: 'GET', version: 1 }
-    const argList = Object.assign({ system }, args)
+    const argList = Object.assign({ system }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -186,11 +190,11 @@ class SystemRepository extends Repository {
    */
   async triggerComponentFinder(project, system, user): Promise<any> {
     const route = { path: 'project/{project}/componentfinder/{system}/{user}/trigger', method: 'POST', version: 1 }
-    const argList = Object.assign({ project, system, user }, args)
+    const argList = Object.assign({ project, system, user }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }
 
-module.exports = SystemRepository
+export default SystemRepository

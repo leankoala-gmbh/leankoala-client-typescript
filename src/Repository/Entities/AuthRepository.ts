@@ -1,4 +1,4 @@
-const Repository = require('../Repository')
+import Repository from '../Repository'
 
 export interface ICreateTokenByCredentialsResult{
   user: { 
@@ -24,15 +24,19 @@ export interface ICreateTokenByRefreshTokenArguments {
 }
 
 
-
 /**
  * This class was created by the LeanApiBundle.
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class AuthRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * request url: /kapi/v1/auth/tokens/access
@@ -46,13 +50,13 @@ class AuthRepository extends Repository {
    *
    * @return ICreateTokenByCredentialsResult
    */
-  async createTokenByCredentials(, args: ICreateTokenByCredentialsArguments): Promise<ICreateTokenByCredentialsResponse> {
+  async createTokenByCredentials(args: ICreateTokenByCredentialsArguments): Promise<ICreateTokenByCredentialsResult> {
     const route = { path: 'auth/tokens/access', method: 'POST', version: 1 }
     const argList = Object.assign({  }, args)
     const requiredArguments = ['username', 'password']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -67,9 +71,9 @@ class AuthRepository extends Repository {
     const route = { path: 'auth/tokens/refresh/{user}', method: 'POST', version: 1 }
     const argList = Object.assign({ user }, args)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }
 
-module.exports = AuthRepository
+export default AuthRepository

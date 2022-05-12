@@ -1,5 +1,4 @@
-const Repository = require('../Repository')
-
+import Repository from '../Repository'
 
 
 
@@ -8,9 +7,14 @@ const Repository = require('../Repository')
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class ScreenshotRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * Return the screenshots for a single component.
@@ -23,9 +27,9 @@ class ScreenshotRepository extends Repository {
    */
   async getScreenshot(system): Promise<any> {
     const route = { path: 'project/screenshot/{system}', method: 'POST', version: 1 }
-    const argList = Object.assign({ system }, args)
+    const argList = Object.assign({ system }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -39,11 +43,11 @@ class ScreenshotRepository extends Repository {
    */
   async getSystemScreenshots(system): Promise<any> {
     const route = { path: 'project/screenshots/{system}', method: 'POST', version: 1 }
-    const argList = Object.assign({ system }, args)
+    const argList = Object.assign({ system }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }
 
-module.exports = ScreenshotRepository
+export default ScreenshotRepository

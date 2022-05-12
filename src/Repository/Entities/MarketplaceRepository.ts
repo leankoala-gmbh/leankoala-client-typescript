@@ -1,4 +1,4 @@
-const Repository = require('../Repository')
+import Repository from '../Repository'
 
 
 export interface ISetComponentArguments {
@@ -11,11 +11,11 @@ export interface IGetHealthStatusArguments {
 }
 
 export interface IActivateFeatureArguments {
-  projects: list
+  projects: any[]
 }
 
 export interface IDeactivateFeatureArguments {
-  projects: list
+  projects: any[]
 }
 
 export interface IGetAvailableFeaturesArguments {
@@ -23,15 +23,19 @@ export interface IGetAvailableFeaturesArguments {
 }
 
 
-
 /**
  * This class was created by the LeanApiBundle.
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class MarketplaceRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * Return all features that are active for the given project.
@@ -44,9 +48,9 @@ class MarketplaceRepository extends Repository {
    */
   async getActiveProjectFeatures(project): Promise<any> {
     const route = { path: 'marketplace/features/project/{project}', method: 'GET', version: 1 }
-    const argList = Object.assign({ project }, args)
+    const argList = Object.assign({ project }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -60,9 +64,9 @@ class MarketplaceRepository extends Repository {
    */
   async getActiveProviderFeatures(providerIdentifier): Promise<any> {
     const route = { path: 'marketplace/features/provider/{providerIdentifier}', method: 'GET', version: 1 }
-    const argList = Object.assign({ providerIdentifier }, args)
+    const argList = Object.assign({ providerIdentifier }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -77,9 +81,9 @@ class MarketplaceRepository extends Repository {
    */
   async getComponents(system, featureIdentifier): Promise<any> {
     const route = { path: 'marketplace/features/components/{system}/{featureIdentifier}', method: 'GET', version: 1 }
-    const argList = Object.assign({ system, featureIdentifier }, args)
+    const argList = Object.assign({ system, featureIdentifier }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -99,7 +103,7 @@ class MarketplaceRepository extends Repository {
     const requiredArguments = ['url']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -118,7 +122,7 @@ class MarketplaceRepository extends Repository {
     const route = { path: 'marketplace/features/status/{system}/{featureIdentifier}', method: 'GET', version: 1 }
     const argList = Object.assign({ system, featureIdentifier }, args)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -133,9 +137,9 @@ class MarketplaceRepository extends Repository {
    */
   async getFeatures(providerIdentifier, company): Promise<any> {
     const route = { path: 'marketplace/marketplace/features/{providerIdentifier}/{company}', method: 'GET', version: 1 }
-    const argList = Object.assign({ providerIdentifier, company }, args)
+    const argList = Object.assign({ providerIdentifier, company }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -155,7 +159,7 @@ class MarketplaceRepository extends Repository {
     const requiredArguments = ['projects']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -175,7 +179,7 @@ class MarketplaceRepository extends Repository {
     const requiredArguments = ['projects']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -189,9 +193,9 @@ class MarketplaceRepository extends Repository {
    */
   async getActiveFeatures(project): Promise<any> {
     const route = { path: 'marketplace/marketplace/feature/active/{project}', method: 'GET', version: 1 }
-    const argList = Object.assign({ project }, args)
+    const argList = Object.assign({ project }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -208,7 +212,7 @@ class MarketplaceRepository extends Repository {
     const route = { path: 'marketplace/marketplace/feature/available/{project}', method: 'POST', version: 1 }
     const argList = Object.assign({ project }, args)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -220,9 +224,9 @@ class MarketplaceRepository extends Repository {
    */
   async getAllFeatures(): Promise<any> {
     const route = { path: 'marketplace/marketplace/feature/all', method: 'POST', version: 1 }
-    const argList = Object.assign({  }, args)
+    const argList = Object.assign({  }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -234,9 +238,9 @@ class MarketplaceRepository extends Repository {
    */
   async getFavourites(): Promise<any> {
     const route = { path: 'marketplace/marketplace/favourites', method: 'GET', version: 1 }
-    const argList = Object.assign({  }, args)
+    const argList = Object.assign({  }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -250,9 +254,9 @@ class MarketplaceRepository extends Repository {
    */
   async getBookingLog(company): Promise<any> {
     const route = { path: 'marketplace/log/company/{company}', method: 'GET', version: 1 }
-    const argList = Object.assign({ company }, args)
+    const argList = Object.assign({ company }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -266,9 +270,9 @@ class MarketplaceRepository extends Repository {
    */
   async getSystemPluginStatus(system): Promise<any> {
     const route = { path: 'marketplace/plugins/incidents/system/{system}', method: 'GET', version: 1 }
-    const argList = Object.assign({ system }, args)
+    const argList = Object.assign({ system }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -282,9 +286,9 @@ class MarketplaceRepository extends Repository {
    */
   async getUserPluginStatus(user): Promise<any> {
     const route = { path: 'marketplace/plugins/incidents/user/{user}', method: 'GET', version: 1 }
-    const argList = Object.assign({ user }, args)
+    const argList = Object.assign({ user }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -299,11 +303,11 @@ class MarketplaceRepository extends Repository {
    */
   async restProxy(secret, url): Promise<any> {
     const route = { path: 'marketplace/proxy/{secret}/{url}', method: 'GET', version: 1 }
-    const argList = Object.assign({ secret, url }, args)
+    const argList = Object.assign({ secret, url }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }
 
-module.exports = MarketplaceRepository
+export default MarketplaceRepository

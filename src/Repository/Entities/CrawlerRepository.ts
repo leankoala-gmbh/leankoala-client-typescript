@@ -1,4 +1,4 @@
-const Repository = require('../Repository')
+import Repository from '../Repository'
 
 export interface ISetCheckStatusResult{
   url_check_status? : boolean
@@ -8,7 +8,7 @@ export interface ISetCheckStatusResult{
 export interface IRunCrawlArguments {
   user: number
   checklist_name?: string
-  collections?: list
+  collections?: any[]
   name: string
   system: number
   depth?: number
@@ -19,7 +19,7 @@ export interface IRunCrawlArguments {
 export interface IRunCompanyCrawlArguments {
   user: number
   checklist_name?: string
-  collections?: list
+  collections?: any[]
   name: string
   depth?: number
   path: string
@@ -44,15 +44,19 @@ export interface ISetCheckStatusArguments {
 }
 
 
-
 /**
  * This class was created by the LeanApiBundle.
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class CrawlerRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * Run a crawl for a given checklist
@@ -78,7 +82,7 @@ class CrawlerRepository extends Repository {
     const requiredArguments = ['user', 'name', 'system']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -104,7 +108,7 @@ class CrawlerRepository extends Repository {
     const requiredArguments = ['user', 'name', 'path']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -124,7 +128,7 @@ class CrawlerRepository extends Repository {
     const requiredArguments = ['system']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -143,7 +147,7 @@ class CrawlerRepository extends Repository {
     const route = { path: 'crawler/crawl/company/{company}/crawls', method: 'POST', version: 1 }
     const argList = Object.assign({ company }, args)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -158,9 +162,9 @@ class CrawlerRepository extends Repository {
    */
   async abortCrawl(project, crawl): Promise<any> {
     const route = { path: 'crawler/crawl/{project}/{crawl}', method: 'PUT', version: 1 }
-    const argList = Object.assign({ project, crawl }, args)
+    const argList = Object.assign({ project, crawl }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -174,9 +178,9 @@ class CrawlerRepository extends Repository {
    */
   async getCrawl(crawl): Promise<any> {
     const route = { path: 'crawler/crawl/detail/{crawl}', method: 'POST', version: 1 }
-    const argList = Object.assign({ crawl }, args)
+    const argList = Object.assign({ crawl }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -191,9 +195,9 @@ class CrawlerRepository extends Repository {
    */
   async getCrawlCsv(crawl, downloadSecret): Promise<any> {
     const route = { path: 'crawler/crawl/detail/csv/{crawl}/{downloadSecret}', method: 'GET', version: 1 }
-    const argList = Object.assign({ crawl, downloadSecret }, args)
+    const argList = Object.assign({ crawl, downloadSecret }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -207,9 +211,9 @@ class CrawlerRepository extends Repository {
    */
   async getCrawlerStatus(project): Promise<any> {
     const route = { path: 'crawler/status/{project}', method: 'GET', version: 1 }
-    const argList = Object.assign({ project }, args)
+    const argList = Object.assign({ project }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -223,9 +227,9 @@ class CrawlerRepository extends Repository {
    */
   async getCompanyCrawlerStatus(company): Promise<any> {
     const route = { path: 'crawler/status/company/{company}', method: 'POST', version: 1 }
-    const argList = Object.assign({ company }, args)
+    const argList = Object.assign({ company }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -237,9 +241,9 @@ class CrawlerRepository extends Repository {
    */
   async getCrawlableCollections(): Promise<any> {
     const route = { path: 'crawler/collections', method: 'POST', version: 1 }
-    const argList = Object.assign({  }, args)
+    const argList = Object.assign({  }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -256,13 +260,13 @@ class CrawlerRepository extends Repository {
    *
    * @return ISetCheckStatusResult
    */
-  async setCheckStatus(company, args: ISetCheckStatusArguments): Promise<ISetCheckStatusResponse> {
+  async setCheckStatus(company, args: ISetCheckStatusArguments): Promise<ISetCheckStatusResult> {
     const route = { path: 'crawler/company/{company}/check/status', method: 'POST', version: 1 }
     const argList = Object.assign({ company }, args)
     const requiredArguments = ['check_type', 'check_status', 'url']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -277,9 +281,9 @@ class CrawlerRepository extends Repository {
    */
   async deleteCheckStatus(company, crawlUrlStatus): Promise<any> {
     const route = { path: 'crawler/company/{company}/check/status/{crawlUrlStatus}', method: 'DELETE', version: 1 }
-    const argList = Object.assign({ company, crawlUrlStatus }, args)
+    const argList = Object.assign({ company, crawlUrlStatus }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -293,11 +297,11 @@ class CrawlerRepository extends Repository {
    */
   async listCheckStatus(company): Promise<any> {
     const route = { path: 'crawler/company/{company}/check/status', method: 'GET', version: 1 }
-    const argList = Object.assign({ company }, args)
+    const argList = Object.assign({ company }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }
 
-module.exports = CrawlerRepository
+export default CrawlerRepository

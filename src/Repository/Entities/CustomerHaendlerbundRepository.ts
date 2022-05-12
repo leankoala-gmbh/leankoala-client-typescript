@@ -1,18 +1,17 @@
-const Repository = require('../Repository')
+import Repository from '../Repository'
 
 
 export interface ICreateShopArguments {
   name: string
-  base_url: url
+  base_url: string
   owner: number
   size?: 'large' | 'small'
 }
 
 export interface IUpdateShopArguments {
   name?: string
-  base_url?: url
+  base_url?: string
 }
-
 
 
 /**
@@ -20,9 +19,14 @@ export interface IUpdateShopArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class CustomerHaendlerbundRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * Händlerbund only: the function is used to create a shop.
@@ -37,13 +41,13 @@ class CustomerHaendlerbundRepository extends Repository {
    * @param {*} args.size The shop size. It determines if the checks are done on a daily or hourly
    *                          base. (default: large)
    */
-  async createShop(, args: ICreateShopArguments): Promise<any> {
+  async createShop(args: ICreateShopArguments): Promise<any> {
     const route = { path: 'customers/haendlerbund/shops', method: 'POST', version: 1 }
     const argList = Object.assign({  }, args)
     const requiredArguments = ['name', 'base_url', 'owner']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -62,9 +66,9 @@ class CustomerHaendlerbundRepository extends Repository {
     const route = { path: 'customers/haendlerbund/shops/{system}', method: 'PUT', version: 1 }
     const argList = Object.assign({ system }, args)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }
 
-module.exports = CustomerHaendlerbundRepository
+export default CustomerHaendlerbundRepository

@@ -1,5 +1,6 @@
 import Repository from '../Repository'
 
+
 export interface ICreateArguments {
   name: string
   type: 'email' | 'slack' | 'teams'
@@ -14,14 +15,20 @@ export interface IUpdateArguments {
   language?: string
 }
 
+
 /**
  * This class was created by the LeanApiBundle.
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class AlertingChannelRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * List all channels for the given project.
@@ -34,9 +41,9 @@ class AlertingChannelRepository extends Repository {
    */
   async list(project): Promise<any> {
     const route = { path: 'alerting/channels/{project}', method: 'GET', version: 1 }
-    const argList = Object.assign({ project })
+    const argList = Object.assign({ project }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -48,8 +55,8 @@ class AlertingChannelRepository extends Repository {
    * @param project
    * @param {Object} args
    * @param {String} args.name The name of the alert channel
-   * @param {*} args.type
-   * @param {Array} args.options
+   * @param {*} args.type 
+   * @param {Array} args.options 
    * @param {String} args.language The language the alert should be send in. If not value is set the
    *                               default provider language is taken. (optional)
    */
@@ -59,7 +66,7 @@ class AlertingChannelRepository extends Repository {
     const requiredArguments = ['name', 'type', 'options']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -74,9 +81,9 @@ class AlertingChannelRepository extends Repository {
    */
   async delete(project, channel): Promise<any> {
     const route = { path: 'alerting/channels/{project}/{channel}', method: 'DELETE', version: 1 }
-    const argList = Object.assign({ project, channel })
+    const argList = Object.assign({ project, channel }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -89,7 +96,7 @@ class AlertingChannelRepository extends Repository {
    * @param channel
    * @param {Object} args
    * @param {String} args.name  (optional)
-   * @param {*} args.type
+   * @param {*} args.type 
    * @param {Array} args.options  (optional)
    * @param {String} args.language The language the alert should be send in (optional)
    */
@@ -99,7 +106,7 @@ class AlertingChannelRepository extends Repository {
     const requiredArguments = ['type']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }

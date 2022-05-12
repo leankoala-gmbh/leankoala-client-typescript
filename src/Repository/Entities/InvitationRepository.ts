@@ -1,4 +1,4 @@
-const Repository = require('../Repository')
+import Repository from '../Repository'
 
 
 export interface IInviteArguments {
@@ -8,15 +8,19 @@ export interface IInviteArguments {
 }
 
 
-
 /**
  * This class was created by the LeanApiBundle.
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class InvitationRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * This endpoint invites a new user to the project.
@@ -36,7 +40,7 @@ class InvitationRepository extends Repository {
     const requiredArguments = ['email']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -50,9 +54,9 @@ class InvitationRepository extends Repository {
    */
   async abort(invitation): Promise<any> {
     const route = { path: 'user/invitation/abort/{invitation}', method: 'DELETE', version: 1 }
-    const argList = Object.assign({ invitation }, args)
+    const argList = Object.assign({ invitation }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -66,11 +70,11 @@ class InvitationRepository extends Repository {
    */
   async getOpenInvitations(project): Promise<any> {
     const route = { path: 'user/invitation/open/{project}', method: 'GET', version: 1 }
-    const argList = Object.assign({ project }, args)
+    const argList = Object.assign({ project }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }
 
-module.exports = InvitationRepository
+export default InvitationRepository

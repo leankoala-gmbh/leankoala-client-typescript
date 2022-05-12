@@ -1,4 +1,4 @@
-const Repository = require('../Repository')
+import Repository from '../Repository'
 
 
 export interface IActivateArguments {
@@ -18,7 +18,7 @@ export interface ICreateArguments {
   first_name?: string
   last_name?: string
   password: string
-  _attributes?: list
+  _attributes?: any[]
 }
 
 export interface IUpdateUserArguments {
@@ -43,11 +43,11 @@ export interface IConnectOAuthAccountArguments {
 }
 
 export interface IExistsArguments {
-  query: list
+  query: any[]
 }
 
 export interface IFindArguments {
-  query: list
+  query: any[]
 }
 
 export interface IUpdateMasterIdArguments {
@@ -67,15 +67,19 @@ export interface IResetPasswordArguments {
 }
 
 
-
 /**
  * This class was created by the LeanApiBundle.
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class ClusterUserRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * Activate an user account. The endpoint will return a valid access and refresh token so the user can
@@ -87,13 +91,13 @@ class ClusterUserRepository extends Repository {
    * @param {Object} args
    * @param {String} args.activation_key 
    */
-  async activate(, args: IActivateArguments): Promise<any> {
+  async activate(args: IActivateArguments): Promise<any> {
     const route = { path: 'user/users/activate', method: 'POST', version: 1 }
     const argList = Object.assign({  }, args)
     const requiredArguments = ['activation_key']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -124,7 +128,7 @@ class ClusterUserRepository extends Repository {
     const requiredArguments = ['email', 'password']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -145,7 +149,7 @@ class ClusterUserRepository extends Repository {
     const route = { path: 'user/users/{user}', method: 'PUT', version: 1 }
     const argList = Object.assign({ user }, args)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -164,7 +168,7 @@ class ClusterUserRepository extends Repository {
     const requiredArguments = ['language']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -178,9 +182,9 @@ class ClusterUserRepository extends Repository {
    */
   async delete(user): Promise<any> {
     const route = { path: 'user/users/{user}', method: 'DELETE', version: 1 }
-    const argList = Object.assign({ user }, args)
+    const argList = Object.assign({ user }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -194,9 +198,9 @@ class ClusterUserRepository extends Repository {
    */
   async isDeletable(user): Promise<any> {
     const route = { path: 'user/users/deletable/{user}', method: 'POST', version: 1 }
-    const argList = Object.assign({ user }, args)
+    const argList = Object.assign({ user }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -208,13 +212,13 @@ class ClusterUserRepository extends Repository {
    * @param {Object} args
    * @param {String} args.email The users email address
    */
-  async deleteByEmail(, args: IDeleteByEmailArguments): Promise<any> {
+  async deleteByEmail(args: IDeleteByEmailArguments): Promise<any> {
     const route = { path: 'user/users/delete/email', method: 'DELETE', version: 1 }
     const argList = Object.assign({  }, args)
     const requiredArguments = ['email']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -234,7 +238,7 @@ class ClusterUserRepository extends Repository {
     const requiredArguments = ['provider', 'provider_user_id']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -246,13 +250,13 @@ class ClusterUserRepository extends Repository {
    * @param {Object} args
    * @param {Array} args.query The key value pairs for the search.
    */
-  async exists(, args: IExistsArguments): Promise<any> {
+  async exists(args: IExistsArguments): Promise<any> {
     const route = { path: 'user/users/exists', method: 'GET', version: 1 }
     const argList = Object.assign({  }, args)
     const requiredArguments = ['query']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -264,13 +268,13 @@ class ClusterUserRepository extends Repository {
    * @param {Object} args
    * @param {Array} args.query The key value pairs for the search.
    */
-  async find(, args: IFindArguments): Promise<any> {
+  async find(args: IFindArguments): Promise<any> {
     const route = { path: 'user/users/find', method: 'GET', version: 1 }
     const argList = Object.assign({  }, args)
     const requiredArguments = ['query']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -284,9 +288,9 @@ class ClusterUserRepository extends Repository {
    */
   async findAll(providerIdentifier): Promise<any> {
     const route = { path: 'user/users/find/all/{providerIdentifier}', method: 'POST', version: 1 }
-    const argList = Object.assign({ providerIdentifier }, args)
+    const argList = Object.assign({ providerIdentifier }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -305,7 +309,7 @@ class ClusterUserRepository extends Repository {
     const requiredArguments = ['master_id']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -324,7 +328,7 @@ class ClusterUserRepository extends Repository {
     const requiredArguments = ['password_new']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -336,13 +340,13 @@ class ClusterUserRepository extends Repository {
    * @param {Object} args
    * @param {String} args.email The users email address
    */
-  async requestPasswordReset(, args: IRequestPasswordResetArguments): Promise<any> {
+  async requestPasswordReset(args: IRequestPasswordResetArguments): Promise<any> {
     const route = { path: 'user/users/password/reset/request', method: 'POST', version: 1 }
     const argList = Object.assign({  }, args)
     const requiredArguments = ['email']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -361,9 +365,9 @@ class ClusterUserRepository extends Repository {
     const requiredArguments = ['password']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }
 
-module.exports = ClusterUserRepository
+export default ClusterUserRepository

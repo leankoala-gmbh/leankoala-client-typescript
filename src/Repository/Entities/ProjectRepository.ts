@@ -1,4 +1,4 @@
-const Repository = require('../Repository')
+import Repository from '../Repository'
 
 
 export interface ISearchArguments {
@@ -15,15 +15,19 @@ export interface IUpdateArguments {
 }
 
 
-
 /**
  * This class was created by the LeanApiBundle.
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class ProjectRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * Return all projects and the user roles for a given user.
@@ -42,13 +46,13 @@ class ProjectRepository extends Repository {
    * @param {Boolean} args.owned_by_user If true the only projects owned by this user are returned. (default: false)
    * @param {Boolean} args.filter_empty_projects If true the only projects with systems are returned (default: false)
    */
-  async search(, args: ISearchArguments): Promise<any> {
+  async search(args: ISearchArguments): Promise<any> {
     const route = { path: 'project/projects/search', method: 'POST', version: 1 }
     const argList = Object.assign({  }, args)
     const requiredArguments = ['user']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -67,7 +71,7 @@ class ProjectRepository extends Repository {
     const requiredArguments = ['name']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -81,9 +85,9 @@ class ProjectRepository extends Repository {
    */
   async delete(project): Promise<any> {
     const route = { path: 'project/projects/{project}', method: 'DELETE', version: 1 }
-    const argList = Object.assign({ project }, args)
+    const argList = Object.assign({ project }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -97,9 +101,9 @@ class ProjectRepository extends Repository {
    */
   async getUsers(project): Promise<any> {
     const route = { path: 'project/users/{project}', method: 'GET', version: 1 }
-    const argList = Object.assign({ project }, args)
+    const argList = Object.assign({ project }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -114,9 +118,9 @@ class ProjectRepository extends Repository {
    */
   async removeUser(project, user): Promise<any> {
     const route = { path: 'project/users/{project}/{user}', method: 'DELETE', version: 1 }
-    const argList = Object.assign({ project, user }, args)
+    const argList = Object.assign({ project, user }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -130,9 +134,9 @@ class ProjectRepository extends Repository {
    */
   async getStatus(project): Promise<any> {
     const route = { path: 'project/{project}/onboarding/status', method: 'POST', version: 1 }
-    const argList = Object.assign({ project }, args)
+    const argList = Object.assign({ project }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -146,11 +150,11 @@ class ProjectRepository extends Repository {
    */
   async searchAll(providerIdentifier): Promise<any> {
     const route = { path: 'project/{providerIdentifier}/all', method: 'GET', version: 1 }
-    const argList = Object.assign({ providerIdentifier }, args)
+    const argList = Object.assign({ providerIdentifier }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }
 
-module.exports = ProjectRepository
+export default ProjectRepository

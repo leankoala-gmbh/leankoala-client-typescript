@@ -1,4 +1,4 @@
-const Repository = require('../Repository')
+import Repository from '../Repository'
 
 
 export interface ICreateComponentArguments {
@@ -10,9 +10,8 @@ export interface ICreateComponentsArguments {
   system: number
   enableToolsBySystem?: boolean
   updateIfComponentSuggestionExists?: boolean
-  components: list
+  components: any[]
 }
-
 
 
 /**
@@ -20,9 +19,14 @@ export interface ICreateComponentsArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class ComponentRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * Show all existing component types.
@@ -35,9 +39,9 @@ class ComponentRepository extends Repository {
    */
   async showComponentTypes(project): Promise<any> {
     const route = { path: 'project/components/componenttypes/{project}', method: 'GET', version: 1 }
-    const argList = Object.assign({ project }, args)
+    const argList = Object.assign({ project }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -51,9 +55,9 @@ class ComponentRepository extends Repository {
    */
   async showComponents(component): Promise<any> {
     const route = { path: 'project/components/{component}', method: 'GET', version: 1 }
-    const argList = Object.assign({ component }, args)
+    const argList = Object.assign({ component }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -66,13 +70,13 @@ class ComponentRepository extends Repository {
    * @param {Number} args.system 
    * @param {Boolean} args.enableToolsBySystem  (default: true)
    */
-  async createComponent(, args: ICreateComponentArguments): Promise<any> {
+  async createComponent(args: ICreateComponentArguments): Promise<any> {
     const route = { path: 'project/components', method: 'POST', version: 1 }
     const argList = Object.assign({  }, args)
     const requiredArguments = ['system']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -89,13 +93,13 @@ class ComponentRepository extends Repository {
    *                                                         updated. (default: false)
    * @param {Array} args.components List of components that should be created/updated.
    */
-  async createComponents(, args: ICreateComponentsArguments): Promise<any> {
+  async createComponents(args: ICreateComponentsArguments): Promise<any> {
     const route = { path: 'project/components/many', method: 'POST', version: 1 }
     const argList = Object.assign({  }, args)
     const requiredArguments = ['system', 'components']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -109,9 +113,9 @@ class ComponentRepository extends Repository {
    */
   async updateComponent(component): Promise<any> {
     const route = { path: 'project/components/{component}', method: 'PUT', version: 1 }
-    const argList = Object.assign({ component }, args)
+    const argList = Object.assign({ component }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -125,11 +129,11 @@ class ComponentRepository extends Repository {
    */
   async deleteComponent(component): Promise<any> {
     const route = { path: 'project/components/{component}', method: 'DELETE', version: 1 }
-    const argList = Object.assign({ component }, args)
+    const argList = Object.assign({ component }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }
 
-module.exports = ComponentRepository
+export default ComponentRepository

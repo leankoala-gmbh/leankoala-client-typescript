@@ -1,5 +1,4 @@
-const Repository = require('../Repository')
-
+import Repository from '../Repository'
 
 
 
@@ -8,9 +7,14 @@ const Repository = require('../Repository')
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class CheckInsecureContentRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * Return all insecure elements for all components of a system.
@@ -23,11 +27,11 @@ class CheckInsecureContentRepository extends Repository {
    */
   async getInsecureElements(system): Promise<any> {
     const route = { path: 'check/checks/{system}/insecure', method: 'GET', version: 1 }
-    const argList = Object.assign({ system }, args)
+    const argList = Object.assign({ system }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }
 
-module.exports = CheckInsecureContentRepository
+export default CheckInsecureContentRepository

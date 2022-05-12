@@ -1,14 +1,13 @@
-const Repository = require('../Repository')
+import Repository from '../Repository'
 
 
 export interface IFindBySystemArguments {
-  tool?: mixed
-  tools?: list
+  tool?: any
+  tools?: any[]
   metric_type?: 'value' | 'status'
   filter_trailing_nulls?: boolean
   min_value?: number
 }
-
 
 
 /**
@@ -16,9 +15,14 @@ export interface IFindBySystemArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class MetricRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * Search for the metrics for all eventIdentifiers in the given projects that are defined by the given
@@ -44,9 +48,9 @@ class MetricRepository extends Repository {
     const route = { path: 'metric/eventidentifier/{system}/search', method: 'POST', version: 1 }
     const argList = Object.assign({ system }, args)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }
 
-module.exports = MetricRepository
+export default MetricRepository

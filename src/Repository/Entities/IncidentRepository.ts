@@ -1,4 +1,4 @@
-const Repository = require('../Repository')
+import Repository from '../Repository'
 
 
 export interface ISearchArguments {
@@ -10,15 +10,19 @@ export interface ISinceArguments {
 }
 
 
-
 /**
  * This class was created by the LeanApiBundle.
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-11
+ * @created 2022-05-12
  */
 class IncidentRepository extends Repository {
+
+    constructor() {
+        super()
+        this.connectionType = 'ClusterConnection'
+    }
 
   /**
    * Find all open incidents for the given company.
@@ -31,9 +35,9 @@ class IncidentRepository extends Repository {
    */
   async findByCompany(company): Promise<any> {
     const route = { path: 'incident/incidents/company/{company}/search', method: 'POST', version: 1 }
-    const argList = Object.assign({ company }, args)
+    const argList = Object.assign({ company }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -50,7 +54,7 @@ class IncidentRepository extends Repository {
     const route = { path: 'incident/incidents/{project}/search', method: 'POST', version: 1 }
     const argList = Object.assign({ project }, args)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -69,7 +73,7 @@ class IncidentRepository extends Repository {
     const requiredArguments = ['days']
     this._assertValidArguments(requiredArguments, argList)
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -84,9 +88,9 @@ class IncidentRepository extends Repository {
    */
   async find(project, incident): Promise<any> {
     const route = { path: 'incident/incidents/{project}/{incident}', method: 'GET', version: 1 }
-    const argList = Object.assign({ project, incident }, args)
+    const argList = Object.assign({ project, incident }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
   /**
@@ -101,11 +105,11 @@ class IncidentRepository extends Repository {
    */
   async getConfig(project): Promise<any> {
     const route = { path: 'incident/tools/{project}', method: 'GET', version: 1 }
-    const argList = Object.assign({ project }, args)
+    const argList = Object.assign({ project }, {})
 
-    return this._connection.send(route, argList)
+    return this.connection.send(route, argList)
   }
 
 }
 
-module.exports = IncidentRepository
+export default IncidentRepository
