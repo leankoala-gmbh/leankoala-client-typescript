@@ -4,7 +4,7 @@ import {TRepositories} from './typescript/interfaces/global/repos'
 import { IClientConnectArgs,
   EEnvironment, EServer,
   IInitConnectionArgs, IInitConnectionViaMasterTokens, IInitConnectionViaWakeUpTokenArgs,
-  IRepositoryCollection, ISwitchClusterArgs,
+  ISwitchClusterArgs,
   ITokenObject, IRepositoryCollectionRepos
 } from './typescript/interfaces/360ApiClient.interface'
 
@@ -16,6 +16,7 @@ import { IClientConnectArgs,
  * @created 2020-07-05
  */
 export class LeankoalaClient {
+
   private _clusterConnection: any
   private _masterConnection: any
   private _user: any
@@ -26,7 +27,7 @@ export class LeankoalaClient {
   private _connectionStatus: string
   private readonly _registeredEventListeners: any
   private _masterToken: string | undefined
-  private _repositoryCollection: Partial<IRepositoryCollection>  = {}
+  private _repositoryCollection: RepositoryCollection
   private _masterUser: any
   private _refreshToken: string | undefined
   private readonly _routes: {
@@ -40,6 +41,7 @@ export class LeankoalaClient {
    * @param {String} environment the environment (development|production)
    */
   constructor(environment = 'production') {
+    this._repositoryCollection = new RepositoryCollection()
     this._clusterConnection = false
     this._masterConnection = false
     this._user = {}
@@ -411,7 +413,11 @@ export class LeankoalaClient {
     return {} as IRepositoryCollectionRepos[T]
   }
 
-  /**
+  getRepositoryCollection(): RepositoryCollection {
+    return this._repositoryCollection
+  }
+
+    /**
    * Sleep for an amount of milliseconds.
    *
    * @param {Number} milliseconds
