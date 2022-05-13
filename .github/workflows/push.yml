@@ -29,10 +29,9 @@ jobs:
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
         run: npm run test
 
-      - name: Autofix Linting errors
-        uses: wearerequired/lint-action@v2
-        with:
-          eslint: true
+      - name: Lint Source
+        working-directory: ./src
+        run: npm run lint
 
       - run: npm run prePublish
       - run: npm publish --access public
