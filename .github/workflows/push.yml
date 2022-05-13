@@ -30,9 +30,9 @@ jobs:
         run: npm run test
 
       - name: Autofix Linting errors
-        uses: getsentry/action-eslint-fix@v1
+        uses: wearerequired/lint-action@v2
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          eslint: true
 
       - run: npm run prePublish
       - run: npm publish --access public
