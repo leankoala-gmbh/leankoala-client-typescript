@@ -32,7 +32,7 @@ await client.connect({ refreshToken, userId })
 This example returns a list of projects the user `demo` is part of.
 
 ```js
-import {LeankoalaClient} from './client/360ApiClient'
+import { LeankoalaClient } from '@webpros/360-api-client'
 
 (async () => {
   const client = new LeankoalaClient('stage')

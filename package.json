@@ -10,7 +10,7 @@
   "main": "./dist/360ApiClient.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/leankoala-gmbh/leankoala-client-typescript"
+    "url": "https://github.com/leankoala-gmbh/leankoala-client-typescript.git"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
