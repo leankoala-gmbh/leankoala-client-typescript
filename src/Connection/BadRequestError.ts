@@ -1,6 +1,6 @@
 class BadRequestError extends Error {
-  protected url: string
-  protected data: any
+  url: string
+  data: any
   protected identifier: any
 
   constructor(errorData) {

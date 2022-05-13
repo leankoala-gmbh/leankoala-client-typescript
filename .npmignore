@@ -1,5 +1,5 @@
 /src/
-/__test__/
+/tests/
 /.github/
 /.idea/
 .gitignore
@@ -10,4 +10,6 @@ package.json
 package-lock.json
 jest.config.js
 tsconfig.json
-tsconfig.release.json
+.env
+.eslintrc.json
+.editorconfig

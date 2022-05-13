@@ -16,7 +16,7 @@ test('Check if the events are published', async () => {
 
   /** @var {ProjectRepository} projectRepo **/
   const projectRepo = await client.getRepository('project')
-  const projects = await projectRepo.search({ user: user.id })
+  const projects = await projectRepo.search({user: user.id})
 
   const project = projects[ 'projects' ].pop()
 

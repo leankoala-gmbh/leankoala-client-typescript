@@ -1,8 +1,8 @@
 [![Actions Status](https://github.com/leankoala-gmbh/leankoala-client-js/workflows/Run%20JEST%20tests/badge.svg)](https://github.com/leankoala-gmbh/leankoala-client-js/actions?query=workflow%3A%22Run+JEST+tests%22) [![DeepScan grade](https://deepscan.io/api/teams/10108/projects/12794/branches/203150/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=10108&pid=12794&bid=203150)
 
-# KoalityEngine JavaScript Client
+# 360 API Client
 
-The library is used to communicate with the KoalityEngine. 
+The library is used to communicate with the 360 Monitoring Engine. 
 
 Please contact `api@koalityengine.com` if you want to use the API.
 
@@ -10,45 +10,43 @@ Please contact `api@koalityengine.com` if you want to use the API.
 The KoalityEngine API can return the results in different languages. The preferred language can be defined in the
 connect argument or later on via the `setLanguage` method.
 
-```javascript
+```js
 await client.connect({ username: 'demo', password: 'demo', language: 'de' })
 // or
 client.setLanguage('de')
 ```
 
 ## Connect
-```javascript
+```js
 // via username and password
-await client.connect({ username: 'demo', password: 'demo', axios })
+await client.connect({ username: 'demo', password: 'demo' })
 
-# via wakeup token
-await client.connect({ wakeUpToken, axios })
+// via wakeup token
+await client.connect({ wakeUpToken })
 
-# via refresh token
-await client.connect({ refreshToken, userId, axios })
+// via refresh token
+await client.connect({ refreshToken, userId })
 ```
 
 ## Examples
 This example returns a list of projects the user `demo` is part of.
-```javascript
-const LeankoalaClient = require('../src/Client');
-const axios = require('axios');
+
+```js
+import {LeankoalaClient} from './client/360ApiClient'
 
 (async () => {
-    const client = new LeankoalaClient('stage')
-    await client.connect({ username: 'demo', password: 'demo', axios })
+  const client = new LeankoalaClient('stage')
+  await client.connect({ username: 'demo', password: 'demo' })
 
-    const user = client.getUser()
+  const user = client.getUser()
+  console.log('user', user)
 
-    const projectRepository = await client.getRepository('project')
-    const projects = await projectRepository.search({ user: user.id })
-
-    console.log('Projects:', projects)
+  const alerts = client
+    .getRepositoryCollection()
+    .getAlertingChannelRepository()
+  const alertList = await alerts.list(3333)
 })()
 
 ```
-More examples can be found in the `examples` directory. A good idea could also be having a look at 
-the test cases in the `tests` directory.
 
-## Testing
-- [How to test the client](tests/readme.md)
+## Repositories

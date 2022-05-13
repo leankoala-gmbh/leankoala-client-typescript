@@ -1,13 +1,16 @@
 {
-  "name": "leankoala-client",
+  "name": "@webpros/360ApiClient",
   "version": "0.0.1",
   "description": "",
-  "author": "Nils Langner (nils.langner@leankoala.com)",
+  "author": "Nils Langner (nils.langner@webpros.com)",
+  "contributors": [
+    "Sascha Fuchs <sascha.fuchs@webpros.com>"
+  ],
   "license": "MIT",
   "main": "./dist/360ApiClient.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/leankoala-gmbh/leankoala-client-js.git"
+    "url": "https://github.com/leankoala-gmbh/leankoala-client-typescript"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
@@ -17,8 +20,9 @@
   },
   "scripts": {
     "test": "jest",
+    "generateClient": "esbuild src/360ApiClient.ts --bundle --minify --format=esm --target=esnext --outfile=dist/360ApiClient.js",
     "generateTypes": "tsc --emitDeclarationOnly --declaration --project tsconfig.json",
-    "prePublish": "npm run generateTypes && esbuild src/360ApiClient.ts --bundle --minify --format=esm --target=esnext --outfile=dist/360ApiClient.js",
+    "prePublish": "npm run generateTypes && npm run generateClient",
     "lint": "eslint --format=pretty --cache --max-warnings 0 --fix --ext .ts .",
     "typedoc": "typedoc --out docs src/360ApiClient.ts"
   },
@@ -35,6 +39,7 @@
     "@typescript-eslint/eslint-plugin": "5.21.0",
     "@typescript-eslint/parser": "5.21.0",
     "babel-eslint": "^10.1.0",
+    "dotenv": "^16.0.1",
     "esbuild": "^0.14.38",
     "eslint": "^8.14.0",
     "eslint-config-prettier": "^8.5.0",

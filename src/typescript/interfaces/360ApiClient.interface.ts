@@ -30,7 +30,7 @@ export interface IClientConnectArgs {
   language?: string
   axiosAdapter?: any
   autoSelectCompany?: boolean
-  axios: any
+  axios?: any
 }
 
 export interface ITokenObject {

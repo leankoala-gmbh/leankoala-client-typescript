@@ -21,6 +21,7 @@
     "plugin:jest/recommended",
     "prettier"
   ],
+  "ignorePatterns": ["tests/**/*"],
   "rules": {
     "array-bracket-spacing": ["error", "never"],
     "comma-spacing": ["error", { "before": false, "after": true }],

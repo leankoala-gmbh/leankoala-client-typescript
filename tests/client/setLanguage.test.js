@@ -11,7 +11,7 @@ test('Check if incidents are returned in german', async () => {
 
   /** @var {ProjectRepository} projectRepo **/
   const projectRepo = await client.getRepository('project')
-  const projects = await projectRepo.search({ user: user.id })
+  const projects = await projectRepo.search({user: user.id})
 
   const project = projects[ 'projects' ].pop()
 
