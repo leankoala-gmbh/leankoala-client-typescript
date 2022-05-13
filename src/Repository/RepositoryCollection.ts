@@ -36,7 +36,7 @@ import CheckDeadLinksRepository from './Entities/CheckDeadLinksRepository'
 import CheckHealthCheckRepository from './Entities/CheckHealthCheckRepository'
 import NixstatsRepository from './Entities/NixstatsRepository'
 import IncidentRepository from './Entities/IncidentRepository'
-import Connection from "../Connection/Connection";
+import Connection from '../Connection/Connection'
 
 /**
  * This class was created by the LeanApiBundle.
@@ -57,45 +57,45 @@ class RepositoryCollection {
     this.clusterConnection = false
 
     this.repositories = {}
-    this.repositories[ 'sequence' ] = new SequenceRepository()
-    this.repositories[ 'marketplace' ] = new MarketplaceRepository()
-    this.repositories[ 'subscription' ] = new SubscriptionRepository()
-    this.repositories[ 'crawler' ] = new CrawlerRepository()
-    this.repositories[ 'customerhaendlerbund' ] = new CustomerHaendlerbundRepository()
-    this.repositories[ 'customerhaendlerbundmetric' ] = new CustomerHaendlerbundMetricRepository()
-    this.repositories[ 'customermehrwertsteuercheck' ] = new CustomerMehrwertsteuercheckRepository()
-    this.repositories[ 'memory' ] = new MemoryRepository()
-    this.repositories[ 'score' ] = new ScoreRepository()
-    this.repositories[ 'alertingpolicy' ] = new AlertingPolicyRepository()
-    this.repositories[ 'alertingchannel' ] = new AlertingChannelRepository()
-    this.repositories[ 'websocket' ] = new WebsocketRepository()
-    this.repositories[ 'metric' ] = new MetricRepository()
-    this.repositories[ 'auth' ] = new AuthRepository()
-    this.repositories[ 'clusteruser' ] = new ClusterUserRepository()
-    this.repositories[ 'user' ] = new UserRepository()
-    this.repositories[ 'invitation' ] = new InvitationRepository()
-    this.repositories[ 'clustercompany' ] = new ClusterCompanyRepository()
-    this.repositories[ 'component' ] = new ComponentRepository()
-    this.repositories[ 'project' ] = new ProjectRepository()
-    this.repositories[ 'system' ] = new SystemRepository()
-    this.repositories[ 'screenshot' ] = new ScreenshotRepository()
-    this.repositories[ 'tool' ] = new ToolRepository()
-    this.repositories[ 'check' ] = new CheckRepository()
-    this.repositories[ 'checklighthouse' ] = new CheckLighthouseRepository()
-    this.repositories[ 'checka11y' ] = new CheckA11yRepository()
-    this.repositories[ 'checkbrokenresource' ] = new CheckBrokenResourceRepository()
-    this.repositories[ 'checkjavascripterrors' ] = new CheckJavaScriptErrorsRepository()
-    this.repositories[ 'checkfilesize' ] = new CheckFileSizeRepository()
-    this.repositories[ 'checksitemap' ] = new CheckSitemapRepository()
-    this.repositories[ 'checkmobilefriendly' ] = new CheckMobileFriendlyRepository()
-    this.repositories[ 'checkcertificate' ] = new CheckCertificateRepository()
-    this.repositories[ 'checkinsecurecontent' ] = new CheckInsecureContentRepository()
-    this.repositories[ 'checkcookie' ] = new CheckCookieRepository()
-    this.repositories[ 'checkdeadlinks' ] = new CheckDeadLinksRepository()
-    this.repositories[ 'checkhealthcheck' ] = new CheckHealthCheckRepository()
-    this.repositories[ 'nixstats' ] = new NixstatsRepository()
-    this.repositories[ 'incident' ] = new IncidentRepository()
-    
+    this.repositories.sequence = new SequenceRepository()
+    this.repositories.marketplace = new MarketplaceRepository()
+    this.repositories.subscription = new SubscriptionRepository()
+    this.repositories.crawler = new CrawlerRepository()
+    this.repositories.customerhaendlerbund = new CustomerHaendlerbundRepository()
+    this.repositories.customerhaendlerbundmetric = new CustomerHaendlerbundMetricRepository()
+    this.repositories.customermehrwertsteuercheck = new CustomerMehrwertsteuercheckRepository()
+    this.repositories.memory = new MemoryRepository()
+    this.repositories.score = new ScoreRepository()
+    this.repositories.alertingpolicy = new AlertingPolicyRepository()
+    this.repositories.alertingchannel = new AlertingChannelRepository()
+    this.repositories.websocket = new WebsocketRepository()
+    this.repositories.metric = new MetricRepository()
+    this.repositories.auth = new AuthRepository()
+    this.repositories.clusteruser = new ClusterUserRepository()
+    this.repositories.user = new UserRepository()
+    this.repositories.invitation = new InvitationRepository()
+    this.repositories.clustercompany = new ClusterCompanyRepository()
+    this.repositories.component = new ComponentRepository()
+    this.repositories.project = new ProjectRepository()
+    this.repositories.system = new SystemRepository()
+    this.repositories.screenshot = new ScreenshotRepository()
+    this.repositories.tool = new ToolRepository()
+    this.repositories.check = new CheckRepository()
+    this.repositories.checklighthouse = new CheckLighthouseRepository()
+    this.repositories.checka11y = new CheckA11yRepository()
+    this.repositories.checkbrokenresource = new CheckBrokenResourceRepository()
+    this.repositories.checkjavascripterrors = new CheckJavaScriptErrorsRepository()
+    this.repositories.checkfilesize = new CheckFileSizeRepository()
+    this.repositories.checksitemap = new CheckSitemapRepository()
+    this.repositories.checkmobilefriendly = new CheckMobileFriendlyRepository()
+    this.repositories.checkcertificate = new CheckCertificateRepository()
+    this.repositories.checkinsecurecontent = new CheckInsecureContentRepository()
+    this.repositories.checkcookie = new CheckCookieRepository()
+    this.repositories.checkdeadlinks = new CheckDeadLinksRepository()
+    this.repositories.checkhealthcheck = new CheckHealthCheckRepository()
+    this.repositories.nixstats = new NixstatsRepository()
+    this.repositories.incident = new IncidentRepository()
+
   }
 
   setClusterConnection(connection: Connection) {
@@ -116,161 +116,161 @@ class RepositoryCollection {
         repo.setConnection(this.masterConnection)
       }
       return this.repositories[repositoryName]
-    } else {
-      throw new Error('No repository with name ' + repositoryName + ' found. Registered repositories are: ' + JSON.stringify(Object.keys(this.repositories)))
     }
+      throw new Error('No repository with name ' + repositoryName + ' found. Registered repositories are: ' + JSON.stringify(Object.keys(this.repositories)))
+
   }
 
   getSequenceRepository(): SequenceRepository {
-      return this.getRepository("Sequence")
+      return this.getRepository('Sequence')
   }
 
   getMarketplaceRepository(): MarketplaceRepository {
-      return this.getRepository("Marketplace")
+      return this.getRepository('Marketplace')
   }
 
   getSubscriptionRepository(): SubscriptionRepository {
-      return this.getRepository("Subscription")
+      return this.getRepository('Subscription')
   }
 
   getCrawlerRepository(): CrawlerRepository {
-      return this.getRepository("Crawler")
+      return this.getRepository('Crawler')
   }
 
   getCustomerHaendlerbundRepository(): CustomerHaendlerbundRepository {
-      return this.getRepository("CustomerHaendlerbund")
+      return this.getRepository('CustomerHaendlerbund')
   }
 
   getCustomerHaendlerbundMetricRepository(): CustomerHaendlerbundMetricRepository {
-      return this.getRepository("CustomerHaendlerbundMetric")
+      return this.getRepository('CustomerHaendlerbundMetric')
   }
 
   getCustomerMehrwertsteuercheckRepository(): CustomerMehrwertsteuercheckRepository {
-      return this.getRepository("CustomerMehrwertsteuercheck")
+      return this.getRepository('CustomerMehrwertsteuercheck')
   }
 
   getMemoryRepository(): MemoryRepository {
-      return this.getRepository("Memory")
+      return this.getRepository('Memory')
   }
 
   getScoreRepository(): ScoreRepository {
-      return this.getRepository("Score")
+      return this.getRepository('Score')
   }
 
   getAlertingPolicyRepository(): AlertingPolicyRepository {
-      return this.getRepository("AlertingPolicy")
+      return this.getRepository('AlertingPolicy')
   }
 
   getAlertingChannelRepository(): AlertingChannelRepository {
-      return this.getRepository("AlertingChannel")
+      return this.getRepository('AlertingChannel')
   }
 
   getWebsocketRepository(): WebsocketRepository {
-      return this.getRepository("Websocket")
+      return this.getRepository('Websocket')
   }
 
   getMetricRepository(): MetricRepository {
-      return this.getRepository("Metric")
+      return this.getRepository('Metric')
   }
 
   getAuthRepository(): AuthRepository {
-      return this.getRepository("Auth")
+      return this.getRepository('Auth')
   }
 
   getClusterUserRepository(): ClusterUserRepository {
-      return this.getRepository("ClusterUser")
+      return this.getRepository('ClusterUser')
   }
 
   getUserRepository(): UserRepository {
-      return this.getRepository("User")
+      return this.getRepository('User')
   }
 
   getInvitationRepository(): InvitationRepository {
-      return this.getRepository("Invitation")
+      return this.getRepository('Invitation')
   }
 
   getClusterCompanyRepository(): ClusterCompanyRepository {
-      return this.getRepository("ClusterCompany")
+      return this.getRepository('ClusterCompany')
   }
 
   getComponentRepository(): ComponentRepository {
-      return this.getRepository("Component")
+      return this.getRepository('Component')
   }
 
   getProjectRepository(): ProjectRepository {
-      return this.getRepository("Project")
+      return this.getRepository('Project')
   }
 
   getSystemRepository(): SystemRepository {
-      return this.getRepository("System")
+      return this.getRepository('System')
   }
 
   getScreenshotRepository(): ScreenshotRepository {
-      return this.getRepository("Screenshot")
+      return this.getRepository('Screenshot')
   }
 
   getToolRepository(): ToolRepository {
-      return this.getRepository("Tool")
+      return this.getRepository('Tool')
   }
 
   getCheckRepository(): CheckRepository {
-      return this.getRepository("Check")
+      return this.getRepository('Check')
   }
 
   getCheckLighthouseRepository(): CheckLighthouseRepository {
-      return this.getRepository("CheckLighthouse")
+      return this.getRepository('CheckLighthouse')
   }
 
   getCheckA11yRepository(): CheckA11yRepository {
-      return this.getRepository("CheckA11y")
+      return this.getRepository('CheckA11y')
   }
 
   getCheckBrokenResourceRepository(): CheckBrokenResourceRepository {
-      return this.getRepository("CheckBrokenResource")
+      return this.getRepository('CheckBrokenResource')
   }
 
   getCheckJavaScriptErrorsRepository(): CheckJavaScriptErrorsRepository {
-      return this.getRepository("CheckJavaScriptErrors")
+      return this.getRepository('CheckJavaScriptErrors')
   }
 
   getCheckFileSizeRepository(): CheckFileSizeRepository {
-      return this.getRepository("CheckFileSize")
+      return this.getRepository('CheckFileSize')
   }
 
   getCheckSitemapRepository(): CheckSitemapRepository {
-      return this.getRepository("CheckSitemap")
+      return this.getRepository('CheckSitemap')
   }
 
   getCheckMobileFriendlyRepository(): CheckMobileFriendlyRepository {
-      return this.getRepository("CheckMobileFriendly")
+      return this.getRepository('CheckMobileFriendly')
   }
 
   getCheckCertificateRepository(): CheckCertificateRepository {
-      return this.getRepository("CheckCertificate")
+      return this.getRepository('CheckCertificate')
   }
 
   getCheckInsecureContentRepository(): CheckInsecureContentRepository {
-      return this.getRepository("CheckInsecureContent")
+      return this.getRepository('CheckInsecureContent')
   }
 
   getCheckCookieRepository(): CheckCookieRepository {
-      return this.getRepository("CheckCookie")
+      return this.getRepository('CheckCookie')
   }
 
   getCheckDeadLinksRepository(): CheckDeadLinksRepository {
-      return this.getRepository("CheckDeadLinks")
+      return this.getRepository('CheckDeadLinks')
   }
 
   getCheckHealthCheckRepository(): CheckHealthCheckRepository {
-      return this.getRepository("CheckHealthCheck")
+      return this.getRepository('CheckHealthCheck')
   }
 
   getNixstatsRepository(): NixstatsRepository {
-      return this.getRepository("Nixstats")
+      return this.getRepository('Nixstats')
   }
 
   getIncidentRepository(): IncidentRepository {
-      return this.getRepository("Incident")
+      return this.getRepository('Incident')
   }
 
 }

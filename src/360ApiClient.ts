@@ -1,11 +1,13 @@
+import axios from 'axios'
 import Connection from './Connection/Connection'
 import RepositoryCollection from './Repository/RepositoryCollection'
 import {TRepositories} from './typescript/interfaces/global/repos'
-import { IClientConnectArgs,
+import {
+  IClientConnectArgs,
   EEnvironment, EServer,
   IInitConnectionArgs, IInitConnectionViaMasterTokens, IInitConnectionViaWakeUpTokenArgs,
   ISwitchClusterArgs,
-  ITokenObject, IRepositoryCollectionRepos
+  ITokenObject
 } from './typescript/interfaces/360ApiClient.interface'
 
 /**
@@ -16,7 +18,6 @@ import { IClientConnectArgs,
  * @created 2020-07-05
  */
 export class LeankoalaClient {
-
   private _clusterConnection: any
   private _masterConnection: any
   private _user: any
@@ -88,7 +89,7 @@ export class LeankoalaClient {
 
     try {
       this._repositoryCollection = new RepositoryCollection()
-      await this._initConnection(args)
+      await this._initConnection({...args, axios})
     } catch (error) {
       this._connectionStatus = 'disconnected'
       throw error
@@ -395,7 +396,7 @@ export class LeankoalaClient {
    *
    * @throws {Error}
    */
-  async getRepository<T extends TRepositories>(entityType: T): Promise<IRepositoryCollectionRepos[T]> {
+  async getRepository(entityType: TRepositories): Promise<any> {
     if (this._connectionStatus === 'disconnected') {
       throw new Error('Please connect the client before running this method.')
     }
@@ -410,9 +411,11 @@ export class LeankoalaClient {
       }
       return this.getRepository(entityType)
     }
-    return {} as IRepositoryCollectionRepos[T]
   }
 
+  /**
+   * Returns
+   */
   getRepositoryCollection(): RepositoryCollection {
     return this._repositoryCollection
   }
