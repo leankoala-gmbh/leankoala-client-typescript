@@ -43,11 +43,11 @@ import Connection from "../Connection/Connection";
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-12
+ * @created 2022-05-13
  */
 class RepositoryCollection {
 
-  private readonly repositories: object
+  private readonly repositories: any
   private masterConnection: any
   private clusterConnection: any
 
@@ -108,7 +108,7 @@ class RepositoryCollection {
 
   getRepository(entityType: string) {
     const repositoryName = entityType.toLowerCase()
-    if (this.repositories.hasOwnProperty(repositoryName)) {
+    if (repositoryName in this.repositories) {
       const repo = this.repositories[repositoryName]
       if (repo.getConnectionType() === 'ClusterConnection') {
         repo.setConnection(this.clusterConnection)
