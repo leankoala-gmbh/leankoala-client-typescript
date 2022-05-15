@@ -10,7 +10,7 @@ describe('Check badrequest', () => {
     const client = new LeankoalaClient('stage')
     await client.connect({ username, password })
 
-    const repo = client.getRepositoryCollection().getProjectRepository()
+    const repo = await client.getRepositoryCollection().then(res => res.getProjectRepository())
 
     try {
       await repo.search({user: 3323434})
