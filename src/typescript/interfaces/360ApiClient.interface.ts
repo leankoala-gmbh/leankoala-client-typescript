@@ -1,15 +1,17 @@
-
-export enum EEnvironment {
-  Local = 'local',
-  Stage = 'stage',
-  Production = 'production',
-}
-
-export enum EServer {
-  Local = 'http://localhost:8082/',
-  Stage = 'https://auth.stage.koalityengine.com/',
-  Production = 'https://auth.koalityengine.com/',
-}
+import {IRepoSubscription} from './repos/subscriptionRepo.interface'
+import {IRWebsocket} from './repos/websocketRepo.interface'
+import {IRAlertingChannel} from './repos/alertingChannelRepo.interface'
+import {IRAlertingPolicy} from './repos/alertingPolicyRepo.interface'
+import {IRAuth} from './repos/authRepo.interface'
+import {IRCheckA11Y} from './repos/checkA11YRepo.interface'
+import {IRCheckBrokenResource} from './repos/checkBrokenResourceRepo.interface'
+import {IRCheckCertificate} from './repos/checkCertificateRepo.interfaces'
+import {IRCheckCookies} from './repos/checkCookiesRepo.interface'
+import {IRCheckDeadlinks} from './repos/checkDeadlinksRepo.interface'
+import {IRCheckFilesize} from './repos/checkFilesizeRepo.interface'
+import {IRCheckHealthCheck} from './repos/checkHealthCheckRepo.interface'
+import {IRCheckInsecureContent} from './repos/checkInsecureContentRepo.interface'
+import {IRCheckJSErrors} from './repos/checkJSErrorsRepo.interface'
 
 export interface IRepositoryCollectionRepo {
   _connectionType: ConnectionType
@@ -18,6 +20,46 @@ export interface IRepositoryCollectionRepo {
 export enum ConnectionType {
   ClusterConnection = 'ClusterConnection',
   MasterConnection = 'MasterConnection',
+}
+
+export interface IRepositoryCollectionRepos {
+  sequence: IRepositoryCollectionRepo
+  marketplace: IRepositoryCollectionRepo
+  subscription: IRepoSubscription
+  crawler: IRepositoryCollectionRepo
+  customerhaendlerbund: IRepositoryCollectionRepo
+  customerhaendlerbundmetric: IRepositoryCollectionRepo
+  customermehrwertsteuercheck: IRepositoryCollectionRepo
+  memory: IRepositoryCollectionRepo
+  score: IRepositoryCollectionRepo
+  alertingpolicy: IRAlertingPolicy
+  AlertingChannelRepository: IRAlertingChannel
+  websocket: IRWebsocket
+  metric: IRepositoryCollectionRepo
+  auth: IRAuth
+  clusteruser: IRepositoryCollectionRepo
+  user: IRepositoryCollectionRepo
+  invitation: IRepositoryCollectionRepo
+  component: IRepositoryCollectionRepo
+  project: IRepositoryCollectionRepo
+  system: IRepositoryCollectionRepo
+  screenshot: IRepositoryCollectionRepo
+  tool: IRepositoryCollectionRepo
+  check: IRepositoryCollectionRepo
+  checklighthouse: IRepositoryCollectionRepo
+  checka11y: IRCheckA11Y
+  checkbrokenresource: IRCheckBrokenResource
+  checkjavascripterrors: IRCheckJSErrors
+  checkfilesize: IRCheckFilesize
+  checksitemap: IRepositoryCollectionRepo
+  checkmobilefriendly: IRepositoryCollectionRepo
+  checkcertificate: IRCheckCertificate
+  checkinsecurecontent: IRCheckInsecureContent
+  checkcookie: IRCheckCookies
+  checkdeadlinks: IRCheckDeadlinks
+  checkhealthcheck: IRCheckHealthCheck
+  nixstats: IRepositoryCollectionRepo
+  incident: IRepositoryCollectionRepo
 }
 
 export interface IClientConnectArgs {

@@ -4,11 +4,13 @@ import RepositoryCollection from './Repository/RepositoryCollection'
 import {TRepositories} from './typescript/interfaces/global/repos'
 import {
   IClientConnectArgs,
-  EEnvironment, EServer,
-  IInitConnectionArgs, IInitConnectionViaMasterTokens, IInitConnectionViaWakeUpTokenArgs,
+  IInitConnectionArgs,
+  IInitConnectionViaMasterTokens,
+  IInitConnectionViaWakeUpTokenArgs,
   ISwitchClusterArgs,
   ITokenObject
 } from './typescript/interfaces/360ApiClient.interface'
+import {EEnvironment, EServer} from './Repository/Constants/Enviroment'
 
 /**
  * The KoalityEngine client is used to connect to an instance of the KoalityEngine
@@ -154,7 +156,7 @@ export class LeankoalaClient {
 
   private async _initConnection(args: IInitConnectionArgs): Promise<void> {
     this._axios = args.axios
-
+    console.log('args', args)
     if ('noLogin' in args) {
       this._masterConnection = new Connection(this._getMasterServer(), args.axios)
       this._repositoryCollection.setMasterConnection(this._masterConnection)
@@ -416,9 +418,25 @@ export class LeankoalaClient {
   /**
    * Returns
    */
-  getRepositoryCollection(): RepositoryCollection {
+  async getRepositoryCollection(): Promise<RepositoryCollection> {
+    if (this._connectionStatus === 'disconnected') {
+      throw new Error('Please connect the client before running this method.')
+    }
+
+    if (this._connectionStatus === 'connected') {
+      return this._repositoryCollection
+    }
+
+    if (this._connectionStatus === 'connecting') {
+      while (this._connectionStatus === 'connecting') {
+        await this._sleep(300)
+      }
+      return this.getRepositoryCollection()
+    }
+
     return this._repositoryCollection
   }
+
 
     /**
    * Sleep for an amount of milliseconds.
