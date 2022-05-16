@@ -28,4 +28,3 @@ build({
   outfile: './dist/360ApiClient.esm.js',
   target: ["esnext", "node16"],
 })
-
