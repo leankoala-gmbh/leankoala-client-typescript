@@ -50,7 +50,7 @@ class IncidentRepository extends Repository {
    * @param {Object} args
    * @param {Number} args.system the system filter (optional)
    */
-  async search(project, args: ISearchArguments): Promise<any> {
+  async search(project, args: Partial<ISearchArguments> = {}): Promise<any> {
     const route = { path: 'incident/incidents/{project}/search', method: 'POST', version: 1 }
     const argList = Object.assign({ project }, args)
 

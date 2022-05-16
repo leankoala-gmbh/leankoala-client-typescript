@@ -11,7 +11,6 @@ describe('Check badrequest', () => {
     await client.connect({ username, password })
 
     const repo = await client.getRepositoryCollection().then(res => res.getProjectRepository())
-
     try {
       await repo.search({user: 3323434})
     } catch (error) {
