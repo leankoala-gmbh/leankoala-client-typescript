@@ -10,6 +10,13 @@ const shared = {
   external: Object.keys( dependencies )
 }
 
+const sharedSingleFiles = {
+  minify: true,
+  format: 'esm',
+  target: ['esnext']
+}
+
+
 new Generator({
   entry: './src/360ApiClient.ts',
   output: './dist/types/360ApiClient.d.ts'
@@ -27,4 +34,16 @@ build({
   format: 'esm',
   outfile: './dist/360ApiClient.esm.js',
   target: ["esnext", "node16"],
+})
+
+build({
+  ...sharedSingleFiles,
+  entryPoints: ['./src/Connection/RefreshTokenInvalidError.ts', './src/Connection/BadRequestError.ts'],
+  outdir: './dist/connection'
+})
+
+build({
+  ...sharedSingleFiles,
+  entryPoints: ['./src/Repository/Constants/Marketplace.ts'],
+  outdir: './dist/constants'
 })
