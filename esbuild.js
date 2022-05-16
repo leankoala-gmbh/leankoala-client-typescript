@@ -17,10 +17,10 @@ const sharedSingleFiles = {
 }
 
 
-new Generator({
-  entry: './src/360ApiClient.ts',
-  output: './dist/types/360ApiClient.d.ts'
-}).generate()
+// new Generator({
+//   entry: './src/360ApiClient.ts',
+//   output: './dist/types/360ApiClient.d.ts'
+// }).generate()
 
 build({
   ...shared,
