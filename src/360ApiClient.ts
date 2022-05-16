@@ -156,7 +156,6 @@ export class LeankoalaClient {
 
   private async _initConnection(args: IInitConnectionArgs): Promise<void> {
     this._axios = args.axios
-    console.log('args', args)
     if ('noLogin' in args) {
       this._masterConnection = new Connection(this._getMasterServer(), args.axios)
       this._repositoryCollection.setMasterConnection(this._masterConnection)

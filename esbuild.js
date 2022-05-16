@@ -5,7 +5,6 @@ const { Generator } = require('npm-dts')
 const shared = {
   entryPoints: ['./src/360ApiClient'],
   bundle: true,
-  minify: true,
   sourcemap: true,
   external: Object.keys( dependencies )
 }
@@ -13,7 +12,7 @@ const shared = {
 const sharedSingleFiles = {
   minify: true,
   format: 'esm',
-  target: ['esnext']
+  target: ['es6']
 }
 
 
@@ -26,14 +25,14 @@ build({
   ...shared,
   format: 'cjs',
   outfile: './dist/360ApiClient.js',
-  target: ["esnext", "node16"],
+  target: ['es6'],
 })
 
 build({
   ...shared,
   format: 'esm',
   outfile: './dist/360ApiClient.esm.js',
-  target: ["esnext", "node16"],
+  target: ['es6'],
 })
 
 build({
