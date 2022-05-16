@@ -1,4 +1,5 @@
 import { LeankoalaClient } from '../../src/360ApiClient'
+import 'dotenv/config'
 
 describe('Check refresh', () => {
   test('Check if the can reconnect via refresh token', async () => {
@@ -7,8 +8,9 @@ describe('Check refresh', () => {
 
     const client = new LeankoalaClient('stage')
     await client.connect({ username, password })
-    const repo = await client.getRepositoryCollection().then(res => res.getWebsocketRepository())
-    const rooms = await repo.getRooms()
+    const repo = await client.getRepositoryCollection()
+    const socketRepo = await repo.getWebsocketRepository()
+    const rooms = await socketRepo.getRooms()
     /**
      * dont test private methods
      */
