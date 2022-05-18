@@ -1,6 +1,6 @@
 {
   "name": "@webpros/360-api-client",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "JS API Client to connect to the Plesk 360 Monitoring Engine",
   "author": "Nils Langner (nils.langner@webpros.com)",
   "contributors": [
@@ -22,10 +22,7 @@
   },
   "scripts": {
     "test": "jest",
-    "generateClient": "esbuild src/360ApiClient.ts --bundle --minify --format=esm --target=es2020 --outfile=dist/360ApiClient.js",
-    "generateExtraFiles": "esbuild src/Connection/RefreshTokenInvalidError.ts src/Connection/BadRequestError.ts src/Repository/Constants/Marketplace.ts --minify --format=esm --target=esnext --outdir=dist/",
     "generateTypes": "tsc --emitDeclarationOnly --declaration --project tsconfig.types.json",
-    "oldPublish": "npm run generateTypes && npm run generateExtraFiles && npm run generateClient",
     "prePublish": "node esbuild.js && npm run generateTypes",
     "lint": "eslint --cache --max-warnings 0 --fix --ext .ts .",
     "typedoc": "typedoc --out docs src/360ApiClient.ts"
