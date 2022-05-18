@@ -1,6 +1,6 @@
 {
   "name": "@webpros/360-api-client",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "JS API Client to connect to the Plesk 360 Monitoring Engine",
   "author": "Nils Langner (nils.langner@webpros.com)",
   "contributors": [
@@ -10,11 +10,6 @@
   "main": "./dist/360ApiClient.js",
   "module": "./dist/360ApiClient.esm.js",
   "typings": "./dist/types/360ApiClient.d.ts",
-  "bin": {
-    "RefreshTokenInvalidError": "./dist/Connection/RefreshTokenInvalidError.js",
-    "BadRequestError": "./dist/connection/BadRequestError.js",
-    "Marketplace": "./dist/Constants/Marketplace.js"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/leankoala-gmbh/leankoala-client-typescript.git"
