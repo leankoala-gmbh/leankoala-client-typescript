@@ -11,6 +11,9 @@ import {
   ITokenObject
 } from './typescript/interfaces/360ApiClient.interface'
 import {EEnvironment, EServer} from './Repository/Constants/Enviroment'
+import BadRequestError from './Connection/BadRequestError'
+import MarketPlaceConsts from './Repository/Constants/Marketplace'
+import RefreshTokenInvalidError from './Connection/RefreshTokenInvalidError'
 
 /**
  * The KoalityEngine client is used to connect to an instance of the KoalityEngine
@@ -19,7 +22,7 @@ import {EEnvironment, EServer} from './Repository/Constants/Enviroment'
  * @author Nils Langner (nils.langner@leankoala.com)
  * @created 2020-07-05
  */
-export class LeankoalaClient {
+class LeankoalaClient {
   private _clusterConnection: any
   private _masterConnection: any
   private _user: any
@@ -544,3 +547,10 @@ export class LeankoalaClient {
     this._refreshToken = token
   }
 }
+export {
+  LeankoalaClient,
+  BadRequestError,
+  MarketPlaceConsts,
+  RefreshTokenInvalidError
+}
+
