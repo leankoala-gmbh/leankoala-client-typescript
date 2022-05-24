@@ -12,43 +12,31 @@ export interface ISetArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-12
+ * @created 2022-05-24
  */
 class MemoryRepository extends Repository {
 
     constructor() {
         super()
-        this.connectionType = 'ClusterConnection'
+        this.connectionType = 'MasterConnection'
     }
 
   /**
-   * request url: /kapi/v1/memory/{objectType}/{objectId}
-   * request method: GET
+   * Write something to the memory
    *
-   * @param objectType
-   * @param objectId
-   * @param {Object} args
-   */
-  async getAll(objectType, objectId): Promise<any> {
-    const route = { path: 'memory/{objectType}/{objectId}', method: 'GET', version: 1 }
-    const argList = Object.assign({ objectType, objectId }, {})
-
-    return this.connection.send(route, argList)
-  }
-
-  /**
-   * request url: /kapi/v1/memory/{objectType}/{objectId}
-   * request method: POST
+   * request url: /kapi/v1//v1/{application}/memory/{objectType}/{objectId}
+   * request method: PUT
    *
+   * @param application
    * @param objectType
    * @param objectId
    * @param {Object} args
    * @param {String} args.key 
    * @param {String} args.value 
    */
-  async set(objectType, objectId, args: ISetArguments): Promise<any> {
-    const route = { path: 'memory/{objectType}/{objectId}', method: 'POST', version: 1 }
-    const argList = Object.assign({ objectType, objectId }, args)
+  async set(application, objectType, objectId, args: ISetArguments): Promise<any> {
+    const route = { path: '/v1/{application}/memory/{objectType}/{objectId}', method: 'PUT', version: 1 }
+    const argList = Object.assign({ application, objectType, objectId }, args)
     const requiredArguments = ['key', 'value']
     this._assertValidArguments(requiredArguments, argList)
 
