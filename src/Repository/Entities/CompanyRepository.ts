@@ -50,7 +50,7 @@ class CompanyRepository extends Repository {
    * @param application
    * @param company
    * @param {Object} args
-   * @param {Number} args.cluster 
+   * @param {Number} args.cluster
    */
   async setCluster(application, company, args: ISetClusterArguments): Promise<any> {
     const route = { path: '/api/{application}/company/{company}', method: 'POST', version: 1 }
