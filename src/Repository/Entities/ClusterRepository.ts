@@ -23,7 +23,7 @@ class ClusterRepository extends Repository {
   /**
    * Will return all needed information about a cluster.
    *
-   * request url: /kapi/v1//v1/{application}/cluster
+   * request url: /{application}/cluster
    * request method: GET
    *
    * @param application
@@ -31,7 +31,7 @@ class ClusterRepository extends Repository {
    * @param {String} args.identifier 
    */
   async getCluster(application, args: IGetClusterArguments): Promise<any> {
-    const route = { path: '/v1/{application}/cluster', method: 'GET', version: 1 }
+    const route = { path: '/{application}/cluster', method: 'GET', version: 1 }
     const argList = Object.assign({ application }, args)
     const requiredArguments = ['identifier']
     this._assertValidArguments(requiredArguments, argList)

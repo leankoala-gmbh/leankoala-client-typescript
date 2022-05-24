@@ -27,7 +27,7 @@ class CompanyRepository extends Repository {
   /**
    * Disconnect the user from the company.
    *
-   * request url: /kapi/v1//v1/{application}/company/{company}/disconnect/{user}
+   * request url: /{application}/company/{company}/disconnect/{user}
    * request method: PUT
    *
    * @param application
@@ -37,14 +37,14 @@ class CompanyRepository extends Repository {
    * @param {Boolean} args.deleteIfNoCompany  (default: false)
    */
   async disconnectUser(application, company, user, args: IDisconnectUserArguments): Promise<any> {
-    const route = { path: '/v1/{application}/company/{company}/disconnect/{user}', method: 'PUT', version: 1 }
+    const route = { path: '/{application}/company/{company}/disconnect/{user}', method: 'PUT', version: 1 }
     const argList = Object.assign({ application, company, user }, args)
 
     return this.connection.send(route, argList)
   }
 
   /**
-   * request url: /kapi/v1//api/{application}/company/{company}
+   * request url: /api/{application}/company/{company}
    * request method: POST
    *
    * @param application

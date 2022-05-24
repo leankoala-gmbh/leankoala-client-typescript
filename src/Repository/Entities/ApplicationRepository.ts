@@ -22,7 +22,7 @@ class ApplicationRepository extends Repository {
     }
 
   /**
-   * request url: /kapi/v1//api/application
+   * request url: /api/application
    * request method: POST
    *
    * @param {Object} args
@@ -39,14 +39,14 @@ class ApplicationRepository extends Repository {
   }
 
   /**
-   * request url: /kapi/v1//v1/{application}/cluster/primary
+   * request url: /{application}/cluster/primary
    * request method: POST
    *
    * @param application
    * @param {Object} args
    */
   async getPrimaryCluster(application): Promise<any> {
-    const route = { path: '/v1/{application}/cluster/primary', method: 'POST', version: 1 }
+    const route = { path: '/{application}/cluster/primary', method: 'POST', version: 1 }
     const argList = Object.assign({ application }, {})
 
     return this.connection.send(route, argList)

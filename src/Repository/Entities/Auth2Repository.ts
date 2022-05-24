@@ -31,7 +31,7 @@ class Auth2Repository extends Repository {
     }
 
   /**
-   * request url: /kapi/v1//v1/{application}/auth/login
+   * request url: /{application}/auth/login
    * request method: POST
    *
    * @param application
@@ -41,7 +41,7 @@ class Auth2Repository extends Repository {
    * @param {Boolean} args.withMemories If true all Memory entities will be attached in the answer. (default: false)
    */
   async loginWithCredentials(application, args: ILoginWithCredentialsArguments): Promise<any> {
-    const route = { path: '/v1/{application}/auth/login', method: 'POST', version: 1 }
+    const route = { path: '/{application}/auth/login', method: 'POST', version: 1 }
     const argList = Object.assign({ application }, args)
     const requiredArguments = ['emailOrUserName', 'password']
     this._assertValidArguments(requiredArguments, argList)
@@ -52,7 +52,7 @@ class Auth2Repository extends Repository {
   /**
    * Create a valid access token by the given refresh token.
    *
-   * request url: /kapi/v1//v1/{application}/auth/refresh/{user}
+   * request url: /{application}/auth/refresh/{user}
    * request method: POST
    *
    * @param application
@@ -61,7 +61,7 @@ class Auth2Repository extends Repository {
    * @param {Boolean} args.with_memories If true all Memory entities will be attached in the answer. (default: false)
    */
   async createTokenByRefreshToken(application, user, args: ICreateTokenByRefreshTokenArguments): Promise<any> {
-    const route = { path: '/v1/{application}/auth/refresh/{user}', method: 'POST', version: 1 }
+    const route = { path: '/{application}/auth/refresh/{user}', method: 'POST', version: 1 }
     const argList = Object.assign({ application, user }, args)
 
     return this.connection.send(route, argList)
@@ -70,7 +70,7 @@ class Auth2Repository extends Repository {
   /**
    * Create a valid access token.
    *
-   * request url: /kapi/v1//v1/{application}/auth/token/{user}
+   * request url: /{application}/auth/token/{user}
    * request method: POST
    *
    * @param application
@@ -79,7 +79,7 @@ class Auth2Repository extends Repository {
    * @param {Boolean} args.with_memories If true all Memory entities will be attached in the answer. (default: false)
    */
   async createToken(application, user, args: ICreateTokenArguments): Promise<any> {
-    const route = { path: '/v1/{application}/auth/token/{user}', method: 'POST', version: 1 }
+    const route = { path: '/{application}/auth/token/{user}', method: 'POST', version: 1 }
     const argList = Object.assign({ application, user }, args)
 
     return this.connection.send(route, argList)
