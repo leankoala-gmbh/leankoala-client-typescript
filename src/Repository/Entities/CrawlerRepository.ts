@@ -35,6 +35,7 @@ export interface IListCompanyCrawlsArguments {
   pagination_start?: number
   pagination_size?: number
   include_collections?: boolean
+  crawl_schedule?: number
 }
 
 export interface ISetCheckStatusArguments {
@@ -55,15 +56,15 @@ export interface ICreateCrawlScheduleArguments {
 }
 
 export interface IUpdateCrawlScheduleArguments {
-  path: string
+  path?: string
   depth?: number
   parallel_requests?: number
-  interval: 'daily' | 'weekly' | 'monthly'
-  timeslot: 'night' | 'morning' | 'noon' | 'afternoon'
+  interval?: 'daily' | 'weekly' | 'monthly'
+  timeslot?: 'night' | 'morning' | 'noon' | 'afternoon'
   day_of_month_or_week?: number
-  collections: any[]
+  collections?: any[]
   enabled?: boolean
-  timezone: string
+  timezone?: string
 }
 
 
@@ -72,7 +73,7 @@ export interface IUpdateCrawlScheduleArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-06-08
+ * @created 2022-06-14
  */
 class CrawlerRepository extends Repository {
 
@@ -165,6 +166,7 @@ class CrawlerRepository extends Repository {
    * @param {Number} args.pagination_start  (optional)
    * @param {Number} args.pagination_size  (default: 25)
    * @param {Boolean} args.include_collections  (default: false)
+   * @param {Number} args.crawl_schedule Only show results for given crawl schedule (optional)
    */
   async listCompanyCrawls(company, args: IListCompanyCrawlsArguments): Promise<any> {
     const route = { path: 'crawler/crawl/company/{company}/crawls', method: 'POST', version: 1 }
@@ -342,6 +344,23 @@ class CrawlerRepository extends Repository {
   }
 
   /**
+   * Show scheduled crawl by id
+   *
+   * request url: /kapi/v1/crawler/company/{company}/schedules/{crawlSchedule}
+   * request method: GET
+   *
+   * @param company
+   * @param crawlSchedule
+   * @param {Object} args
+   */
+  async showCrawlSchedule(company, crawlSchedule): Promise<any> {
+    const route = { path: 'crawler/company/{company}/schedules/{crawlSchedule}', method: 'GET', version: 1 }
+    const argList = Object.assign({ company, crawlSchedule }, {})
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
    * Create a crawl schedule
    *
    * request url: /kapi/v1/crawler/company/{company}/schedules
@@ -372,27 +391,25 @@ class CrawlerRepository extends Repository {
    * Update a crawl schedule by id
    *
    * request url: /kapi/v1/crawler/company/{company}/schedules/{crawlSchedule}
-   * request method: POST
+   * request method: PATCH
    *
    * @param company
    * @param crawlSchedule
    * @param {Object} args
-   * @param {String} args.path The URL the crawler starts to crawl
+   * @param {String} args.path The URL the crawler starts to crawl (optional)
    * @param {Number} args.depth Number of URLs to be crawled (default: 50)
    * @param {Number} args.parallel_requests Number of parallel requests that can be done (default: 8)
-   * @param {*} args.interval Interval at which a crawl is started
-   * @param {*} args.timeslot Time window in which a crawl is started
+   * @param {*} args.interval Interval at which a crawl is started (optional)
+   * @param {*} args.timeslot Time window in which a crawl is started (optional)
    * @param {Number} args.day_of_month_or_week Day of month or week on which a crawl is started if
    *                                            interval is weekly or monthly (optional)
-   * @param {Array} args.collections The additional collections
+   * @param {Array} args.collections The additional collections (optional)
    * @param {Boolean} args.enabled Enable or disable the schedule (optional)
-   * @param {String} args.timezone The time zone for which the timeslot applies
+   * @param {String} args.timezone The time zone for which the timeslot applies (optional)
    */
   async updateCrawlSchedule(company, crawlSchedule, args: IUpdateCrawlScheduleArguments): Promise<any> {
-    const route = { path: 'crawler/company/{company}/schedules/{crawlSchedule}', method: 'POST', version: 1 }
+    const route = { path: 'crawler/company/{company}/schedules/{crawlSchedule}', method: 'PATCH', version: 1 }
     const argList = Object.assign({ company, crawlSchedule }, args)
-    const requiredArguments = ['path', 'interval', 'timeslot', 'collections', 'timezone']
-    this._assertValidArguments(requiredArguments, argList)
 
     return this.connection.send(route, argList)
   }

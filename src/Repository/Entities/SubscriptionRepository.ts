@@ -35,7 +35,7 @@ export interface ISetSubscriptionPlanArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-12
+ * @created 2022-06-13
  */
 class SubscriptionRepository extends Repository {
 
@@ -223,6 +223,22 @@ class SubscriptionRepository extends Repository {
   async endTrials(providerIdentifier): Promise<any> {
     const route = { path: 'subscription/trial/{providerIdentifier}/end', method: 'POST', version: 1 }
     const argList = Object.assign({ providerIdentifier }, {})
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * Get current quota for the company.
+   *
+   * request url: /kapi/v1/subscription/company/{company}/quota
+   * request method: GET
+   *
+   * @param company
+   * @param {Object} args
+   */
+  async getQuota(company): Promise<any> {
+    const route = { path: 'subscription/company/{company}/quota', method: 'GET', version: 1 }
+    const argList = Object.assign({ company }, {})
 
     return this.connection.send(route, argList)
   }
