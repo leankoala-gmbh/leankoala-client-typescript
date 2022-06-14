@@ -14,6 +14,7 @@ import MetricRepository from './Entities/MetricRepository'
 import AuthRepository from './Entities/AuthRepository'
 import ClusterUserRepository from './Entities/ClusterUserRepository'
 import UserRepository from './Entities/UserRepository'
+import UserSubscriptionRepository from './Entities/UserSubscriptionRepository'
 import InvitationRepository from './Entities/InvitationRepository'
 import ClusterCompanyRepository from './Entities/ClusterCompanyRepository'
 import ComponentRepository from './Entities/ComponentRepository'
@@ -43,7 +44,7 @@ import Connection from '../Connection/Connection'
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-13
+ * @created 2022-06-13
  */
 class RepositoryCollection {
 
@@ -73,6 +74,7 @@ class RepositoryCollection {
     this.repositories.auth = new AuthRepository()
     this.repositories.clusteruser = new ClusterUserRepository()
     this.repositories.user = new UserRepository()
+    this.repositories.userSubscription = new UserSubscriptionRepository()
     this.repositories.invitation = new InvitationRepository()
     this.repositories.clustercompany = new ClusterCompanyRepository()
     this.repositories.component = new ComponentRepository()
@@ -183,6 +185,10 @@ class RepositoryCollection {
 
   getUserRepository(): UserRepository {
       return this.getRepository('User')
+  }
+
+  getUserSubscriptionRepository(): UserSubscriptionRepository {
+      return this.getRepository('UserSubscription')
   }
 
   getInvitationRepository(): InvitationRepository {
