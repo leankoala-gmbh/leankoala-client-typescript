@@ -26,14 +26,28 @@ class ApplicationRepository extends Repository {
    * request method: POST
    *
    * @param {Object} args
-   * @param {String} args.name 
-   * @param {String} args.identifier 
+   * @param {String} args.name
+   * @param {String} args.identifier
    */
   async createApplication(args: ICreateApplicationArguments): Promise<any> {
     const route = { path: '/api/application', method: 'POST', version: 1 }
     const argList = Object.assign({  }, args)
     const requiredArguments = ['name', 'identifier']
     this._assertValidArguments(requiredArguments, argList)
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * request url: /api/application/whitelabel/connection/cname/{cName}
+   * request method: GET
+   *
+   * @param cName
+   * @param {Object} args
+   */
+  async getConnectionByCName(cName): Promise<any> {
+    const route = { path: '/api/application/whitelabel/connection/cname/{cName}', method: 'GET', version: 1 }
+    const argList = Object.assign({ cName }, {})
 
     return this.connection.send(route, argList)
   }
