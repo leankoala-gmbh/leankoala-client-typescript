@@ -73,7 +73,7 @@ export interface IUpdateCrawlScheduleArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-06-14
+ * @created 2022-06-28
  */
 class CrawlerRepository extends Repository {
 
@@ -426,6 +426,23 @@ class CrawlerRepository extends Repository {
    */
   async deleteCrawlSchedule(company, crawlSchedule): Promise<any> {
     const route = { path: 'crawler/company/{company}/schedules/{crawlSchedule}', method: 'DELETE', version: 1 }
+    const argList = Object.assign({ company, crawlSchedule }, {})
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * Run a scheduled crawl immediately
+   *
+   * request url: /kapi/v1/crawler/company/{company}/schedules/{crawlSchedule}/crawl
+   * request method: POST
+   *
+   * @param company
+   * @param crawlSchedule
+   * @param {Object} args
+   */
+  async runScheduledCrawl(company, crawlSchedule): Promise<any> {
+    const route = { path: 'crawler/company/{company}/schedules/{crawlSchedule}/crawl', method: 'POST', version: 1 }
     const argList = Object.assign({ company, crawlSchedule }, {})
 
     return this.connection.send(route, argList)
