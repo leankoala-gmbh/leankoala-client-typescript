@@ -15,6 +15,10 @@ export interface ICreateTokenArguments {
   with_memories?: boolean
 }
 
+export interface ICreateTokenBySessionArguments {
+  sessionToken?: string
+  withMemories?: boolean
+}
 
 /**
  * This class was created by the LeanApiBundle.
@@ -25,10 +29,10 @@ export interface ICreateTokenArguments {
  */
 class Auth2Repository extends Repository {
 
-    constructor() {
-        super()
-        this.connectionType = 'MasterConnection'
-    }
+  constructor() {
+    super()
+    this.connectionType = 'MasterConnection'
+  }
 
   /**
    * request url: /{application}/auth/login
@@ -36,15 +40,33 @@ class Auth2Repository extends Repository {
    *
    * @param application
    * @param {Object} args
-   * @param {String} args.emailOrUserName 
-   * @param {String} args.password 
+   * @param {String} args.emailOrUserName
+   * @param {String} args.password
    * @param {Boolean} args.withMemories If true all Memory entities will be attached in the answer. (default: false)
    */
   async loginWithCredentials(application, args: ILoginWithCredentialsArguments): Promise<any> {
-    const route = { path: '/{application}/auth/login', method: 'POST', version: 1 }
-    const argList = Object.assign({ application }, args)
+    const route = {path: '/{application}/auth/login', method: 'POST', version: 1}
+    const argList = Object.assign({application}, args)
     const requiredArguments = ['emailOrUserName', 'password']
     this._assertValidArguments(requiredArguments, argList)
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * Create a valid access token by the given refresh token.
+   *
+   * request url: /{application}/auth/session
+   * request method: POST
+   *
+   * @param application
+   * @param {Object} args
+   * @param {String} args.sessionToken  (optional)
+   * @param {Boolean} args.withMemories If true all Memory entities will be attached in the answer. (default: false)
+   */
+  async createTokenBySession(application, args: ICreateTokenBySessionArguments): Promise<any> {
+    const route = {path: '/{application}/auth/session', method: 'POST', version: 1}
+    const argList = Object.assign({application}, args)
 
     return this.connection.send(route, argList)
   }
@@ -61,8 +83,8 @@ class Auth2Repository extends Repository {
    * @param {Boolean} args.with_memories If true all Memory entities will be attached in the answer. (default: false)
    */
   async createTokenByRefreshToken(application, user, args: ICreateTokenByRefreshTokenArguments): Promise<any> {
-    const route = { path: '/{application}/auth/refresh/{user}', method: 'POST', version: 1 }
-    const argList = Object.assign({ application, user }, args)
+    const route = {path: '/{application}/auth/refresh/{user}', method: 'POST', version: 1}
+    const argList = Object.assign({application, user}, args)
 
     return this.connection.send(route, argList)
   }
@@ -79,8 +101,8 @@ class Auth2Repository extends Repository {
    * @param {Boolean} args.with_memories If true all Memory entities will be attached in the answer. (default: false)
    */
   async createToken(application, user, args: ICreateTokenArguments): Promise<any> {
-    const route = { path: '/{application}/auth/token/{user}', method: 'POST', version: 1 }
-    const argList = Object.assign({ application, user }, args)
+    const route = {path: '/{application}/auth/token/{user}', method: 'POST', version: 1}
+    const argList = Object.assign({application, user}, args)
 
     return this.connection.send(route, argList)
   }
