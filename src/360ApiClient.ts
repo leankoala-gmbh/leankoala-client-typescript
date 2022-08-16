@@ -10,7 +10,7 @@ import {
   ISwitchClusterArgs,
   ITokenObject
 } from './typescript/interfaces/360ApiClient.interface'
-import {EEnvironment, EServer} from './Repository/Constants/Enviroment'
+import {EEnvironment, EServer, ESession} from './Repository/Constants/Enviroment'
 import BadRequestError from './Connection/BadRequestError'
 import MarketPlaceConsts from './Repository/Constants/Marketplace'
 import RefreshTokenInvalidError from './Connection/RefreshTokenInvalidError'
@@ -37,8 +37,8 @@ class LeankoalaClient {
   private _masterUser: any
   private _refreshToken: string | undefined
   private readonly _routes: {
-    masterRefresh: {path: string; method: string; version: number}
-    clusterRefresh: {path: string; method: string; version: number}
+    masterRefresh: { path: string; method: string; version: number }
+    clusterRefresh: { path: string; method: string; version: number }
   }
 
   /**
@@ -76,9 +76,9 @@ class LeankoalaClient {
    * Connect to the API server and retrieve the JWT for later requests.
    *
    * @param {Object} args
-   * @param {String} [args.username] the user name for the user that should be logged in
+   * @param {String} [args.username] the username for the user that should be logged in
    * @param {String} [args.password the password for the given user
-   * @param {String} [args.wakeUpToken] the wakeup token can be used to log in instead of username and pasword
+   * @param {String} [args.wakeUpToken] the wakeup token can be used to log in instead of username and password
    * @param {String} [args.accessToken] the token fill this in the client generator
    * @param {Boolean} [args.withMemories] return the users memory on connect
    * @param {String} [args.language] the preferred language (default: en; implemented: de, en)
@@ -101,6 +101,13 @@ class LeankoalaClient {
     }
 
     this._connectionStatus = 'connected'
+  }
+
+  public async connectViaSession(args: IClientConnectArgs) {
+    LeankoalaClient._assertAxios(args)
+    const axios = args.axios
+    args['sessionToken'] = await axios.post(this._getSessionEndpoint(), { withCredentials: true })
+    return this.connect(args)
   }
 
   /**
@@ -162,6 +169,8 @@ class LeankoalaClient {
     if ('noLogin' in args) {
       this._masterConnection = new Connection(this._getMasterServer(), args.axios)
       this._repositoryCollection.setMasterConnection(this._masterConnection)
+    } else if ('sessionToken' in args) {
+      await this._initConnectionViaSessionToken(args)
     } else if ('wakeUpToken' in args) {
       await this._initConnectionViaWakeUpToken(args)
     } else if ('accessToken' in args && args.accessToken) {
@@ -184,7 +193,6 @@ class LeankoalaClient {
    *
    * @private
    */
-
   private async _initConnectionViaWakeUpToken(args: IInitConnectionViaWakeUpTokenArgs) {
     if (!('wakeUpToken' in args)) throw new Error('WakeUp Token is missing')
     const wakeUpToken = JSON.parse(args.wakeUpToken)
@@ -214,25 +222,15 @@ class LeankoalaClient {
     }
   }
 
-
   private async _initConnectionViaCredentials(args: IClientConnectArgs) {
     const apiServer = this._getMasterServer()
 
-    if (!('axios' in args)) {
-      throw new Error('Missing parameter axios. The HTTP client must be injected.')
-    }
-
+    LeankoalaClient._assertAxios(args)
     this._axios = args.axios
-
-    if (typeof this._axios !== 'function') {
-      throw new Error(
-        'The axios argument is not a function. Seems like it is not a valid axios object,'
-      )
-    }
 
     this._masterConnection = new Connection(apiServer, this._axios)
 
-    const route = { version: 1, path: '{application}/auth/login', method: 'POST' }
+    const route = {version: 1, path: '{application}/auth/login', method: 'POST'}
 
     const withMemories = Boolean(args.withMemories || false)
 
@@ -247,25 +245,81 @@ class LeankoalaClient {
       true
     )
 
-    this._masterToken = result.token
-    this._refreshToken = result.refreshToken
-    this._masterUser = result.user
-    this._masterConnection.setUser(result.user)
-    this._masterUser.masterId = result.user.id
-
-    if (result.memories) {
-      this._masterUser.memories = result.memories
-    }
-    this._companies = result.companies
-
-    this._masterConnection.setAccessToken(this._masterToken, this._refreshToken)
-    this._repositoryCollection.setMasterConnection(this._masterConnection)
+    await this._handleLoginData(result)
 
     if (args.autoSelectCompany) {
       await this._autoSelectCompany()
     }
   }
 
+  /**
+   * Assert that the args parameter contain a valid axios HTTP client.
+   *
+   * @param args
+   * @private
+   */
+  private static _assertAxios(args: IClientConnectArgs) {
+    if (!('axios' in args)) {
+      throw new Error('Missing parameter axios. The HTTP client must be injected.')
+    }
+
+    if (typeof args.axios !== 'function') {
+      throw new Error(
+        'The axios argument is not a function. Seems like it is not a valid axios object,'
+      )
+    }
+  }
+
+  private async _initConnectionViaSessionToken(args: IClientConnectArgs) {
+    const apiServer = this._getMasterServer()
+
+    LeankoalaClient._assertAxios(args)
+    this._axios = args.axios
+
+    this._masterConnection = new Connection(apiServer, this._axios)
+
+    const route = {version: 1, path: '{application}/auth/session', method: 'POST'}
+
+    const withMemories = Boolean(args.withMemories || false)
+
+    const result = await this._masterConnection.send(
+      route,
+      {
+        sessionToken: args.sessionToken,
+        withMemories
+      },
+      true
+    )
+
+    await this._handleLoginData(result)
+
+    if (args.autoSelectCompany) {
+      await this._autoSelectCompany()
+    }
+  }
+
+  /**
+   * The login function always returns the same data. This method handles it and initializes the
+   * client.
+   *
+   * @param loginData
+   * @private
+   */
+  private async _handleLoginData(loginData) {
+    this._masterToken = loginData.token
+    this._refreshToken = loginData.refreshToken
+    this._masterUser = loginData.user
+    this._masterConnection.setUser(loginData.user)
+    this._masterUser.masterId = loginData.user.id
+
+    if (loginData.memories) {
+      this._masterUser.memories = loginData.memories
+    }
+    this._companies = loginData.companies
+
+    this._masterConnection.setAccessToken(this._masterToken, this._refreshToken)
+    this._repositoryCollection.setMasterConnection(this._masterConnection)
+  }
 
   private async _initConnectionViaRefreshToken(args: IClientConnectArgs) {
     this._masterConnection = new Connection(this._getMasterServer(), args.axios)
@@ -345,7 +399,7 @@ class LeankoalaClient {
     this._repositoryCollection.setClusterConnection(this._clusterConnection)
     this._clusterConnection.addDefaultParameter('masterUserId', this._masterUser.id)
 
-    await this._clusterConnection.connect({ loginToken: this._masterToken })
+    await this._clusterConnection.connect({loginToken: this._masterToken})
 
     const clusterUser = this._clusterConnection.getUser()
     this._masterUser.clusterId = clusterUser.id
@@ -364,6 +418,19 @@ class LeankoalaClient {
         return EServer.Stage
       case EEnvironment.Production:
         return EServer.Production
+      default:
+        throw new Error('The given environment "' + this._environment + '" is unknown.')
+    }
+  }
+
+  private _getSessionEndpoint() {
+    switch (this._environment) {
+      case EEnvironment.Local:
+        return EServer.Local
+      case EEnvironment.Stage:
+        return ESession.Stage
+      case EEnvironment.Production:
+        return ESession.Production
       default:
         throw new Error('The given environment "' + this._environment + '" is unknown.')
     }
@@ -439,8 +506,7 @@ class LeankoalaClient {
     return this._repositoryCollection
   }
 
-
-    /**
+  /**
    * Sleep for an amount of milliseconds.
    *
    * @param {Number} milliseconds
@@ -527,7 +593,7 @@ class LeankoalaClient {
    * @returns {boolean}
    */
   isWakeUpTokenExpired(token) {
-    const { master, cluster } = JSON.parse(token)
+    const {master, cluster} = JSON.parse(token)
 
     const time = Math.floor(new Date().getTime() / 1000)
 
@@ -547,6 +613,7 @@ class LeankoalaClient {
     this._refreshToken = token
   }
 }
+
 export {
   LeankoalaClient,
   BadRequestError,

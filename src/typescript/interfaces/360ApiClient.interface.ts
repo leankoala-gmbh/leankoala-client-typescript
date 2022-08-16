@@ -73,6 +73,7 @@ export interface IClientConnectArgs {
   axiosAdapter?: any
   autoSelectCompany?: boolean
   axios?: any
+  sessionToken?: string
 }
 
 export interface ITokenObject {
