@@ -14,6 +14,7 @@ import {EEnvironment, EServer, ESession} from './Repository/Constants/Enviroment
 import BadRequestError from './Connection/BadRequestError'
 import MarketPlaceConsts from './Repository/Constants/Marketplace'
 import RefreshTokenInvalidError from './Connection/RefreshTokenInvalidError'
+import SessionConnection from "./Connection/SessionConnection";
 
 /**
  * The KoalityEngine client is used to connect to an instance of the KoalityEngine
@@ -77,7 +78,7 @@ class LeankoalaClient {
    *
    * @param {Object} args
    * @param {String} [args.username] the username for the user that should be logged in
-   * @param {String} [args.password the password for the given user
+   * @param {String} [args.password] the password for the given user
    * @param {String} [args.wakeUpToken] the wakeup token can be used to log in instead of username and password
    * @param {String} [args.accessToken] the token fill this in the client generator
    * @param {Boolean} [args.withMemories] return the users memory on connect
@@ -103,13 +104,6 @@ class LeankoalaClient {
     this._connectionStatus = 'connected'
   }
 
-  public async connectViaSession(args: IClientConnectArgs) {
-    LeankoalaClient._assertAxios(args)
-    const axios = args.axios
-    args['sessionToken'] = await axios.post(this._getSessionEndpoint(), { withCredentials: true })
-    return this.connect(args)
-  }
-
   /**
    * Return true if the client has valid and not expired refresh tokens.
    *
@@ -119,6 +113,10 @@ class LeankoalaClient {
     if (!this._masterConnection) return false
 
     return Math.floor(Date.now() / 1000) < this._masterConnection.getExpireDate()
+  }
+
+  public getEnvironment(): string {
+    return this._environment
   }
 
   /**
@@ -418,19 +416,6 @@ class LeankoalaClient {
         return EServer.Stage
       case EEnvironment.Production:
         return EServer.Production
-      default:
-        throw new Error('The given environment "' + this._environment + '" is unknown.')
-    }
-  }
-
-  private _getSessionEndpoint() {
-    switch (this._environment) {
-      case EEnvironment.Local:
-        return EServer.Local
-      case EEnvironment.Stage:
-        return ESession.Stage
-      case EEnvironment.Production:
-        return ESession.Production
       default:
         throw new Error('The given environment "' + this._environment + '" is unknown.')
     }
