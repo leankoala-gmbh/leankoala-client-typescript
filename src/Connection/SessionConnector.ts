@@ -53,7 +53,7 @@ class SessionConnector {
       )
     }
 
-    const sessionConnector = new SessionConnector(client.getEnvironment, args.axios)
+    const sessionConnector = new SessionConnector(client.getEnvironment(), args.axios)
     args.sessionToken = await sessionConnector.getSessionToken()
     await client.connect(args)
 
