@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Connection from './Connection/Connection'
+
 import RepositoryCollection from './Repository/RepositoryCollection'
 import {TRepositories} from './typescript/interfaces/global/repos'
 import {
@@ -12,9 +13,9 @@ import {
 } from './typescript/interfaces/360ApiClient.interface'
 import {EEnvironment, EServer, ESession} from './Repository/Constants/Enviroment'
 import BadRequestError from './Connection/BadRequestError'
+import SessionConnector from './Connection/SessionConnector'
 import MarketPlaceConsts from './Repository/Constants/Marketplace'
 import RefreshTokenInvalidError from './Connection/RefreshTokenInvalidError'
-import SessionConnection from "./Connection/SessionConnection";
 
 /**
  * The KoalityEngine client is used to connect to an instance of the KoalityEngine
@@ -603,6 +604,7 @@ export {
   LeankoalaClient,
   BadRequestError,
   MarketPlaceConsts,
-  RefreshTokenInvalidError
+  RefreshTokenInvalidError,
+  SessionConnector
 }
 

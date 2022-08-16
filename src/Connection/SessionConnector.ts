@@ -1,6 +1,7 @@
-import {EEnvironment, EServer, ESession} from "../Repository/Constants/Enviroment";
 import axios from 'axios'
-import {LeankoalaClient} from "../360ApiClient";
+import {EEnvironment, EServer, ESession} from '../Repository/Constants/Enviroment'
+import {LeankoalaClient} from '../360ApiClient'
+import {IClientConnectArgs} from '../typescript/interfaces/360ApiClient.interface'
 
 /**
  * This connector uses the browser session to connect the leankoala client to the auth2 server.
@@ -11,8 +12,8 @@ import {LeankoalaClient} from "../360ApiClient";
  * @created 2022-08-16
  */
 class SessionConnector {
-  private readonly environment: string;
-  private axios: any;
+  private readonly environment: string
+  private axios: any
 
   /**
    * The private constructor. To use the connector please use the static connect function.
@@ -41,9 +42,9 @@ class SessionConnector {
    *
    * @throws Error
    */
-  public static async connect(client, args) {
+  public static async connect(client: LeankoalaClient, args: IClientConnectArgs): Promise<LeankoalaClient> {
     if (!('axios' in args)) {
-      args['axios'] = axios
+      args.axios = axios
     }
 
     if (typeof args.axios !== 'function') {
@@ -53,8 +54,8 @@ class SessionConnector {
     }
 
     const sessionConnector = new SessionConnector(client.getEnvironment, args.axios)
-    args['sessionToken'] = await sessionConnector.getSessionToken()
-    client.connect(args)
+    args.sessionToken = await sessionConnector.getSessionToken()
+    await client.connect(args)
 
     return client
   }
