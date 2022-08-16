@@ -277,7 +277,7 @@ class LeankoalaClient {
 
     this._masterConnection = new Connection(apiServer, this._axios)
 
-    const route = {version: 1, path: '{application}/auth/session', method: 'POST'}
+    const route = {version: 1, path: '360/auth/session', method: 'POST'}
 
     const withMemories = Boolean(args.withMemories || false)
 
