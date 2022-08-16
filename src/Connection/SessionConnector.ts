@@ -32,7 +32,7 @@ class SessionConnector {
    */
   private async getSessionToken(): Promise<string> {
     const sessionToken = await this.axios.get(this.getSessionEndpoint(), {withCredentials: true})
-    return sessionToken
+    return sessionToken.data
   }
 
   /**
