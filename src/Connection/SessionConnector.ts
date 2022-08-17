@@ -21,7 +21,7 @@ class SessionConnector {
    * @param {string} environment
    * @param axios
    */
-  private constructor(environment, axios) {
+  constructor(environment, axios) {
     axios.defaults.withCredentials = true
     this.environment = environment
     this.axios = axios
@@ -30,7 +30,7 @@ class SessionConnector {
   /**
    * Retrieve the session token from the API. This can only be done inside a browser.
    */
-  private async getSessionToken(): Promise<string> {
+  public async getSessionToken(): Promise<string> {
     const sessionToken = await this.axios.get(this.getSessionEndpoint(), {withCredentials: true})
     return sessionToken.data
   }
