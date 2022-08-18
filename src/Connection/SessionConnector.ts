@@ -67,15 +67,23 @@ class SessionConnector {
    * @throws Error
    */
   private getSessionEndpoint(): string {
-    switch (this.environment) {
-      case EEnvironment.Local:
-        return EServer.Local
-      case EEnvironment.Stage:
-        return ESession.Stage
-      case EEnvironment.Production:
-        return ESession.Production
-      default:
-        throw new Error('The given environment "' + this.environment + '" is unknown.')
+
+    const domain = window.location.hostname
+
+    if (domain.includes('koality.io')) {
+      switch (this.environment) {
+        case EEnvironment.Local:
+          throw new Error('The get session should not be used on local development. Please check your white label config for localhost.')
+        case EEnvironment.Stage:
+          return ESession.Stage
+        case EEnvironment.Production:
+          return ESession.Production
+        default:
+          throw new Error('The given environment "' + this.environment + '" is unknown.')
+      }
+    } else {
+      const monitoringDomain = domain.replace('sitecheck', 'monitoring')
+      return monitoringDomain + '/token'
     }
   }
 }
