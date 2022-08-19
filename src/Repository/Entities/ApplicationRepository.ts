@@ -1,18 +1,13 @@
 import Repository from '../Repository'
 
 
-export interface ICreateApplicationArguments {
-  name: string
-  identifier: string
-}
-
 
 /**
  * This class was created by the LeanApiBundle.
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-24
+ * @created 2022-08-19
  */
 class ApplicationRepository extends Repository {
 
@@ -22,31 +17,14 @@ class ApplicationRepository extends Repository {
     }
 
   /**
-   * request url: /api/application
-   * request method: POST
-   *
-   * @param {Object} args
-   * @param {String} args.name
-   * @param {String} args.identifier
-   */
-  async createApplication(args: ICreateApplicationArguments): Promise<any> {
-    const route = { path: '/api/application', method: 'POST', version: 1 }
-    const argList = Object.assign({  }, args)
-    const requiredArguments = ['name', 'identifier']
-    this._assertValidArguments(requiredArguments, argList)
-
-    return this.connection.send(route, argList)
-  }
-
-  /**
-   * request url: /api/application/whitelabel/connection/cname/{cName}
+   * request url: /api/application/whitelabel/config/cname/{cName}
    * request method: GET
    *
    * @param cName
    * @param {Object} args
    */
-  async getConnectionByCName(cName): Promise<any> {
-    const route = { path: '/api/application/whitelabel/connection/cname/{cName}', method: 'GET', version: 1 }
+  async getConfigByCName(cName): Promise<any> {
+    const route = { path: '/api/application/whitelabel/config/cname/{cName}', method: 'GET', version: 1 }
     const argList = Object.assign({ cName }, {})
 
     return this.connection.send(route, argList)
