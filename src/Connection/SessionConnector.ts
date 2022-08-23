@@ -89,7 +89,7 @@ class SessionConnector {
       }
     } else {
       const monitoringDomain = domain.replace('sitecheck', 'monitoring')
-      return monitoringDomain + '/token'
+      return 'https://' + monitoringDomain + '/token'
     }
   }
 }
