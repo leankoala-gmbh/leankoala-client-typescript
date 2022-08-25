@@ -22,7 +22,6 @@ class SessionConnector {
    * @param axios
    */
   constructor(environment, axios) {
-    axios.defaults.withCredentials = true
     this.environment = environment
     this.axios = axios
   }
