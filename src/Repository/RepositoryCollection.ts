@@ -38,6 +38,7 @@ import CheckHealthCheckRepository from './Entities/CheckHealthCheckRepository'
 import NixstatsRepository from './Entities/NixstatsRepository'
 import IncidentRepository from './Entities/IncidentRepository'
 import Connection from '../Connection/Connection'
+import ApplicationRepository from './Entities/ApplicationRepository'
 
 /**
  * This class was created by the LeanApiBundle.
@@ -97,6 +98,7 @@ class RepositoryCollection {
     this.repositories.checkhealthcheck = new CheckHealthCheckRepository()
     this.repositories.nixstats = new NixstatsRepository()
     this.repositories.incident = new IncidentRepository()
+    this.repositories.application = new ApplicationRepository()
 
   }
 
@@ -277,6 +279,10 @@ class RepositoryCollection {
 
   getIncidentRepository(): IncidentRepository {
       return this.getRepository('Incident')
+  }
+
+  getApplicationRepository(): ApplicationRepository {
+    return this.getRepository('Application')
   }
 
 }
