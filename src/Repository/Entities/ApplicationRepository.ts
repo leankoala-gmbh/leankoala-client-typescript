@@ -17,14 +17,14 @@ class ApplicationRepository extends Repository {
     }
 
   /**
-   * request url: /api/application/whitelabel/config/cname/{cName}
+   * request url: /application/whitelabel/config/cname/{cName}
    * request method: GET
    *
    * @param cName
    * @param {Object} args
    */
   async getConfigByCName(cName): Promise<any> {
-    const route = { path: '/api/application/whitelabel/config/cname/{cName}', method: 'GET', version: 1 }
+    const route = { path: '/application/whitelabel/config/cname/{cName}', method: 'GET', version: 1 }
     const argList = Object.assign({ cName }, {})
 
     return this.connection.send(route, argList)
