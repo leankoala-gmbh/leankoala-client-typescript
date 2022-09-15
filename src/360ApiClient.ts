@@ -209,6 +209,7 @@ class LeankoalaClient {
     this._repositoryCollection.setMasterConnection(this._masterConnection)
 
     const user = this._masterConnection.getUser()
+    console.log('user api client', user)
     this._masterUser.preferredLanguage = user.preferredLanguage
 
     if (wakeUpToken.company) {
