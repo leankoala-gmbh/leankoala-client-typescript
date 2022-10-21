@@ -35,6 +35,7 @@ class Connection {
   private _preferredLanguage: string
   private readonly _axios: any
   private _axiosAdapter: boolean
+  private readonly _provider: string
   private readonly _defaultParameters: Partial<IGetUrlArgs> = {}
   private readonly _registeredEventListeners: object
   private readonly _routes: {
@@ -49,8 +50,9 @@ class Connection {
    *
    * @param apiServer
    * @param {function} axios
+   * @param {string} provider api provider
    */
-  constructor(apiServer, axios) {
+  constructor(apiServer, axios, provider) {
     this._refreshRoute = {
       version: 1,
       path: 'auth/tokens/refresh/{user_id}',
@@ -67,6 +69,7 @@ class Connection {
     this._axiosAdapter = false
     this._defaultParameters = {}
     this._registeredEventListeners = {}
+    this._provider = provider
     this._routes = {
       authenticateByPassword: {
         version: 1,
@@ -431,7 +434,7 @@ class Connection {
           access_token: this._refreshToken,
           with_memories: withMemories,
           withMemories: withMemories,
-          application: 'koality'
+          application: this._provider
         }, true)
         if (tokens.user) {
           this._user = tokens.user
