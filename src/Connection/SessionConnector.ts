@@ -86,9 +86,12 @@ class SessionConnector {
         default:
           throw new Error('The given environment "' + this.environment + '" is unknown.')
       }
+    } else if (domain.includes('360monitoring.com')) {
+      return `https://${['auth', ...domain.split('.').slice(1)].join('.')}/token`
+
     } else {
       const monitoringDomain = domain.replace('sitecheck', 'monitoring')
-      return 'https://' + monitoringDomain + '/token'
+      return `https://${monitoringDomain}/token`
     }
   }
 }
