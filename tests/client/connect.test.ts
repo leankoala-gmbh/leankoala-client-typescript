@@ -11,7 +11,6 @@ describe('Check connection', () =>{
     await client.connect({ username, password })
 
     const user = client.getUser()
-
     expect(client.isConnected()).toBeTruthy()
     expect(client.getWakeUpToken().length).toBeGreaterThan(50)
     expect(user.id).toEqual(140)

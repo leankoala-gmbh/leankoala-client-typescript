@@ -215,6 +215,7 @@ class LeankoalaClient {
     this._masterUser.preferredLanguage = user.preferredLanguage
     this._masterUser.threeSixtyId = user.threeSixtyId
 
+
     if (wakeUpToken.company) {
       this._clusterConnection = new Connection(wakeUpToken.company.cluster.apiEndpoint, args.axios, this._provider)
       this._clusterConnection.setRefreshRoute(this._routes.clusterRefresh)
@@ -314,8 +315,8 @@ class LeankoalaClient {
     this._masterUser = loginData.user
     this._masterConnection.setUser(loginData.user)
     this._masterUser.masterId = loginData.user.id
-
     if (loginData.memories) {
+
       this._masterUser.memories = loginData.memories
     }
     this._companies = loginData.companies
@@ -602,6 +603,13 @@ class LeankoalaClient {
   setRefreshToken(token: string) {
     this._refreshToken = token
   }
+
+  async setMemory(application, key, value) {
+    const memoryRepo = await this.getRepository('memory')
+    await memoryRepo.set('360monitoring', 'user', this.getUser().masterId, {key, value})
+    this._masterUser.memories[key] = value
+  }
+
 }
 
 export {
