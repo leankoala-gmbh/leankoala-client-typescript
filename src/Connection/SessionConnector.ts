@@ -29,15 +29,21 @@ class SessionConnector {
   /**
    * Retrieve the session token from the API. This can only be done inside a browser.
    */
-  public async getSessionToken(): Promise<string> {
+  public async getSessionToken(): Promise<{sessionToken: string, timezone: string}> {
     const sessionTokenResponse = await this.axios.get(this.getSessionEndpoint(), {withCredentials: true})
-    const sessionToken = sessionTokenResponse.data
+    const responseObj = JSON.parse(sessionTokenResponse.data)
 
-    if (!sessionToken.startsWith('ey')) {
-      throw new Error('The returned token is no a valid. Given "' + sessionToken.substr(0, 20) + '...".')
+    const sessionToken = responseObj.access
+
+    if (!sessionToken?.startsWith('ey')) {
+      if (!sessionToken) throw new Error('No session token found')
+      throw new Error(`The returned token is no a valid. Given "${sessionToken.substr(0, 20)}...".`)
     }
 
-    return sessionToken
+    return {
+      sessionToken,
+      timezone: responseObj.timezone
+    }
   }
 
   /**
@@ -60,7 +66,8 @@ class SessionConnector {
     }
 
     const sessionConnector = new SessionConnector(client.getEnvironment(), args.axios)
-    args.sessionToken = await sessionConnector.getSessionToken()
+    const {sessionToken} = await sessionConnector.getSessionToken()
+    args.sessionToken = sessionToken
     await client.connect(args)
 
     return client
