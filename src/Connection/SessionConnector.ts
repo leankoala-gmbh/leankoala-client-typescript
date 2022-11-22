@@ -31,7 +31,7 @@ class SessionConnector {
    */
   public async getSessionToken(): Promise<{sessionToken: string, timezone: string}> {
     const sessionTokenResponse = await this.axios.get(this.getSessionEndpoint(), {withCredentials: true})
-    const responseObj = JSON.parse(sessionTokenResponse.data)
+    const responseObj = JSON.parse(JSON.stringify(sessionTokenResponse.data))
 
     const sessionToken = responseObj.access
 
