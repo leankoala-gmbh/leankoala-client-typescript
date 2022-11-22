@@ -30,13 +30,10 @@ class SessionConnector {
    * Retrieve the session token from the API. This can only be done inside a browser.
    */
   public async getSessionToken(): Promise<{sessionToken: string, timezone: string}> {
-    console.log('getSessionEndpoint', this.getSessionEndpoint())
     const sessionTokenResponse = await this.axios.get(this.getSessionEndpoint(), {withCredentials: true})
-    console.log('sessionTokenResponse', sessionTokenResponse)
     const responseObj = JSON.parse(JSON.stringify(sessionTokenResponse.data))
-    console.log('responseObj', responseObj)
     const sessionToken = responseObj.access
-    console.log('sessionToken client', sessionToken)
+
     if (!sessionToken?.startsWith('ey')) {
       if (!sessionToken) throw new Error('No session token found')
       throw new Error(`The returned token is no a valid. Given "${sessionToken.substr(0, 20)}...".`)
