@@ -45,6 +45,17 @@ class SessionConnector {
     }
   }
 
+   public async setTimezone(timezone: string) {
+     try {
+       await this.axios.put(this.getSessionEndpoint('/profile'), {
+         timezone
+       }, {withCredentials: true})
+
+     } catch (err) {
+       console.error(err)
+     }
+   }
+
   /**
    * Connect the given client via the browser session.
    *
@@ -77,7 +88,7 @@ class SessionConnector {
    *
    * @throws Error
    */
-  private getSessionEndpoint(): string {
+  private getSessionEndpoint(path = '/token'): string {
 
     const domain = window.location.hostname
 
@@ -93,11 +104,11 @@ class SessionConnector {
           throw new Error('The given environment "' + this.environment + '" is unknown.')
       }
     } else if (domain.includes('360monitoring.com')) {
-      return `https://${['auth', ...domain.split('.').slice(1)].join('.')}/token`
+      return `https://${['auth', ...domain.split('.').slice(1)].join('.')}${path}`
 
     } else {
       const monitoringDomain = domain.replace('sitecheck', 'monitoring')
-      return `https://${monitoringDomain}/token`
+      return `https://${monitoringDomain}${path}`
     }
   }
 }
