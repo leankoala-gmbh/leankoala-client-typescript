@@ -67,7 +67,7 @@ class ComponentRepository extends Repository {
    * request method: POST
    *
    * @param {Object} args
-   * @param {Number} args.system 
+   * @param {Number} args.system
    * @param {Boolean} args.enableToolsBySystem  (default: true)
    */
   async createComponent(args: ICreateComponentArguments): Promise<any> {
@@ -111,9 +111,9 @@ class ComponentRepository extends Repository {
    * @param component
    * @param {Object} args
    */
-  async updateComponent(component): Promise<any> {
+  async updateComponent(component, args): Promise<any> {
     const route = { path: 'project/components/{component}', method: 'PUT', version: 1 }
-    const argList = Object.assign({ component }, {})
+    const argList = Object.assign({ component }, args)
 
     return this.connection.send(route, argList)
   }
