@@ -29,7 +29,7 @@ class SessionConnector {
   /**
    * Retrieve the session token from the API. This can only be done inside a browser.
    */
-  public async getSessionToken(): Promise<{sessionToken: string, timezone: string}> {
+  public async getSessionToken(): Promise<{sessionToken: string, timezone: string, nickname: string, firstname: string, lastname: string}> {
     const sessionTokenResponse = await this.axios.get(this.getSessionEndpoint(), {withCredentials: true})
     const responseObj = JSON.parse(JSON.stringify(sessionTokenResponse.data))
     const sessionToken = responseObj.access
@@ -41,7 +41,10 @@ class SessionConnector {
 
     return {
       sessionToken,
-      timezone: responseObj.timezone
+      timezone: responseObj.timezone,
+      nickname: responseObj.nickname,
+      firstname: responseObj.firstName,
+      lastname: responseObj.familyName
     }
   }
 
