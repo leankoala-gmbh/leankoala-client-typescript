@@ -107,12 +107,11 @@ class SessionConnector {
           throw new Error('The given environment "' + this.environment + '" is unknown.')
       }
     } else if (domain.includes('koality.360monitoring.com')) {
-      console.log('1', domain)
       return `https://${['auth', ...domain.split('.').slice(1)].join('.')}${path}`
 
     } else {
-      console.log('2', domain)
       const monitoringDomain = domain.replace('sitecheck', 'monitoring')
+      console.log('2', monitoringDomain, `https://${monitoringDomain}${path}`)
       return `https://${monitoringDomain}${path}`
     }
   }
