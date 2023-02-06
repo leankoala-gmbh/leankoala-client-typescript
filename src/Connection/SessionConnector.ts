@@ -29,7 +29,7 @@ class SessionConnector {
   /**
    * Retrieve the session token from the API. This can only be done inside a browser.
    */
-  public async getSessionToken(): Promise<{sessionToken: string, timezone: string, nickname: string, firstname: string, lastname: string}> {
+  public async getSessionToken(): Promise<{sessionToken: string, timezone: string, nickname: string, firstName: string, familyName: string}> {
     const sessionTokenResponse = await this.axios.get(this.getSessionEndpoint(), {withCredentials: true})
     const responseObj = JSON.parse(JSON.stringify(sessionTokenResponse.data))
     const sessionToken = responseObj.access
@@ -43,8 +43,8 @@ class SessionConnector {
       sessionToken,
       timezone: responseObj.timezone,
       nickname: responseObj.nickname,
-      firstname: responseObj.firstName,
-      lastname: responseObj.familyName
+      firstName: responseObj.firstName,
+      familyName: responseObj.familyName
     }
   }
 
@@ -92,11 +92,9 @@ class SessionConnector {
    * @throws Error
    */
   private getSessionEndpoint(path = '/token'): string {
-    console.log('getSessionEndpoint', window.location.hostname)
     const domain = window.location.hostname
 
     if (domain.includes('koality.io')) {
-      console.log('1', this.environment)
       switch (this.environment) {
         case EEnvironment.Local:
           throw new Error('The get session should not be used on local development. Please check your white label config for localhost.')
@@ -108,12 +106,10 @@ class SessionConnector {
           throw new Error('The given environment "' + this.environment + '" is unknown.')
       }
     } else if (domain.includes('koality.360monitoring.com')) {
-      console.log('2', domain, `https://${domain}${path}`)
       return `https://${['auth', ...domain.split('.').slice(1)].join('.')}${path}`
 
     } else {
       const monitoringDomain = domain.replace('sitecheck', 'monitoring')
-      console.log('3', monitoringDomain, `https://${monitoringDomain}${path}`)
       return `https://${monitoringDomain}${path}`
     }
   }
