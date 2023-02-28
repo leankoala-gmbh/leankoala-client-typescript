@@ -83,6 +83,22 @@ class CrawlerRepository extends Repository {
     }
 
   /**
+   * Get all possible crawler settings. This is only needed for usability in the frontends.
+   *
+   * request url: /kapi/v1/crawler/crawl/company/{company}}/settings
+   * request method: POST
+   *
+   * @param company
+   * @param {Object} args
+   */
+  async getCrawlerSettings(company): Promise<any> {
+    const route = { path: 'crawler/crawl/company/{company}/settings', method: 'POST', version: 1 }
+    const argList = Object.assign({ company }, {})
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
    * Run a crawl for a given checklist
    *
    * request url: /kapi/v1/crawler/crawl/{project}
