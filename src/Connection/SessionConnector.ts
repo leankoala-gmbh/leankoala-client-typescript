@@ -3,6 +3,16 @@ import {EEnvironment, EServer, ESession} from '../Repository/Constants/Enviromen
 import {LeankoalaClient} from '../360ApiClient'
 import {IClientConnectArgs} from '../typescript/interfaces/360ApiClient.interface'
 
+interface ISessionTokenReturn {
+  sessionToken: string
+   timezone: string
+   nickname: string
+  firstName: string
+   familyName: string
+   isLicensePartner: boolean
+  isTrial: boolean
+}
+
 /**
  * This connector uses the browser session to connect the leankoala client to the auth2 server.
  *
@@ -29,7 +39,7 @@ class SessionConnector {
   /**
    * Retrieve the session token from the API. This can only be done inside a browser.
    */
-  public async getSessionToken(): Promise<{sessionToken: string, timezone: string, nickname: string, firstName: string, familyName: string}> {
+  public async getSessionToken(): Promise<ISessionTokenReturn> {
     const sessionTokenResponse = await this.axios.get(this.getSessionEndpoint(), {withCredentials: true})
     const responseObj = JSON.parse(JSON.stringify(sessionTokenResponse.data))
     const sessionToken = responseObj.access
@@ -44,7 +54,9 @@ class SessionConnector {
       timezone: responseObj.timezone,
       nickname: responseObj.nickname,
       firstName: responseObj.firstName,
-      familyName: responseObj.familyName
+      familyName: responseObj.familyName,
+      isLicensePartner: responseObj.isLicensePartner,
+      isTrial: responseObj.isTrial
     }
   }
 
