@@ -63,7 +63,8 @@ class ProjectRepository extends Repository {
    *
    * @param project
    * @param {Object} args
-   * @param {String} args.name 
+   * @param {String} args.name  (default: )
+   * @param {String} args.location The location the project should be monitored from (default: )
    */
   async update(project, args: IUpdateArguments): Promise<any> {
     const route = { path: 'project/projects/{project}', method: 'PUT', version: 1 }
