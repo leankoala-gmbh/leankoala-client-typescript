@@ -1,6 +1,6 @@
 {
   "name": "@webpros/360-api-client",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "JS API Client to connect to the Plesk 360 Monitoring Engine",
   "author": "Nils Langner (nils.langner@webpros.com)",
   "contributors": [
