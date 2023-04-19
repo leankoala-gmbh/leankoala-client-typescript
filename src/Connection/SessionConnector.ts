@@ -11,6 +11,7 @@ interface ISessionTokenReturn {
    familyName: string
    isLicensePartner: boolean
   isTrial: boolean
+  responseObj: any
 }
 
 /**
@@ -56,7 +57,8 @@ class SessionConnector {
       firstName: responseObj.firstName,
       familyName: responseObj.familyName,
       isLicensePartner: responseObj.isLicensePartner,
-      isTrial: responseObj.isTrial
+      isTrial: responseObj.isTrial,
+      responseObj
     }
   }
 
