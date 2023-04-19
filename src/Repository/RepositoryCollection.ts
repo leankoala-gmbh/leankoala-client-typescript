@@ -39,6 +39,7 @@ import NixstatsRepository from './Entities/NixstatsRepository'
 import IncidentRepository from './Entities/IncidentRepository'
 import Connection from '../Connection/Connection'
 import ApplicationRepository from './Entities/ApplicationRepository'
+import LocationRepository from "./Entities/LocationRepository";
 
 /**
  * This class was created by the LeanApiBundle.
@@ -99,7 +100,7 @@ class RepositoryCollection {
     this.repositories.nixstats = new NixstatsRepository()
     this.repositories.incident = new IncidentRepository()
     this.repositories.application = new ApplicationRepository()
-
+    this.repositories.location = new LocationRepository()
   }
 
   setClusterConnection(connection: Connection) {
@@ -285,6 +286,9 @@ class RepositoryCollection {
     return this.getRepository('Application')
   }
 
+  getLocationRepository(): ApplicationRepository {
+    return this.getRepository('Location')
+  }
 }
 
 export default RepositoryCollection

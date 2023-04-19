@@ -10,6 +10,7 @@ export interface ICreateSystemArguments {
   system_type: number
   add_checklist_checks?: boolean
   add_support_user?: boolean
+  location?: string
 }
 
 export interface IUpdateSystemArguments {
