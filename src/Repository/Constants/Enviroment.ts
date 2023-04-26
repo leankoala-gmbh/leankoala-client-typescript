@@ -15,3 +15,4 @@ export enum ESession {
   Stage = 'https://monitoring.platform360.staging.plesk.tech/token',
   Production = 'https://monitoring.platform360/token',
 }
+

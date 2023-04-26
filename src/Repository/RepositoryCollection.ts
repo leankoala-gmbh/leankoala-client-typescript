@@ -286,7 +286,7 @@ class RepositoryCollection {
     return this.getRepository('Application')
   }
 
-  getLocationRepository(): ApplicationRepository {
+  getLocationRepository(): LocationRepository {
     return this.getRepository('Location')
   }
 }
