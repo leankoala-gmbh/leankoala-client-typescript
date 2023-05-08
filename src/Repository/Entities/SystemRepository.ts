@@ -156,7 +156,7 @@ class SystemRepository extends Repository {
    * @param {Object} args
    */
   async getSystemTypes(providerIdentifier): Promise<any> {
-    const route = { path: 'project/systems/{providerIdentifier}/systemType', method: 'GET', version: 1 }
+    const route = { path: 'project/systems/{providerIdentifier}/systemType', method: 'POST', version: 1 }
     const argList = Object.assign({ providerIdentifier }, {})
 
     return this.connection.send(route, argList)
