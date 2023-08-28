@@ -5,6 +5,10 @@ export interface IActivateArguments {
   activation_key: string
 }
 
+export interface IProviderActivateArguments {
+  master_id: number
+}
+
 export interface ICreateArguments {
   username?: string
   master_id?: number
@@ -21,25 +25,17 @@ export interface ICreateArguments {
   _attributes?: any[]
 }
 
-export interface IUpdateUserArguments {
-  email?: string
-  preferred_language?: string
-  company_id?: number
-  first_name?: string
-  last_name?: string
-}
-
 export interface ISetPreferredLanguageArguments {
   language: string
-}
-
-export interface IDeleteByEmailArguments {
-  email: string
 }
 
 export interface IConnectOAuthAccountArguments {
   provider: 'haendlerbund' | 'google'
   provider_user_id: string
+}
+
+export interface IChangePasswordArguments {
+  password_new: string
 }
 
 export interface IExistsArguments {
@@ -50,12 +46,20 @@ export interface IFindArguments {
   query: any[]
 }
 
-export interface IUpdateMasterIdArguments {
-  master_id: number
+export interface IDeleteByEmailArguments {
+  email: string
 }
 
-export interface IChangePasswordArguments {
-  password_new: string
+export interface IUpdateUserArguments {
+  email?: string
+  preferred_language?: string
+  company_id?: number
+  first_name?: string
+  last_name?: string
+}
+
+export interface IUpdateMasterIdArguments {
+  master_id: number
 }
 
 export interface IRequestPasswordResetArguments {
@@ -72,7 +76,7 @@ export interface IResetPasswordArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-12
+ * @created 2023-08-28
  */
 class ClusterUserRepository extends Repository {
 
@@ -95,6 +99,25 @@ class ClusterUserRepository extends Repository {
     const route = { path: 'user/users/activate', method: 'POST', version: 1 }
     const argList = Object.assign({  }, args)
     const requiredArguments = ['activation_key']
+    this._assertValidArguments(requiredArguments, argList)
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * Activate a user account by provider admin.
+   *
+   * request url: /kapi/v1/user/users/{provider}/activate
+   * request method: POST
+   *
+   * @param provider
+   * @param {Object} args
+   * @param {Number} args.master_id The master_id user.
+   */
+  async providerActivate(provider, args: IProviderActivateArguments): Promise<any> {
+    const route = { path: 'user/users/{provider}/activate', method: 'POST', version: 1 }
+    const argList = Object.assign({ provider }, args)
+    const requiredArguments = ['master_id']
     this._assertValidArguments(requiredArguments, argList)
 
     return this.connection.send(route, argList)
@@ -132,27 +155,6 @@ class ClusterUserRepository extends Repository {
   }
 
   /**
-   * This endpoint updates an existing user.
-   *
-   * request url: /kapi/v1/user/users/{user}
-   * request method: PUT
-   *
-   * @param user
-   * @param {Object} args
-   * @param {String} args.email The email address of the new user. (optional)
-   * @param {String} args.preferred_language The users preferred interface language. (optional)
-   * @param {Number} args.company_id The companies numeric id of the new user. (optional)
-   * @param {String} args.first_name The users first name. (optional)
-   * @param {String} args.last_name The users last name. (optional)
-   */
-  async updateUser(user, args: IUpdateUserArguments): Promise<any> {
-    const route = { path: 'user/users/{user}', method: 'PUT', version: 1 }
-    const argList = Object.assign({ user }, args)
-
-    return this.connection.send(route, argList)
-  }
-
-  /**
    * Update the users preferred language.
    *
    * request url: /kapi/v1/user/users/preferredLanguage/{user}
@@ -166,6 +168,81 @@ class ClusterUserRepository extends Repository {
     const route = { path: 'user/users/preferredLanguage/{user}', method: 'PUT', version: 1 }
     const argList = Object.assign({ user }, args)
     const requiredArguments = ['language']
+    this._assertValidArguments(requiredArguments, argList)
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * This endpoint connects an OAuth provider with the current user.
+   *
+   * request url: /kapi/v1/user/oauth/{user}/connect
+   * request method: PUT
+   *
+   * @param user
+   * @param {Object} args
+   * @param {*} args.provider The OAuth provider.
+   * @param {String} args.provider_user_id The OAuth provider user id.
+   */
+  async connectOAuthAccount(user, args: IConnectOAuthAccountArguments): Promise<any> {
+    const route = { path: 'user/oauth/{user}/connect', method: 'PUT', version: 1 }
+    const argList = Object.assign({ user }, args)
+    const requiredArguments = ['provider', 'provider_user_id']
+    this._assertValidArguments(requiredArguments, argList)
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * Change the users password. This can only be done by the master server.
+   *
+   * request url: /kapi/v1/user/users/{user}/password
+   * request method: PUT
+   *
+   * @param user
+   * @param {Object} args
+   * @param {String} args.password_new 
+   */
+  async changePassword(user, args: IChangePasswordArguments): Promise<any> {
+    const route = { path: 'user/users/{user}/password', method: 'PUT', version: 1 }
+    const argList = Object.assign({ user }, args)
+    const requiredArguments = ['password_new']
+    this._assertValidArguments(requiredArguments, argList)
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * This endpoint returns true if a user exists that matches the given search criteria.
+   *
+   * request url: /kapi/v1/user/users/exists
+   * request method: GET
+   *
+   * @param {Object} args
+   * @param {Array} args.query The key value pairs for the search.
+   */
+  async exists(args: IExistsArguments): Promise<any> {
+    const route = { path: 'user/users/exists', method: 'GET', version: 1 }
+    const argList = Object.assign({  }, args)
+    const requiredArguments = ['query']
+    this._assertValidArguments(requiredArguments, argList)
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * This endpoint returns a user that matches the given search criteria.
+   *
+   * request url: /kapi/v1/user/users/find
+   * request method: GET
+   *
+   * @param {Object} args
+   * @param {Array} args.query The key value pairs for the search.
+   */
+  async find(args: IFindArguments): Promise<any> {
+    const route = { path: 'user/users/find', method: 'GET', version: 1 }
+    const argList = Object.assign({  }, args)
+    const requiredArguments = ['query']
     this._assertValidArguments(requiredArguments, argList)
 
     return this.connection.send(route, argList)
@@ -222,73 +299,22 @@ class ClusterUserRepository extends Repository {
   }
 
   /**
-   * This endpoint connects an OAuth provider with the current user.
+   * This endpoint updates an existing user.
    *
-   * request url: /kapi/v1/user/oauth/{user}/connect
+   * request url: /kapi/v1/user/users/{user}
    * request method: PUT
    *
    * @param user
    * @param {Object} args
-   * @param {*} args.provider The OAuth provider.
-   * @param {String} args.provider_user_id The OAuth provider user id.
+   * @param {String} args.email The email address of the new user. (optional)
+   * @param {String} args.preferred_language The users preferred interface language. (optional)
+   * @param {Number} args.company_id The companies numeric id of the new user. (optional)
+   * @param {String} args.first_name The users first name. (optional)
+   * @param {String} args.last_name The users last name. (optional)
    */
-  async connectOAuthAccount(user, args: IConnectOAuthAccountArguments): Promise<any> {
-    const route = { path: 'user/oauth/{user}/connect', method: 'PUT', version: 1 }
+  async updateUser(user, args: IUpdateUserArguments): Promise<any> {
+    const route = { path: 'user/users/{user}', method: 'PUT', version: 1 }
     const argList = Object.assign({ user }, args)
-    const requiredArguments = ['provider', 'provider_user_id']
-    this._assertValidArguments(requiredArguments, argList)
-
-    return this.connection.send(route, argList)
-  }
-
-  /**
-   * This endpoint returns true if a user exists that matches the given search criteria.
-   *
-   * request url: /kapi/v1/user/users/exists
-   * request method: GET
-   *
-   * @param {Object} args
-   * @param {Array} args.query The key value pairs for the search.
-   */
-  async exists(args: IExistsArguments): Promise<any> {
-    const route = { path: 'user/users/exists', method: 'GET', version: 1 }
-    const argList = Object.assign({  }, args)
-    const requiredArguments = ['query']
-    this._assertValidArguments(requiredArguments, argList)
-
-    return this.connection.send(route, argList)
-  }
-
-  /**
-   * This endpoint returns a user that matches the given search criteria.
-   *
-   * request url: /kapi/v1/user/users/find
-   * request method: GET
-   *
-   * @param {Object} args
-   * @param {Array} args.query The key value pairs for the search.
-   */
-  async find(args: IFindArguments): Promise<any> {
-    const route = { path: 'user/users/find', method: 'GET', version: 1 }
-    const argList = Object.assign({  }, args)
-    const requiredArguments = ['query']
-    this._assertValidArguments(requiredArguments, argList)
-
-    return this.connection.send(route, argList)
-  }
-
-  /**
-   * Return a list of all users for the given company.
-   *
-   * request url: /kapi/v1/user/users/find/all/{providerIdentifier}
-   * request method: POST
-   *
-   * @param providerIdentifier
-   * @param {Object} args
-   */
-  async findAll(providerIdentifier): Promise<any> {
-    const route = { path: 'user/users/find/all/{providerIdentifier}', method: 'POST', version: 1 }
-    const argList = Object.assign({ providerIdentifier }, {})
 
     return this.connection.send(route, argList)
   }
@@ -307,25 +333,6 @@ class ClusterUserRepository extends Repository {
     const route = { path: 'user/users/{user}/masterId', method: 'PUT', version: 1 }
     const argList = Object.assign({ user }, args)
     const requiredArguments = ['master_id']
-    this._assertValidArguments(requiredArguments, argList)
-
-    return this.connection.send(route, argList)
-  }
-
-  /**
-   * Change the users password. This can only be done by the master server.
-   *
-   * request url: /kapi/v1/user/users/{user}/password
-   * request method: PUT
-   *
-   * @param user
-   * @param {Object} args
-   * @param {String} args.password_new 
-   */
-  async changePassword(user, args: IChangePasswordArguments): Promise<any> {
-    const route = { path: 'user/users/{user}/password', method: 'PUT', version: 1 }
-    const argList = Object.assign({ user }, args)
-    const requiredArguments = ['password_new']
     this._assertValidArguments(requiredArguments, argList)
 
     return this.connection.send(route, argList)
@@ -364,6 +371,22 @@ class ClusterUserRepository extends Repository {
     const argList = Object.assign({ user }, args)
     const requiredArguments = ['password']
     this._assertValidArguments(requiredArguments, argList)
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * Return a list of all users for the given company.
+   *
+   * request url: /kapi/v1/user/users/find/all/{providerIdentifier}
+   * request method: POST
+   *
+   * @param providerIdentifier
+   * @param {Object} args
+   */
+  async findAll(providerIdentifier): Promise<any> {
+    const route = { path: 'user/users/find/all/{providerIdentifier}', method: 'POST', version: 1 }
+    const argList = Object.assign({ providerIdentifier }, {})
 
     return this.connection.send(route, argList)
   }
