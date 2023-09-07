@@ -40,6 +40,7 @@ import IncidentRepository from './Entities/IncidentRepository'
 import Connection from '../Connection/Connection'
 import ApplicationRepository from './Entities/ApplicationRepository'
 import LocationRepository from "./Entities/LocationRepository";
+import CompanyRepository from "./Entities/CompanyRepository";
 
 /**
  * This class was created by the LeanApiBundle.
@@ -101,6 +102,8 @@ class RepositoryCollection {
     this.repositories.incident = new IncidentRepository()
     this.repositories.application = new ApplicationRepository()
     this.repositories.location = new LocationRepository()
+
+    this.repositories.company = new CompanyRepository()
   }
 
   setClusterConnection(connection: Connection) {
@@ -288,6 +291,10 @@ class RepositoryCollection {
 
   getLocationRepository(): LocationRepository {
     return this.getRepository('Location')
+  }
+
+  getCompanyRepository(): CompanyRepository {
+    return this.getRepository('Company')
   }
 }
 
