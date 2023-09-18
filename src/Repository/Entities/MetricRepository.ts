@@ -7,6 +7,8 @@ export interface IFindBySystemArguments {
   metric_type?: 'value' | 'status'
   filter_trailing_nulls?: boolean
   min_value?: number
+  time?: string
+  from?: string
 }
 
 
@@ -15,14 +17,14 @@ export interface IFindBySystemArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-12
+ * @created 2023-09-18
  */
 class MetricRepository extends Repository {
 
-    constructor() {
-        super()
-        this.connectionType = 'ClusterConnection'
-    }
+  constructor() {
+    super()
+    this.connectionType = 'ClusterConnection'
+  }
 
   /**
    * Search for the metrics for all eventIdentifiers in the given projects that are defined by the given
@@ -43,6 +45,8 @@ class MetricRepository extends Repository {
    *                                             not provide values for a given time spam. (default: true)
    * @param {Number} args.min_value Replace all values that are smaller than the min value with the min
    *                                 value. (default: 0)
+   * @param {String} args.time The time group the datapoint are aggregated. (default: 24h)
+   * @param {String} args.from The interval you want to get the data from. (default: -1month)
    */
   async findBySystem(system, args: IFindBySystemArguments): Promise<any> {
     const route = { path: 'metric/eventidentifier/{system}/search', method: 'POST', version: 1 }
