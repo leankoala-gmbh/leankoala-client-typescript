@@ -41,6 +41,7 @@ import Connection from '../Connection/Connection'
 import ApplicationRepository from './Entities/ApplicationRepository'
 import LocationRepository from "./Entities/LocationRepository";
 import CompanyRepository from "./Entities/CompanyRepository";
+import Auth2Repository from "./Entities/Auth2Repository";
 
 /**
  * This class was created by the LeanApiBundle.
@@ -62,6 +63,7 @@ class RepositoryCollection {
 
     this.repositories = {}
     this.repositories.sequence = new SequenceRepository()
+    this.repositories.auth2 = new Auth2Repository()
     this.repositories.marketplace = new MarketplaceRepository()
     this.repositories.subscription = new SubscriptionRepository()
     this.repositories.crawler = new CrawlerRepository()
@@ -127,6 +129,10 @@ class RepositoryCollection {
     }
       throw new Error('No repository with name ' + repositoryName + ' found. Registered repositories are: ' + JSON.stringify(Object.keys(this.repositories)))
 
+  }
+
+  getAuth2Repository(): Auth2Repository {
+    return this.getRepository('Auth2')
   }
 
   getSequenceRepository(): SequenceRepository {
