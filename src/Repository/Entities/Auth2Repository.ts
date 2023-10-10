@@ -20,6 +20,7 @@ export interface ICreateTokenBySessionArguments {
   withMemories?: boolean
 }
 
+
 /**
  * This class was created by the LeanApiBundle.
  *
@@ -69,6 +70,17 @@ class Auth2Repository extends Repository {
     const argList = Object.assign({application}, args)
 
     return this.connection.send(route, argList)
+  }
+
+  /**
+   * Create a valid read-only refresh token by the given refresh token.
+   *
+   * @param {String} application
+   * @param {String} user
+   */
+  async createReadOnlyRefreshToken(application, user): Promise<any> {
+    const route = {path: '/{application}/auth/read-only-token/{user}', method: 'POST', version: 1}
+    return this.connection.send(route, {application, user})
   }
 
   /**
