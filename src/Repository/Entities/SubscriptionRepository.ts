@@ -3,10 +3,18 @@ import Repository from '../Repository'
 
 export interface ISetCompanyCreditCardPlansArguments {
   quantity: number
+  system_size?: number
 }
 
 export interface ISetCompanyFreePlansArguments {
   quantity: number
+  system_size: number
+}
+
+export interface ISetCompanyFreePlansByUserArguments {
+  quantity: number
+  system_size?: number
+  identifier?: string
 }
 
 export interface ISetCreditCardArguments {
@@ -35,7 +43,7 @@ export interface ISetSubscriptionPlanArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-06-13
+ * @created 2024-02-19
  */
 class SubscriptionRepository extends Repository {
 
@@ -69,6 +77,7 @@ class SubscriptionRepository extends Repository {
    * @param company
    * @param {Object} args
    * @param {Number} args.quantity The number of packets to be used
+   * @param {Number} args.system_size The system size id (optional)
    */
   async setCompanyCreditCardPlans(company, args: ISetCompanyCreditCardPlansArguments): Promise<any> {
     const route = { path: 'subscription/company/{company}/plans/creditcard', method: 'POST', version: 1 }
@@ -88,10 +97,32 @@ class SubscriptionRepository extends Repository {
    * @param company
    * @param {Object} args
    * @param {Number} args.quantity The number of packets to be used
+   * @param {Number} args.system_size The system size id
    */
   async setCompanyFreePlans(company, args: ISetCompanyFreePlansArguments): Promise<any> {
     const route = { path: 'subscription/company/{company}/plans/free', method: 'POST', version: 1 }
     const argList = Object.assign({ company }, args)
+    const requiredArguments = ['quantity', 'system_size']
+    this._assertValidArguments(requiredArguments, argList)
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * Set the companies free plans by user.
+   *
+   * request url: /kapi/v1/subscription/user/{user}/plans/free
+   * request method: POST
+   *
+   * @param user
+   * @param {Object} args
+   * @param {Number} args.quantity The number of packets to be used
+   * @param {Number} args.system_size The system size id (optional)
+   * @param {String} args.identifier  (optional)
+   */
+  async setCompanyFreePlansByUser(user, args: ISetCompanyFreePlansByUserArguments): Promise<any> {
+    const route = { path: 'subscription/user/{user}/plans/free', method: 'POST', version: 1 }
+    const argList = Object.assign({ user }, args)
     const requiredArguments = ['quantity']
     this._assertValidArguments(requiredArguments, argList)
 
@@ -212,22 +243,6 @@ class SubscriptionRepository extends Repository {
   }
 
   /**
-   * End all trials.
-   *
-   * request url: /kapi/v1/subscription/trial/{providerIdentifier}/end
-   * request method: POST
-   *
-   * @param providerIdentifier
-   * @param {Object} args
-   */
-  async endTrials(providerIdentifier): Promise<any> {
-    const route = { path: 'subscription/trial/{providerIdentifier}/end', method: 'POST', version: 1 }
-    const argList = Object.assign({ providerIdentifier }, {})
-
-    return this.connection.send(route, argList)
-  }
-
-  /**
    * Get current quota for the company.
    *
    * request url: /kapi/v1/subscription/company/{company}/quota
@@ -239,6 +254,22 @@ class SubscriptionRepository extends Repository {
   async getQuota(company): Promise<any> {
     const route = { path: 'subscription/company/{company}/quota', method: 'GET', version: 1 }
     const argList = Object.assign({ company }, {})
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * End all trials.
+   *
+   * request url: /kapi/v1/subscription/trial/{providerIdentifier}/end
+   * request method: POST
+   *
+   * @param providerIdentifier
+   * @param {Object} args
+   */
+  async endTrials(providerIdentifier): Promise<any> {
+    const route = { path: 'subscription/trial/{providerIdentifier}/end', method: 'POST', version: 1 }
+    const argList = Object.assign({ providerIdentifier }, {})
 
     return this.connection.send(route, argList)
   }
