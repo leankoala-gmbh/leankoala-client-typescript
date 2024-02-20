@@ -37,6 +37,10 @@ export interface ISetSubscriptionPlanArguments {
   identifier: string
 }
 
+export interface ICreateCheckoutSessionArguments {
+  sku: string
+}
+
 
 /**
  * This class was created by the LeanApiBundle.
@@ -254,6 +258,25 @@ class SubscriptionRepository extends Repository {
   async getQuota(company): Promise<any> {
     const route = { path: 'subscription/company/{company}/quota', method: 'GET', version: 1 }
     const argList = Object.assign({ company }, {})
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * Create a checkout session for current user.
+   *
+   * request url: /kapi/v1/subscription/user/{user}/checkout/session
+   * request method: POST
+   *
+   * @param user
+   * @param {Object} args
+   * @param {String} args.sku 
+   */
+  async createCheckoutSession(user, args: ICreateCheckoutSessionArguments): Promise<any> {
+    const route = { path: 'subscription/user/{user}/checkout/session', method: 'POST', version: 1 }
+    const argList = Object.assign({ user }, args)
+    const requiredArguments = ['sku']
+    this._assertValidArguments(requiredArguments, argList)
 
     return this.connection.send(route, argList)
   }
