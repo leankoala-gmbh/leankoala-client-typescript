@@ -39,6 +39,12 @@ export interface ISetSubscriptionPlanArguments {
 
 export interface ICreateCheckoutSessionArguments {
   sku: string
+  success_url: string
+  cancel_url: string
+}
+
+export interface ICreateCustomerPortalSessionArguments {
+  return_url: string
 }
 
 
@@ -47,7 +53,7 @@ export interface ICreateCheckoutSessionArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2024-02-19
+ * @created 2024-03-04
  */
 class SubscriptionRepository extends Repository {
 
@@ -263,19 +269,52 @@ class SubscriptionRepository extends Repository {
   }
 
   /**
+   * Get a list of subscription products.
+   * request url: /kapi/v1/subscription/products
+   * request method: GET
+   *
+   * @param {Object} args
+   */
+  async getSubscriptionProducts(): Promise<any> {
+    const route = { path: 'subscription/products', method: 'GET', version: 1 }
+    const argList = Object.assign({  }, {})
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
    * Create a checkout session for current user.
    *
-   * request url: /kapi/v1/subscription/user/{user}/checkout/session
+   * request url: /kapi/v1/subscription/checkout/session
    * request method: POST
    *
-   * @param user
    * @param {Object} args
    * @param {String} args.sku 
+   * @param {String} args.success_url 
+   * @param {String} args.cancel_url 
    */
-  async createCheckoutSession(user, args: ICreateCheckoutSessionArguments): Promise<any> {
-    const route = { path: 'subscription/user/{user}/checkout/session', method: 'POST', version: 1 }
-    const argList = Object.assign({ user }, args)
-    const requiredArguments = ['sku']
+  async createCheckoutSession(args: ICreateCheckoutSessionArguments): Promise<any> {
+    const route = { path: 'subscription/checkout/session', method: 'POST', version: 1 }
+    const argList = Object.assign({  }, args)
+    const requiredArguments = ['sku', 'success_url', 'cancel_url']
+    this._assertValidArguments(requiredArguments, argList)
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * Create a customer portal session for current user.
+   *
+   * request url: /kapi/v1/subscription/portal/session
+   * request method: POST
+   *
+   * @param {Object} args
+   * @param {String} args.return_url 
+   */
+  async createCustomerPortalSession(args: ICreateCustomerPortalSessionArguments): Promise<any> {
+    const route = { path: 'subscription/portal/session', method: 'POST', version: 1 }
+    const argList = Object.assign({  }, args)
+    const requiredArguments = ['return_url']
     this._assertValidArguments(requiredArguments, argList)
 
     return this.connection.send(route, argList)
