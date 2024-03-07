@@ -53,7 +53,7 @@ export interface ICreateCustomerPortalSessionArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2024-03-04
+ * @created 2024-03-07
  */
 class SubscriptionRepository extends Repository {
 
@@ -316,6 +316,36 @@ class SubscriptionRepository extends Repository {
     const argList = Object.assign({  }, args)
     const requiredArguments = ['return_url']
     this._assertValidArguments(requiredArguments, argList)
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * Cancel a subscription.
+   *
+   * request url: /kapi/v1/subscription/external/{subscriptionId}
+   * request method: DELETE
+   *
+   * @param subscriptionId
+   * @param {Object} args
+   */
+  async cancelSubscription(subscriptionId): Promise<any> {
+    const route = { path: 'subscription/external/{subscriptionId}', method: 'DELETE', version: 1 }
+    const argList = Object.assign({ subscriptionId }, {})
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * Get a list of subscriptions for current user.
+   * request url: /kapi/v1/subscription
+   * request method: GET
+   *
+   * @param {Object} args
+   */
+  async getUserSubscriptions(): Promise<any> {
+    const route = { path: 'subscription', method: 'GET', version: 1 }
+    const argList = Object.assign({  }, {})
 
     return this.connection.send(route, argList)
   }
