@@ -47,13 +47,19 @@ export interface ICreateCustomerPortalSessionArguments {
   return_url: string
 }
 
+export interface IUpdateSubscriptionByProjectArguments {
+  sku: string
+  success_url: string
+  cancel_url: string
+}
+
 
 /**
  * This class was created by the LeanApiBundle.
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2024-03-07
+ * @created 2024-03-15
  */
 class SubscriptionRepository extends Repository {
 
@@ -346,6 +352,27 @@ class SubscriptionRepository extends Repository {
   async getUserSubscriptions(): Promise<any> {
     const route = { path: 'subscription', method: 'GET', version: 1 }
     const argList = Object.assign({  }, {})
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * Update subscription by project.
+   *
+   * request url: /kapi/v1/subscription/project/{project}
+   * request method: POST
+   *
+   * @param project
+   * @param {Object} args
+   * @param {String} args.sku The product SKU
+   * @param {String} args.success_url 
+   * @param {String} args.cancel_url 
+   */
+  async updateSubscriptionByProject(project, args: IUpdateSubscriptionByProjectArguments): Promise<any> {
+    const route = { path: 'subscription/project/{project}', method: 'POST', version: 1 }
+    const argList = Object.assign({ project }, args)
+    const requiredArguments = ['sku', 'success_url', 'cancel_url']
+    this._assertValidArguments(requiredArguments, argList)
 
     return this.connection.send(route, argList)
   }
