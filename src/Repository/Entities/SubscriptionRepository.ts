@@ -38,7 +38,7 @@ export interface ISetSubscriptionPlanArguments {
 }
 
 export interface ICreateCheckoutSessionArguments {
-  sku: string
+  price_id: string
   success_url: string
   cancel_url: string
 }
@@ -48,7 +48,7 @@ export interface ICreateCustomerPortalSessionArguments {
 }
 
 export interface IUpdateSubscriptionByProjectArguments {
-  sku: string
+  price_id: string
   success_url: string
   cancel_url: string
 }
@@ -59,7 +59,7 @@ export interface IUpdateSubscriptionByProjectArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2024-03-15
+ * @created 2024-03-25
  */
 class SubscriptionRepository extends Repository {
 
@@ -295,14 +295,14 @@ class SubscriptionRepository extends Repository {
    * request method: POST
    *
    * @param {Object} args
-   * @param {String} args.sku 
+   * @param {String} args.price_id The product price id
    * @param {String} args.success_url 
    * @param {String} args.cancel_url 
    */
   async createCheckoutSession(args: ICreateCheckoutSessionArguments): Promise<any> {
     const route = { path: 'subscription/checkout/session', method: 'POST', version: 1 }
     const argList = Object.assign({  }, args)
-    const requiredArguments = ['sku', 'success_url', 'cancel_url']
+    const requiredArguments = ['price_id', 'success_url', 'cancel_url']
     this._assertValidArguments(requiredArguments, argList)
 
     return this.connection.send(route, argList)
@@ -364,14 +364,14 @@ class SubscriptionRepository extends Repository {
    *
    * @param project
    * @param {Object} args
-   * @param {String} args.sku The product SKU
+   * @param {String} args.price_id The product price id
    * @param {String} args.success_url 
    * @param {String} args.cancel_url 
    */
   async updateSubscriptionByProject(project, args: IUpdateSubscriptionByProjectArguments): Promise<any> {
     const route = { path: 'subscription/project/{project}', method: 'POST', version: 1 }
     const argList = Object.assign({ project }, args)
-    const requiredArguments = ['sku', 'success_url', 'cancel_url']
+    const requiredArguments = ['price_id', 'success_url', 'cancel_url']
     this._assertValidArguments(requiredArguments, argList)
 
     return this.connection.send(route, argList)
