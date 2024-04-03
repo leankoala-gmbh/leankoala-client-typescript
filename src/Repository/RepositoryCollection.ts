@@ -42,6 +42,7 @@ import ApplicationRepository from './Entities/ApplicationRepository'
 import LocationRepository from "./Entities/LocationRepository";
 import CompanyRepository from "./Entities/CompanyRepository";
 import Auth2Repository from "./Entities/Auth2Repository";
+import TwoFactorRepository from "./Entities/TwoFactorRepository";
 
 /**
  * This class was created by the LeanApiBundle.
@@ -106,6 +107,8 @@ class RepositoryCollection {
     this.repositories.location = new LocationRepository()
 
     this.repositories.company = new CompanyRepository()
+
+    this.repositories.twoFactor = new TwoFactorRepository()
   }
 
   setClusterConnection(connection: Connection) {
@@ -301,6 +304,10 @@ class RepositoryCollection {
 
   getCompanyRepository(): CompanyRepository {
     return this.getRepository('Company')
+  }
+
+  getTwoFactorRepository(): TwoFactorRepository {
+    return this.getRepository('TwoFactor')
   }
 }
 
