@@ -5,6 +5,10 @@ export interface IIsTwoFactorRequiredArguments {
   action: string
 }
 
+export interface ITriggerTwoFactorForActionArguments {
+  action: string
+}
+
 
 /**
  * This class was created by the LeanApiBundle.
@@ -31,6 +35,24 @@ class TwoFactorRepository extends Repository {
    */
   async isTwoFactorRequired(args: IIsTwoFactorRequiredArguments): Promise<any> {
     const route = { path: 'auth/2fa/is-required', method: 'POST', version: 1 }
+    const argList = Object.assign({  }, args)
+    const requiredArguments = ['action']
+    this._assertValidArguments(requiredArguments, argList)
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * Trigger two factor authentication for action.
+   *
+   * request url: /kapi/v1/auth/2fa/trigger
+   * request method: POST
+   *
+   * @param {Object} args
+   * @param {String} args.action 
+   */
+  async triggerTwoFactorForAction(args: ITriggerTwoFactorForActionArguments): Promise<any> {
+    const route = { path: 'auth/2fa/trigger', method: 'POST', version: 1 }
     const argList = Object.assign({  }, args)
     const requiredArguments = ['action']
     this._assertValidArguments(requiredArguments, argList)

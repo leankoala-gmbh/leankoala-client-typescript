@@ -41,6 +41,7 @@ export interface ICreateCheckoutSessionArguments {
   price_id: string
   success_url: string
   cancel_url: string
+  two_factor_code?: string
 }
 
 export interface ICreateCustomerPortalSessionArguments {
@@ -51,6 +52,7 @@ export interface IUpdateSubscriptionByProjectArguments {
   price_id: string
   success_url: string
   cancel_url: string
+  two_factor_code?: string
 }
 
 
@@ -59,7 +61,7 @@ export interface IUpdateSubscriptionByProjectArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2024-03-25
+ * @created 2024-04-03
  */
 class SubscriptionRepository extends Repository {
 
@@ -298,6 +300,7 @@ class SubscriptionRepository extends Repository {
    * @param {String} args.price_id The product price id
    * @param {String} args.success_url 
    * @param {String} args.cancel_url 
+   * @param {String} args.two_factor_code  (optional)
    */
   async createCheckoutSession(args: ICreateCheckoutSessionArguments): Promise<any> {
     const route = { path: 'subscription/checkout/session', method: 'POST', version: 1 }
@@ -367,6 +370,7 @@ class SubscriptionRepository extends Repository {
    * @param {String} args.price_id The product price id
    * @param {String} args.success_url 
    * @param {String} args.cancel_url 
+   * @param {String} args.two_factor_code  (optional)
    */
   async updateSubscriptionByProject(project, args: IUpdateSubscriptionByProjectArguments): Promise<any> {
     const route = { path: 'subscription/project/{project}', method: 'POST', version: 1 }
