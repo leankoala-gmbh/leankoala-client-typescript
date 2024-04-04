@@ -108,7 +108,7 @@ class RepositoryCollection {
 
     this.repositories.company = new CompanyRepository()
 
-    this.repositories.twoFactor = new TwoFactorRepository()
+    this.repositories.twofactor = new TwoFactorRepository()
   }
 
   setClusterConnection(connection: Connection) {
