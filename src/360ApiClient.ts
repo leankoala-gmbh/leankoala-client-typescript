@@ -329,8 +329,6 @@ class LeankoalaClient {
     this._masterConnection.setRefreshRoute(this._routes.masterRefresh)
     await this._masterConnection.connect(args)
 
-    this._masterUser.memories = this._masterConnection.getUser().memories
-
     this._masterUser = this._masterConnection.getUser()
     this._masterUser.masterId = this._masterUser.id
     this._masterToken = this._masterConnection.getAccessToken()
