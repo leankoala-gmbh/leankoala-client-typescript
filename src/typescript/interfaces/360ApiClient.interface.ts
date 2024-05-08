@@ -60,6 +60,7 @@ export interface IRepositoryCollectionRepos {
   checkhealthcheck: IRCheckHealthCheck
   nixstats: IRepositoryCollectionRepo
   incident: IRepositoryCollectionRepo
+  twofactor: IRepositoryCollectionRepo
 }
 
 export interface IClientConnectArgs {

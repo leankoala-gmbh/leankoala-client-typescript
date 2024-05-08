@@ -3,10 +3,18 @@ import Repository from '../Repository'
 
 export interface ISetCompanyCreditCardPlansArguments {
   quantity: number
+  system_size?: number
 }
 
 export interface ISetCompanyFreePlansArguments {
   quantity: number
+  system_size: number
+}
+
+export interface ISetCompanyFreePlansByUserArguments {
+  quantity: number
+  system_size?: number
+  identifier?: string
 }
 
 export interface ISetCreditCardArguments {
@@ -29,13 +37,31 @@ export interface ISetSubscriptionPlanArguments {
   identifier: string
 }
 
+export interface ICreateCheckoutSessionArguments {
+  price_id: string
+  success_url: string
+  cancel_url: string
+  two_factor_code?: string
+}
+
+export interface ICreateCustomerPortalSessionArguments {
+  return_url: string
+}
+
+export interface IUpdateSubscriptionByProjectArguments {
+  price_id: string
+  success_url: string
+  cancel_url: string
+  two_factor_code?: string
+}
+
 
 /**
  * This class was created by the LeanApiBundle.
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-06-13
+ * @created 2024-04-03
  */
 class SubscriptionRepository extends Repository {
 
@@ -69,6 +95,7 @@ class SubscriptionRepository extends Repository {
    * @param company
    * @param {Object} args
    * @param {Number} args.quantity The number of packets to be used
+   * @param {Number} args.system_size The system size id (optional)
    */
   async setCompanyCreditCardPlans(company, args: ISetCompanyCreditCardPlansArguments): Promise<any> {
     const route = { path: 'subscription/company/{company}/plans/creditcard', method: 'POST', version: 1 }
@@ -88,10 +115,32 @@ class SubscriptionRepository extends Repository {
    * @param company
    * @param {Object} args
    * @param {Number} args.quantity The number of packets to be used
+   * @param {Number} args.system_size The system size id
    */
   async setCompanyFreePlans(company, args: ISetCompanyFreePlansArguments): Promise<any> {
     const route = { path: 'subscription/company/{company}/plans/free', method: 'POST', version: 1 }
     const argList = Object.assign({ company }, args)
+    const requiredArguments = ['quantity', 'system_size']
+    this._assertValidArguments(requiredArguments, argList)
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * Set the companies free plans by user.
+   *
+   * request url: /kapi/v1/subscription/user/{user}/plans/free
+   * request method: POST
+   *
+   * @param user
+   * @param {Object} args
+   * @param {Number} args.quantity The number of packets to be used
+   * @param {Number} args.system_size The system size id (optional)
+   * @param {String} args.identifier  (optional)
+   */
+  async setCompanyFreePlansByUser(user, args: ISetCompanyFreePlansByUserArguments): Promise<any> {
+    const route = { path: 'subscription/user/{user}/plans/free', method: 'POST', version: 1 }
+    const argList = Object.assign({ user }, args)
     const requiredArguments = ['quantity']
     this._assertValidArguments(requiredArguments, argList)
 
@@ -212,22 +261,6 @@ class SubscriptionRepository extends Repository {
   }
 
   /**
-   * End all trials.
-   *
-   * request url: /kapi/v1/subscription/trial/{providerIdentifier}/end
-   * request method: POST
-   *
-   * @param providerIdentifier
-   * @param {Object} args
-   */
-  async endTrials(providerIdentifier): Promise<any> {
-    const route = { path: 'subscription/trial/{providerIdentifier}/end', method: 'POST', version: 1 }
-    const argList = Object.assign({ providerIdentifier }, {})
-
-    return this.connection.send(route, argList)
-  }
-
-  /**
    * Get current quota for the company.
    *
    * request url: /kapi/v1/subscription/company/{company}/quota
@@ -239,6 +272,127 @@ class SubscriptionRepository extends Repository {
   async getQuota(company): Promise<any> {
     const route = { path: 'subscription/company/{company}/quota', method: 'GET', version: 1 }
     const argList = Object.assign({ company }, {})
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * Get a list of subscription products.
+   * request url: /kapi/v1/subscription/products
+   * request method: GET
+   *
+   * @param {Object} args
+   */
+  async getSubscriptionProducts(): Promise<any> {
+    const route = { path: 'subscription/products', method: 'GET', version: 1 }
+    const argList = Object.assign({  }, {})
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * Create a checkout session for current user.
+   *
+   * request url: /kapi/v1/subscription/checkout/session
+   * request method: POST
+   *
+   * @param {Object} args
+   * @param {String} args.price_id The product price id
+   * @param {String} args.success_url 
+   * @param {String} args.cancel_url 
+   * @param {String} args.two_factor_code  (optional)
+   */
+  async createCheckoutSession(args: ICreateCheckoutSessionArguments): Promise<any> {
+    const route = { path: 'subscription/checkout/session', method: 'POST', version: 1 }
+    const argList = Object.assign({  }, args)
+    const requiredArguments = ['price_id', 'success_url', 'cancel_url']
+    this._assertValidArguments(requiredArguments, argList)
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * Create a customer portal session for current user.
+   *
+   * request url: /kapi/v1/subscription/portal/session
+   * request method: POST
+   *
+   * @param {Object} args
+   * @param {String} args.return_url 
+   */
+  async createCustomerPortalSession(args: ICreateCustomerPortalSessionArguments): Promise<any> {
+    const route = { path: 'subscription/portal/session', method: 'POST', version: 1 }
+    const argList = Object.assign({  }, args)
+    const requiredArguments = ['return_url']
+    this._assertValidArguments(requiredArguments, argList)
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * Cancel a subscription.
+   *
+   * request url: /kapi/v1/subscription/external/{subscriptionId}
+   * request method: DELETE
+   *
+   * @param subscriptionId
+   * @param {Object} args
+   */
+  async cancelSubscription(subscriptionId): Promise<any> {
+    const route = { path: 'subscription/external/{subscriptionId}', method: 'DELETE', version: 1 }
+    const argList = Object.assign({ subscriptionId }, {})
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * Get a list of subscriptions for current user.
+   * request url: /kapi/v1/subscription
+   * request method: GET
+   *
+   * @param {Object} args
+   */
+  async getUserSubscriptions(): Promise<any> {
+    const route = { path: 'subscription', method: 'GET', version: 1 }
+    const argList = Object.assign({  }, {})
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * Update subscription by project.
+   *
+   * request url: /kapi/v1/subscription/project/{project}
+   * request method: POST
+   *
+   * @param project
+   * @param {Object} args
+   * @param {String} args.price_id The product price id
+   * @param {String} args.success_url 
+   * @param {String} args.cancel_url 
+   * @param {String} args.two_factor_code  (optional)
+   */
+  async updateSubscriptionByProject(project, args: IUpdateSubscriptionByProjectArguments): Promise<any> {
+    const route = { path: 'subscription/project/{project}', method: 'POST', version: 1 }
+    const argList = Object.assign({ project }, args)
+    const requiredArguments = ['price_id', 'success_url', 'cancel_url']
+    this._assertValidArguments(requiredArguments, argList)
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * End all trials.
+   *
+   * request url: /kapi/v1/subscription/trial/{providerIdentifier}/end
+   * request method: POST
+   *
+   * @param providerIdentifier
+   * @param {Object} args
+   */
+  async endTrials(providerIdentifier): Promise<any> {
+    const route = { path: 'subscription/trial/{providerIdentifier}/end', method: 'POST', version: 1 }
+    const argList = Object.assign({ providerIdentifier }, {})
 
     return this.connection.send(route, argList)
   }

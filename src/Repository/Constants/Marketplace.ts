@@ -3,6 +3,7 @@ export default {
     FEATURE_EXTRA_RESULTS : 'plugins.extra.results',
     FEATURE_PASSWORD : 'feature.password',
     FEATURE_PAYMENT : 'feature.payment',
+    FEATURE_PAID_SUBSCRIPTION : 'feature.paid_subscription',
     FEATURE_ALPHA : 'feature.alpha',
     STATUS_TIME_SERIES_NUMERIC : 'time_series_numeric',
     STATUS_TIME_SERIES_PERCENT : 'time_series_percent',
