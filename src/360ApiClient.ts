@@ -316,7 +316,6 @@ class LeankoalaClient {
     this._masterConnection.setUser(loginData.user)
     this._masterUser.masterId = loginData.user.id
     if (loginData.memories) {
-
       this._masterUser.memories = loginData.memories
     }
     this._companies = loginData.companies
@@ -329,6 +328,8 @@ class LeankoalaClient {
     this._masterConnection = new Connection(this._getMasterServer(), args.axios, this._provider)
     this._masterConnection.setRefreshRoute(this._routes.masterRefresh)
     await this._masterConnection.connect(args)
+
+    this._masterUser.memories = this._masterConnection.getUser().memories
 
     this._masterUser = this._masterConnection.getUser()
     this._masterUser.masterId = this._masterUser.id
