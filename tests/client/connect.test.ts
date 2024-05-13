@@ -4,8 +4,8 @@ import 'dotenv/config'
 
 describe('Check connection', () =>{
   test('Check if the client can connect', async () => {
-    const username = process.env['TEST_USERNAME'] || 'demo'
-    const password = process.env['TEST_PASSWORD'] || 'demo'
+    const username = process.env['TEST_USERNAME'] || 'features@leankoala.com'
+    const password = process.env['TEST_PASSWORD'] || 'langner'
 
     const client = new LeankoalaClient('stage')
     await client.connect({ username, password })
