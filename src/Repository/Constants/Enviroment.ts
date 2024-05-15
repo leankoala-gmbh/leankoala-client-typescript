@@ -6,7 +6,8 @@ export enum EEnvironment {
 
 export enum EServer {
   Local = 'http://localhost:8082/',
-  Stage = 'https://auth.stage.koalityengine.com/',
+    // Stage = 'https://auth.stage.koalityengine.com/',
+  Stage = 'http://hackaton-hh.api.branches.koalityengine.com/',
   Production = 'https://auth.koalityengine.com/',
 }
 
