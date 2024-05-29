@@ -10,9 +10,9 @@ describe('Check list locations', () => {
 
     expect(locations).toStrictEqual([
       { identifier: 'asia_jp', name: 'Asia (east)' },
-      { identifier: 'de', name: 'Europe (central)' },
       { identifier: 'us_east', name: 'US (east)' },
-      { identifier: 'us', name: 'US' }
+      { identifier: 'us', name: 'US' },
+      { identifier: 'de', name: 'Europe (central)' }
     ])
   })
 })
