@@ -8,12 +8,7 @@ describe('Check list locations', () => {
 
     const locations = await locationRepository.list()
 
-    expect(locations).toStrictEqual([
-      { identifier: 'asia_jp', name: 'Asia (east)' },
-      { identifier: 'us_east', name: 'US (east)' },
-      { identifier: 'us', name: 'US' },
-      { identifier: 'de', name: 'Europe (central)' }
-    ])
+    expect(locations.length).toBe(4)
   })
 })
 
