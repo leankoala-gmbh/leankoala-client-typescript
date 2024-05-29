@@ -36,14 +36,16 @@ import { LeankoalaClient } from '@webpros/360-api-client'
 
 (async () => {
   const client = new LeankoalaClient('stage')
-  await client.connect({ username: 'demo', password: 'demo' })
+  await client.connect({ username: 'demo', password: 'demo', autoSelectCompany: true})
 
   const user = client.getUser()
   console.log('user', user)
-
-  const alerts = client
-    .getRepositoryCollection()
+    
+    
+  const alerts = (await client
+    .getRepositoryCollection())
     .getAlertingChannelRepository()
+
   const alertList = await alerts.list(3333)
 })()
 
