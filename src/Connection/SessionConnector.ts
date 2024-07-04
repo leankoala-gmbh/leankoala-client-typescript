@@ -107,7 +107,7 @@ class SessionConnector {
    */
   private getSessionEndpoint(path = '/token'): string {
     const domain = window.location.hostname
-    const domainRegex = /(koality)?(\.stage)?\.(360monitoring|site-quality-monitoring)\.com/
+    const domainRegex = /(koality(\.stage)?\.360monitoring|stage\.site-quality-monitoring|site-quality-monitoring)\.com/
 
     if (domain.includes('koality.io')) {
       switch (this.environment) {
@@ -121,7 +121,7 @@ class SessionConnector {
           throw new Error('The given environment "' + this.environment + '" is unknown.')
       }
     } else if (domainRegex.test(domain)) {
-      return `https://${['auth', ...domain.split('.').slice(1)].join('.')}${path}`
+      return `https://${['auth', ...domain.split(domain.includes('koality') ? '.' : '://').slice(1)].join('.')}${path}`
     } else {
       const monitoringDomain = domain.replace('sitecheck', 'monitoring')
       return `https://${monitoringDomain}${path}`
