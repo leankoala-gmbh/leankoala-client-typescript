@@ -8,6 +8,7 @@ export interface ICreateSystemArguments {
   base_url: string
   owner: number
   system_type: number
+  system_size: number
   add_checklist_checks?: boolean
   add_support_user?: boolean
   location?: string
