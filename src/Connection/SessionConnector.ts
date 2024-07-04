@@ -121,7 +121,7 @@ class SessionConnector {
           throw new Error('The given environment "' + this.environment + '" is unknown.')
       }
     } else if (domainRegex.test(domain)) {
-      return `https://${['auth', ...domain.split(domain.includes('koality') ? '.' : '://').slice(1)].join('.')}${path}`
+      return `https://${['auth', ...domain.split(domain.includes('koality') ? '.' : '://').slice(domain.includes('koality') ? 1 : 0)].join('.')}${path}`
     } else {
       const monitoringDomain = domain.replace('sitecheck', 'monitoring')
       return `https://${monitoringDomain}${path}`
