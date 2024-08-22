@@ -1,15 +1,15 @@
 import axios from 'axios'
-import {EEnvironment, EServer, ESession} from '../Repository/Constants/Enviroment'
+import {EEnvironment, ESession} from '../Repository/Constants/Enviroment'
 import {LeankoalaClient} from '../360ApiClient'
 import {IClientConnectArgs} from '../typescript/interfaces/360ApiClient.interface'
 
 interface ISessionTokenReturn {
   sessionToken: string
-   timezone: string
-   nickname: string
+  timezone: string
+  nickname: string
   firstName: string
-   familyName: string
-   isLicensePartner: boolean
+  familyName: string
+  isLicensePartner: boolean
   isTrial: boolean
   responseObj: any
 }
@@ -43,11 +43,11 @@ class SessionConnector {
   public async getSessionToken(): Promise<ISessionTokenReturn> {
     const sessionTokenResponse = await this.axios.get(this.getSessionEndpoint(), {withCredentials: true})
     const responseObj = JSON.parse(JSON.stringify(sessionTokenResponse.data))
-    const sessionToken = responseObj.access
+    const sessionToken : string = responseObj.access
 
     if (!sessionToken?.startsWith('ey')) {
       if (!sessionToken) throw new Error('No session token found')
-      throw new Error(`The returned token is no a valid. Given "${sessionToken.substr(0, 20)}...".`)
+      throw new Error(`The returned token is no a valid. Given "${sessionToken.slice(0, 20)}...".`)
     }
 
     return {
@@ -62,16 +62,16 @@ class SessionConnector {
     }
   }
 
-   public async setTimezone(timezone: string) {
-     try {
-       await this.axios.put(this.getSessionEndpoint('/profile'), {
-         timezone
-       }, {withCredentials: true})
+  public async setTimezone(timezone: string) {
+    try {
+      await this.axios.put(this.getSessionEndpoint('/profile'), {
+        timezone
+      }, {withCredentials: true})
 
-     } catch (err) {
-       console.error(err)
-     }
-   }
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
   /**
    * Connect the given client via the browser session.

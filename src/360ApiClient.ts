@@ -251,7 +251,7 @@ class LeankoalaClient {
       true
     )
 
-    await this._handleLoginData(result)
+    this._handleLoginData(result)
 
     if (args.autoSelectCompany) {
       await this._autoSelectCompany()
@@ -297,7 +297,7 @@ class LeankoalaClient {
       true
     )
 
-    await this._handleLoginData(result)
+    this._handleLoginData(result)
 
     if (args.autoSelectCompany) {
       await this._autoSelectCompany()
@@ -311,7 +311,7 @@ class LeankoalaClient {
    * @param loginData
    * @private
    */
-  private async _handleLoginData(loginData) {
+  private _handleLoginData(loginData) {
     this._masterToken = loginData.token
     this._refreshToken = loginData.refreshToken
     this._masterUser = loginData.user

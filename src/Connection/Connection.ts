@@ -31,7 +31,7 @@ class Connection {
   private _user: Partial<IUser> = {}
   private _accessExpireTimestamp: number
   private _refreshExpireTimestamp: number
-  private readonly _apiServer: any
+  private readonly _apiServer: string
   private _preferredLanguage: string
   private readonly _axios: any
   private _axiosAdapter: boolean
@@ -53,7 +53,7 @@ class Connection {
    * @param {function} axios
    * @param {string} provider api provider
    */
-  constructor(apiServer, axios, provider, headerMeta) {
+  constructor(apiServer: string, axios, provider, headerMeta) {
     this._refreshRoute = {
       version: 1,
       path: 'auth/tokens/refresh/{user_id}',
@@ -219,7 +219,7 @@ class Connection {
    *
    * @private
    */
-  private _getUrl(route: IRoute, args: IGetUrlArgs|object) {
+  private _getUrl(route: IRoute, args: IGetUrlArgs|object): string {
     const plainPath = route.path
     const version = route.version
     const apiServer = this._apiServer
@@ -390,11 +390,11 @@ class Connection {
    * @private
    */
   _refreshTokenExpireDate(withRefreshToken = false) {
-    const accessTokenData = jwtDecode(this._accessToken)
+    const accessTokenData = jwtDecode(this._accessToken) as { ttl: number }
     this._accessExpireTimestamp = Math.floor(Date.now() / 1000) + accessTokenData.ttl
 
     if (withRefreshToken) {
-      const refreshTokenData = jwtDecode(this._refreshToken)
+      const refreshTokenData = jwtDecode(this._refreshToken) as { ttl: number }
       this._refreshExpireTimestamp = Math.floor(Date.now() / 1000) + refreshTokenData.ttl
     }
   }
