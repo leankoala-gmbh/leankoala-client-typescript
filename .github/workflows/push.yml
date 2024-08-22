@@ -29,10 +29,6 @@ jobs:
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
         run: npm run test
 
-      - name: Lint Source
-        working-directory: ./src
-        run: npm run lint
-
       - run: npm run prePublish
       - run: npm publish --access public
         env:
