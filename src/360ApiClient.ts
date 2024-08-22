@@ -43,6 +43,7 @@ class LeankoalaClient {
     masterRefresh: { path: string; method: string; version: number }
     clusterRefresh: { path: string; method: string; version: number }
   }
+  private readonly _headerMeta: any
 
   /**
    * Create a client and set the environment
@@ -50,7 +51,7 @@ class LeankoalaClient {
    * @param {String} environment the environment (development|production)
    * @param {String} provider the api provider
    */
-  constructor(environment = 'production', provider = 'koality') {
+  constructor(environment = 'production', provider = 'koality', headerMeta = {}) {
     this._repositoryCollection = new RepositoryCollection()
     this._clusterConnection = false
     this._masterConnection = false
@@ -63,6 +64,7 @@ class LeankoalaClient {
     this._registeredEventListeners = {}
     this._masterToken = ''
     this._provider = provider
+    this._headerMeta = headerMeta
     this._routes = {
       masterRefresh: {
         version: 1,
@@ -169,7 +171,7 @@ class LeankoalaClient {
   private async _initConnection(args: IInitConnectionArgs): Promise<void> {
     this._axios = args.axios
     if ('noLogin' in args) {
-      this._masterConnection = new Connection(this._getMasterServer(), args.axios, this._provider)
+      this._masterConnection = new Connection(this._getMasterServer(), args.axios, this._provider, this._headerMeta)
       this._repositoryCollection.setMasterConnection(this._masterConnection)
     } else if ('sessionToken' in args) {
       await this._initConnectionViaSessionToken(args)
@@ -201,7 +203,7 @@ class LeankoalaClient {
     this._masterUser = wakeUpToken.user
     this._currentCompany = wakeUpToken.company
 
-    this._masterConnection = new Connection(this._getMasterServer(), args.axios, this._provider)
+    this._masterConnection = new Connection(this._getMasterServer(), args.axios, this._provider, this._headerMeta)
 
     const masterConnectionArgs = args
     const masterWakeUpToken = wakeUpToken.master
@@ -217,7 +219,7 @@ class LeankoalaClient {
 
 
     if (wakeUpToken.company) {
-      this._clusterConnection = new Connection(wakeUpToken.company.cluster.apiEndpoint, args.axios, this._provider)
+      this._clusterConnection = new Connection(wakeUpToken.company.cluster.apiEndpoint, args.axios, this._provider, this._headerMeta)
       this._clusterConnection.setRefreshRoute(this._routes.clusterRefresh)
       const clusterConnectionArgs = args
       clusterConnectionArgs.wakeUpToken = JSON.stringify(wakeUpToken.cluster)
@@ -232,7 +234,7 @@ class LeankoalaClient {
     LeankoalaClient._assertAxios(args)
     this._axios = args.axios
 
-    this._masterConnection = new Connection(apiServer, this._axios, this._provider)
+    this._masterConnection = new Connection(apiServer, this._axios, this._provider, this._headerMeta)
 
     const route = {version: 1, path: '{application}/auth/login', method: 'POST'}
 
@@ -280,7 +282,7 @@ class LeankoalaClient {
     LeankoalaClient._assertAxios(args)
     this._axios = args.axios
 
-    this._masterConnection = new Connection(apiServer, this._axios, this._provider)
+    this._masterConnection = new Connection(apiServer, this._axios, this._provider, this._headerMeta)
     // TODO: Check if we can make the path whitelabeld
     const route = {version: 1, path: '360/auth/session', method: 'POST'}
 
@@ -325,7 +327,7 @@ class LeankoalaClient {
   }
 
   private async _initConnectionViaRefreshToken(args: IClientConnectArgs) {
-    this._masterConnection = new Connection(this._getMasterServer(), args.axios, this._provider)
+    this._masterConnection = new Connection(this._getMasterServer(), args.axios, this._provider, this._headerMeta)
     this._masterConnection.setRefreshRoute(this._routes.masterRefresh)
     await this._masterConnection.connect(args)
 
@@ -341,7 +343,7 @@ class LeankoalaClient {
   }
 
   private async _initConnectionViaMasterTokens(args: IInitConnectionViaMasterTokens) {
-    this._masterConnection = new Connection(this._getMasterServer(), args.axios, this._provider)
+    this._masterConnection = new Connection(this._getMasterServer(), args.axios, this._provider, this._headerMeta)
     this._masterConnection.setAccessToken(args.accessToken, args.refreshToken)
     this._masterToken = args.accessToken
 
@@ -398,7 +400,7 @@ class LeankoalaClient {
    * @private
    */
   private async _switchCluster(cluster: ISwitchClusterArgs) {
-    this._clusterConnection = new Connection(cluster.apiEndpoint, this._axios, this._provider)
+    this._clusterConnection = new Connection(cluster.apiEndpoint, this._axios, this._provider, this._headerMeta)
     this._repositoryCollection.setClusterConnection(this._clusterConnection)
     this._clusterConnection.addDefaultParameter('masterUserId', this._masterUser.id)
 

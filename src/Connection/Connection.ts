@@ -44,6 +44,7 @@ class Connection {
   }
 
   private _connectionArgs: any
+  private _headerMeta: any
 
   /**
    * Init routes and set default values
@@ -52,7 +53,7 @@ class Connection {
    * @param {function} axios
    * @param {string} provider api provider
    */
-  constructor(apiServer, axios, provider) {
+  constructor(apiServer, axios, provider, headerMeta) {
     this._refreshRoute = {
       version: 1,
       path: 'auth/tokens/refresh/{user_id}',
@@ -82,6 +83,7 @@ class Connection {
         method: 'POST'
       }
     }
+    this._headerMeta = headerMeta
   }
 
   /**
@@ -260,6 +262,10 @@ class Connection {
     const headers: ISendHeaders = {
       'accept-language': this._preferredLanguage
     }
+
+    Object.entries(this._headerMeta).forEach(([key, value]: [string, unknown]) => {
+      headers[key] = String(value)
+    })
 
     if (!withoutToken) {
       await this.refreshAccessToken()
