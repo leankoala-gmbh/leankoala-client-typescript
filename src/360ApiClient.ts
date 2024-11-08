@@ -16,6 +16,7 @@ import BadRequestError from './Connection/BadRequestError'
 import SessionConnector from './Connection/SessionConnector'
 import MarketPlaceConsts from './Repository/Constants/Marketplace'
 import RefreshTokenInvalidError from './Connection/RefreshTokenInvalidError'
+import Auth2Repository from './Repository/Entities/Auth2Repository'
 
 /**
  * The KoalityEngine client is used to connect to an instance of the KoalityEngine
@@ -496,6 +497,10 @@ class LeankoalaClient {
     }
 
     return this._repositoryCollection
+  }
+
+  async getAuth2Repository(): Promise<Auth2Repository> {
+    return this._repositoryCollection.getRepository('auth2')
   }
 
   /**
