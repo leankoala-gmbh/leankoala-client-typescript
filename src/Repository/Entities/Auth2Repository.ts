@@ -21,8 +21,8 @@ export interface ICreateTokenArguments {
 }
 
 export interface ICreateTokenByConfirmCodeAndDeprecatedJwtArguments {
-  deprecatedSessionToken?: string
-  confirmationCode?: string
+  deprecatedSessionToken: string
+  confirmationCode: string
   withMemories?: boolean
 }
 
@@ -32,7 +32,7 @@ export interface ICreateTokenByConfirmCodeAndDeprecatedJwtArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2024-11-07
+ * @created 2024-11-08
  */
 class Auth2Repository extends Repository {
 
@@ -139,13 +139,15 @@ class Auth2Repository extends Repository {
    *
    * @param application
    * @param {Object} args
-   * @param {String} args.deprecatedSessionToken  (optional)
-   * @param {String} args.confirmationCode  (optional)
+   * @param {String} args.deprecatedSessionToken The deprecated session token.
+   * @param {String} args.confirmationCode The confirmation code i.e. from an email.
    * @param {Boolean} args.withMemories If true all Memory entities will be attached in the answer. (default: false)
    */
   async createTokenByConfirmCodeAndDeprecatedJwt(application, args: ICreateTokenByConfirmCodeAndDeprecatedJwtArguments): Promise<any> {
     const route = { path: '/{application}/auth/session-deprecated/confirm', method: 'POST', version: 1 }
     const argList = Object.assign({ application }, args)
+    const requiredArguments = ['deprecatedSessionToken', 'confirmationCode']
+    this._assertValidArguments(requiredArguments, argList)
 
     return this.connection.send(route, argList)
   }
