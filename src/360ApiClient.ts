@@ -16,7 +16,7 @@ import BadRequestError from './Connection/BadRequestError'
 import SessionConnector from './Connection/SessionConnector'
 import MarketPlaceConsts from './Repository/Constants/Marketplace'
 import RefreshTokenInvalidError from './Connection/RefreshTokenInvalidError'
-import Auth2Repository from './Repository/Entities/Auth2Repository'
+import { ICreateTokenByConfirmCodeAndDeprecatedJwtArguments } from './Repository/Entities/Auth2Repository'
 
 /**
  * The KoalityEngine client is used to connect to an instance of the KoalityEngine
@@ -95,20 +95,23 @@ class LeankoalaClient {
    *
    * @param {function} [args.axios] a predefined axios instance
    */
-
   async connect(args: IClientConnectArgs) {
     args.autoSelectCompany = args.autoSelectCompany || false
     this._connectionStatus = 'connecting'
 
+    let result;
+
     try {
       this._repositoryCollection = new RepositoryCollection()
-      await this._initConnection({...args, axios})
+      result = await this._initConnection({...args, axios})
     } catch (error) {
       this._connectionStatus = 'disconnected'
       throw error
     }
 
     this._connectionStatus = 'connected'
+
+    return result
   }
 
   /**
@@ -169,8 +172,9 @@ class LeankoalaClient {
    * @private
    */
 
-  private async _initConnection(args: IInitConnectionArgs): Promise<void> {
+  private async _initConnection(args: IInitConnectionArgs): Promise<any> {
     this._axios = args.axios
+    let result = null;
     if ('noLogin' in args) {
       this._masterConnection = new Connection(this._getMasterServer(), args.axios, this._provider, this._headerMeta)
       this._repositoryCollection.setMasterConnection(this._masterConnection)
@@ -182,11 +186,15 @@ class LeankoalaClient {
       await this._initConnectionViaMasterTokens(args)
     } else if ('refreshToken' in args) {
       await this._initConnectionViaRefreshToken(args)
+    }  else if ('deprecatedSessionTokenAndConfirmCode' in args) {
+      result = await this._initConnectionViaDeprecatedSessionTokenAndConfirmCode(args)
     } else {
       await this._initConnectionViaCredentials(args)
     }
 
     this._registerConnectionListeners()
+
+    return result
   }
 
   /**
@@ -303,6 +311,37 @@ class LeankoalaClient {
     if (args.autoSelectCompany) {
       await this._autoSelectCompany()
     }
+  }
+
+  private async _initConnectionViaDeprecatedSessionTokenAndConfirmCode(args: ICreateTokenByConfirmCodeAndDeprecatedJwtArguments) {
+    const apiServer = this._getMasterServer()
+
+    LeankoalaClient._assertAxios(args)
+    this._axios = args.axios
+
+    this._masterConnection = new Connection(apiServer, this._axios, this._provider, this._headerMeta)
+
+    const route = {version: 1, path: '{application}/auth/session-deprecated/confirm', method: 'POST'}
+
+    const withMemories = Boolean(args.withMemories || false)
+
+    const result = await this._masterConnection.send(
+      route,
+      {
+        deprecatedSessionToken: args.deprecatedSessionToken,
+        confirmationCode: args.confirmationCode,
+        withMemories
+      },
+      true
+    )
+
+    this._handleLoginData(result)
+
+    if (args.autoSelectCompany) {
+      await this._autoSelectCompany()
+    }
+
+    return result
   }
 
   /**
@@ -497,10 +536,6 @@ class LeankoalaClient {
     }
 
     return this._repositoryCollection
-  }
-
-  async getAuth2Repository(): Promise<Auth2Repository> {
-    return this._repositoryCollection.getRepository('auth2')
   }
 
   /**
