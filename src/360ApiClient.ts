@@ -178,15 +178,15 @@ class LeankoalaClient {
       this._masterConnection = new Connection(this._getMasterServer(), args.axios, this._provider, this._headerMeta)
       this._repositoryCollection.setMasterConnection(this._masterConnection)
     } else if ('sessionToken' in args) {
-      await this._initConnectionViaSessionToken(args)
+      await this._initConnectionViaSessionToken(args as IClientConnectArgs)
     } else if ('wakeUpToken' in args) {
       await this._initConnectionViaWakeUpToken(args)
     } else if ('accessToken' in args && args.accessToken) {
       await this._initConnectionViaMasterTokens(args)
     } else if ('refreshToken' in args) {
       await this._initConnectionViaRefreshToken(args)
-    }  else if ('deprecatedSessionTokenAndConfirmCode' in args) {
-      result = await this._initConnectionViaDeprecatedSessionTokenAndConfirmCode(args)
+    }  else if ('deprecatedSessionTokenAndConfirmCode' in args && 'deprecatedSessionToken' in args && 'confirmationCode' in args) {
+      result = await this._initConnectionViaDeprecatedSessionTokenAndConfirmCode(args as IInitConnectionViaDeprecatedJwtAndConfirmCode)
     } else {
       await this._initConnectionViaCredentials(args)
     }

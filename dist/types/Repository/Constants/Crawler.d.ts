@@ -1,0 +1,11 @@
+declare const _default: {
+    CRAWL_URL_CHECK_TYPE_BROKEN_RESOURCES: string;
+    CRAWL_URL_CHECK_TYPE_DEAD_LINKS: string;
+    CRAWL_URL_CHECK_TYPE_JS_ERROR_INTERNAL: string;
+    CRAWL_URL_CHECK_TYPE_JS_ERROR_EXTERNAL: string;
+    CRAWL_URL_CHECK_TYPE_SITE_INFO_BIG_FILES: string;
+    CRAWL_URL_CHECK_TYPE_SITE_INFO_DOCUMENT: string;
+    CRAWL_URL_STATUS_FALSE_POSITIVE: string;
+    _GENERATED: boolean;
+};
+export default _default;

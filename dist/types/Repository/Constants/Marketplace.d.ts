@@ -1,0 +1,21 @@
+declare const _default: {
+    FEATURE_LANGUAGE_MULTI: string;
+    FEATURE_EXTRA_RESULTS: string;
+    FEATURE_PASSWORD: string;
+    FEATURE_PAYMENT: string;
+    FEATURE_PAID_SUBSCRIPTION: string;
+    FEATURE_ALPHA: string;
+    STATUS_TIME_SERIES_NUMERIC: string;
+    STATUS_TIME_SERIES_PERCENT: string;
+    FEATURE_STATUS_IDEA: string;
+    FEATURE_STATUS_ALPHA: string;
+    FEATURE_STATUS_BETA: string;
+    FEATURE_STATUS_LIVE: string;
+    FEATURE_CRAWL_DEPTH_2000: string;
+    FEATURE_CRAWL_DEPTH_5000: string;
+    FEATURE_COMPONENT_LIMIT_30: string;
+    FEATURE_COMPONENT_LIMIT_50: string;
+    FEATURE_COMPONENT_LIMIT_100: string;
+    _GENERATED: boolean;
+};
+export default _default;
