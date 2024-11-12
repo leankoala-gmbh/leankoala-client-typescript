@@ -1,0 +1,29 @@
+name: Build and test
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org/'
+          scope: '@webpros'
+
+      - name: Install Dependencies
+        working-directory: ./src
+        run: npm ci
+
+      - name: Run JEST tests
+        working-directory: ./src
+        env:
+          TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
+          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+        run: npm run test
