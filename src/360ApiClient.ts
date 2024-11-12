@@ -185,7 +185,7 @@ class LeankoalaClient {
       await this._initConnectionViaMasterTokens(args)
     } else if ('refreshToken' in args) {
       await this._initConnectionViaRefreshToken(args)
-    }  else if ('deprecatedSessionTokenAndConfirmCode' in args && 'deprecatedSessionToken' in args && 'confirmationCode' in args) {
+    }  else if ('deprecatedSessionToken' in args && 'confirmationCode' in args) {
       result = await this._initConnectionViaDeprecatedSessionTokenAndConfirmCode(args as IInitConnectionViaDeprecatedJwtAndConfirmCode)
     } else {
       await this._initConnectionViaCredentials(args)
