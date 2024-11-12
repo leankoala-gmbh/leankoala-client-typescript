@@ -5,18 +5,17 @@ import RepositoryCollection from './Repository/RepositoryCollection'
 import {TRepositories} from './typescript/interfaces/global/repos'
 import {
   IClientConnectArgs,
-  IInitConnectionArgs,
+  IInitConnectionArgs, IInitConnectionViaDeprecatedJwtAndConfirmCode,
   IInitConnectionViaMasterTokens,
   IInitConnectionViaWakeUpTokenArgs,
   ISwitchClusterArgs,
-  ITokenObject
+  ITokenObject,
 } from './typescript/interfaces/360ApiClient.interface'
 import {EEnvironment, EServer} from './Repository/Constants/Enviroment'
 import BadRequestError from './Connection/BadRequestError'
 import SessionConnector from './Connection/SessionConnector'
 import MarketPlaceConsts from './Repository/Constants/Marketplace'
 import RefreshTokenInvalidError from './Connection/RefreshTokenInvalidError'
-import { ICreateTokenByConfirmCodeAndDeprecatedJwtArguments } from './Repository/Entities/Auth2Repository'
 
 /**
  * The KoalityEngine client is used to connect to an instance of the KoalityEngine
@@ -313,7 +312,7 @@ class LeankoalaClient {
     }
   }
 
-  private async _initConnectionViaDeprecatedSessionTokenAndConfirmCode(args: ICreateTokenByConfirmCodeAndDeprecatedJwtArguments) {
+  private async _initConnectionViaDeprecatedSessionTokenAndConfirmCode(args: IInitConnectionViaDeprecatedJwtAndConfirmCode) {
     const apiServer = this._getMasterServer()
 
     LeankoalaClient._assertAxios(args)

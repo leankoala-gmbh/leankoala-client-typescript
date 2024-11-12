@@ -105,6 +105,11 @@ export interface IInitConnectionViaMasterTokens extends IClientConnectArgs {
   }
 }
 
+export interface IInitConnectionViaDeprecatedJwtAndConfirmCode extends IClientConnectArgs {
+  deprecatedSessionToken: string
+  confirmationCode: string
+}
+
 export interface ISwitchClusterArgs {
   apiEndpoint: string
 }
