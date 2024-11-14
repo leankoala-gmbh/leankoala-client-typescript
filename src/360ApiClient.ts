@@ -329,6 +329,7 @@ class LeankoalaClient {
       {
         deprecatedSessionToken: args.deprecatedSessionToken,
         confirmationCode: args.confirmationCode,
+        application: this._provider,
         withMemories
       },
       true
