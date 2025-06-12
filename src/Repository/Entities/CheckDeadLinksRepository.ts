@@ -6,7 +6,8 @@ export interface IIgnorePatternArguments {
 }
 
 export interface IUnignorePatternArguments {
-  pattern_id: number
+  pattern_id?: number
+  pattern_ids?: any[]
 }
 
 
@@ -15,7 +16,7 @@ export interface IUnignorePatternArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-12
+ * @created 2025-06-12
  */
 class CheckDeadLinksRepository extends Repository {
 
@@ -36,20 +37,6 @@ class CheckDeadLinksRepository extends Repository {
   async getResults(system): Promise<any> {
     const route = { path: 'check/checks/{system}/deadlinks', method: 'GET', version: 1 }
     const argList = Object.assign({ system }, {})
-
-    return this.connection.send(route, argList)
-  }
-
-  /**
-   * Return a list patterns that should be blocked in the dead link checker.
-   * request url: /kapi/v1/check/checks/deadlinks/blocked
-   * request method: GET
-   *
-   * @param {Object} args
-   */
-  async getBlockedPatterns(): Promise<any> {
-    const route = { path: 'check/checks/deadlinks/blocked', method: 'GET', version: 1 }
-    const argList = Object.assign({  }, {})
 
     return this.connection.send(route, argList)
   }
@@ -113,13 +100,27 @@ class CheckDeadLinksRepository extends Repository {
    *
    * @param system
    * @param {Object} args
-   * @param {Number} args.pattern_id Single URL that will not be excluded anymore in the dead link crawl
+   * @param {Number} args.pattern_id Single URL that will not be excluded anymore in the dead link crawl (optional)
+   * @param {Array} args.pattern_ids List of URLs that will not be excluded anymore from the dead link
+   *                                crawl (optional)
    */
   async unignorePattern(system, args: IUnignorePatternArguments): Promise<any> {
     const route = { path: 'check/checks/{system}/deadlinks/unignore', method: 'POST', version: 1 }
     const argList = Object.assign({ system }, args)
-    const requiredArguments = ['pattern_id']
-    this._assertValidArguments(requiredArguments, argList)
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * Return a list patterns that should be blocked in the dead link checker.
+   * request url: /kapi/v1/check/checks/deadlinks/blocked
+   * request method: GET
+   *
+   * @param {Object} args
+   */
+  async getBlockedPatterns(): Promise<any> {
+    const route = { path: 'check/checks/deadlinks/blocked', method: 'GET', version: 1 }
+    const argList = Object.assign({  }, {})
 
     return this.connection.send(route, argList)
   }

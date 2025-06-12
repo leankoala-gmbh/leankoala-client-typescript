@@ -5,6 +5,16 @@ export interface ISetCheckStatusResult{
 }
 
 
+export interface IRunCompanyCrawlArguments {
+  user: number
+  checklist_name?: string
+  collections?: any[]
+  name: string
+  depth?: number
+  path: string
+  parallel_requests?: number
+}
+
 export interface IRunCrawlArguments {
   user: number
   checklist_name?: string
@@ -13,16 +23,6 @@ export interface IRunCrawlArguments {
   system: number
   depth?: number
   path?: string
-  parallel_requests?: number
-}
-
-export interface IRunCompanyCrawlArguments {
-  user: number
-  checklist_name?: string
-  collections?: any[]
-  name: string
-  depth?: number
-  path: string
   parallel_requests?: number
 }
 
@@ -73,7 +73,7 @@ export interface IUpdateCrawlScheduleArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-06-28
+ * @created 2025-06-12
  */
 class CrawlerRepository extends Repository {
 
@@ -83,9 +83,35 @@ class CrawlerRepository extends Repository {
     }
 
   /**
+   * Run a crawl for a given checklist
+   *
+   * request url: /kapi/v1/crawler/crawl/company/{company}
+   * request method: POST
+   *
+   * @param company
+   * @param {Object} args
+   * @param {Number} args.user The user (id) that starts the crawl and gets informed when the crawl
+   *                            finishes
+   * @param {String} args.checklist_name The check lists name (optional)
+   * @param {Array} args.collections The additional collections (optional)
+   * @param {String} args.name The crawls name
+   * @param {Number} args.depth Number of URLs to be crawled (default: 50)
+   * @param {String} args.path The URL the crawler starts to crawl
+   * @param {Number} args.parallel_requests Number of parallel requests that can be done (default: 8)
+   */
+  async runCompanyCrawl(company, args: IRunCompanyCrawlArguments): Promise<any> {
+    const route = { path: 'crawler/crawl/company/{company}', method: 'POST', version: 1 }
+    const argList = Object.assign({ company }, args)
+    const requiredArguments = ['user', 'name', 'path']
+    this._assertValidArguments(requiredArguments, argList)
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
    * Get all possible crawler settings. This is only needed for usability in the frontends.
    *
-   * request url: /kapi/v1/crawler/crawl/company/{company}}/settings
+   * request url: /kapi/v1/crawler/crawl/company/{company}/settings
    * request method: POST
    *
    * @param company
@@ -126,27 +152,32 @@ class CrawlerRepository extends Repository {
   }
 
   /**
-   * Run a crawl for a given checklist
-   *
-   * request url: /kapi/v1/crawler/crawl/company/{company}
+   * Get all collections that can be crawled.
+   * request url: /kapi/v1/crawler/collections
    * request method: POST
    *
-   * @param company
    * @param {Object} args
-   * @param {Number} args.user The user (id) that starts the crawl and gets informed when the crawl
-   *                            finishes
-   * @param {String} args.checklist_name The check lists name (optional)
-   * @param {Array} args.collections The additional collections (optional)
-   * @param {String} args.name The crawls name
-   * @param {Number} args.depth Number of URLs to be crawled (default: 50)
-   * @param {String} args.path The URL the crawler starts to crawl
-   * @param {Number} args.parallel_requests Number of parallel requests that can be done (default: 8)
    */
-  async runCompanyCrawl(company, args: IRunCompanyCrawlArguments): Promise<any> {
-    const route = { path: 'crawler/crawl/company/{company}', method: 'POST', version: 1 }
-    const argList = Object.assign({ company }, args)
-    const requiredArguments = ['user', 'name', 'path']
-    this._assertValidArguments(requiredArguments, argList)
+  async getCrawlableCollections(): Promise<any> {
+    const route = { path: 'crawler/collections', method: 'POST', version: 1 }
+    const argList = Object.assign({  }, {})
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * Abort a running crawl. The effect can take up to 5 minutes.
+   *
+   * request url: /kapi/v1/crawler/crawl/{project}/{crawl}
+   * request method: PUT
+   *
+   * @param project
+   * @param crawl
+   * @param {Object} args
+   */
+  async abortCrawl(project, crawl): Promise<any> {
+    const route = { path: 'crawler/crawl/{project}/{crawl}', method: 'PUT', version: 1 }
+    const argList = Object.assign({ project, crawl }, {})
 
     return this.connection.send(route, argList)
   }
@@ -192,18 +223,18 @@ class CrawlerRepository extends Repository {
   }
 
   /**
-   * Abort a running crawl. The effect can take up to 5 minutes.
+   * Return the detailed information for a given crawl with all results (as CSV).
    *
-   * request url: /kapi/v1/crawler/crawl/{project}/{crawl}
-   * request method: PUT
+   * request url: /kapi/v1/crawler/crawl/detail/csv/{crawl}/{downloadSecret}
+   * request method: GET
    *
-   * @param project
    * @param crawl
+   * @param downloadSecret
    * @param {Object} args
    */
-  async abortCrawl(project, crawl): Promise<any> {
-    const route = { path: 'crawler/crawl/{project}/{crawl}', method: 'PUT', version: 1 }
-    const argList = Object.assign({ project, crawl }, {})
+  async getCrawlCsv(crawl, downloadSecret): Promise<any> {
+    const route = { path: 'crawler/crawl/detail/csv/{crawl}/{downloadSecret}', method: 'GET', version: 1 }
+    const argList = Object.assign({ crawl, downloadSecret }, {})
 
     return this.connection.send(route, argList)
   }
@@ -220,23 +251,6 @@ class CrawlerRepository extends Repository {
   async getCrawl(crawl): Promise<any> {
     const route = { path: 'crawler/crawl/detail/{crawl}', method: 'POST', version: 1 }
     const argList = Object.assign({ crawl }, {})
-
-    return this.connection.send(route, argList)
-  }
-
-  /**
-   * Return the detailed information for a given crawl with all results (as CSV).
-   *
-   * request url: /kapi/v1/crawler/crawl/detail/csv/{crawl}/{downloadSecret}
-   * request method: GET
-   *
-   * @param crawl
-   * @param downloadSecret
-   * @param {Object} args
-   */
-  async getCrawlCsv(crawl, downloadSecret): Promise<any> {
-    const route = { path: 'crawler/crawl/detail/csv/{crawl}/{downloadSecret}', method: 'GET', version: 1 }
-    const argList = Object.assign({ crawl, downloadSecret }, {})
 
     return this.connection.send(route, argList)
   }
@@ -269,20 +283,6 @@ class CrawlerRepository extends Repository {
   async getCompanyCrawlerStatus(company): Promise<any> {
     const route = { path: 'crawler/status/company/{company}', method: 'POST', version: 1 }
     const argList = Object.assign({ company }, {})
-
-    return this.connection.send(route, argList)
-  }
-
-  /**
-   * Get all collections that can be crawled.
-   * request url: /kapi/v1/crawler/collections
-   * request method: POST
-   *
-   * @param {Object} args
-   */
-  async getCrawlableCollections(): Promise<any> {
-    const route = { path: 'crawler/collections', method: 'POST', version: 1 }
-    const argList = Object.assign({  }, {})
 
     return this.connection.send(route, argList)
   }
