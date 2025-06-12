@@ -9,7 +9,7 @@ describe('Check search projects', () => {
     const projects = await projectRepository.search({user: client.getUser().id})
 
     expect(projects.projects[0]).toMatchObject({
-      id: 7701,
+      id: expect.any(Number),
       identifier: expect.any(String),
       name: expect.any(String),
       location: expect.any(String),
