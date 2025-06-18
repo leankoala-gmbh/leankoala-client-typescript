@@ -38,6 +38,10 @@ export interface IListCompanyCrawlsArguments {
   crawl_schedule?: number
 }
 
+export interface IGetCrawlArguments {
+  show_finding_details?: boolean
+}
+
 export interface ISetCheckStatusArguments {
   check_type: 'BrokenLink' | 'DeadLink' | 'JsErrorScanner' | 'JsErrorScanner_external' | 'SiteInfoBigFile' | 'SiteInfoFileSize'
   check_status: 'false_positive'
@@ -73,7 +77,7 @@ export interface IUpdateCrawlScheduleArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2025-06-12
+ * @created 2025-06-18
  */
 class CrawlerRepository extends Repository {
 
@@ -247,10 +251,27 @@ class CrawlerRepository extends Repository {
    *
    * @param crawl
    * @param {Object} args
+   * @param {Boolean} args.show_finding_details Show the details of the findings (default: true)
    */
-  async getCrawl(crawl): Promise<any> {
+  async getCrawl(crawl, args: IGetCrawlArguments): Promise<any> {
     const route = { path: 'crawler/crawl/detail/{crawl}', method: 'POST', version: 1 }
-    const argList = Object.assign({ crawl }, {})
+    const argList = Object.assign({ crawl }, args)
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * Return the detailed information for a given crawl result.
+   *
+   * request url: /kapi/v1/crawler/crawl/result/{crawlResult}
+   * request method: GET
+   *
+   * @param crawlResult
+   * @param {Object} args
+   */
+  async getCrawlResult(crawlResult): Promise<any> {
+    const route = { path: 'crawler/crawl/result/{crawlResult}', method: 'GET', version: 1 }
+    const argList = Object.assign({ crawlResult }, {})
 
     return this.connection.send(route, argList)
   }
