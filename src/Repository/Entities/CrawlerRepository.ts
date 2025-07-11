@@ -57,6 +57,7 @@ export interface ICreateCrawlScheduleArguments {
   day_of_month_or_week?: number
   collections: any[]
   timezone: string
+  project?: number
 }
 
 export interface IUpdateCrawlScheduleArguments {
@@ -77,7 +78,7 @@ export interface IUpdateCrawlScheduleArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2025-06-18
+ * @created 2025-07-11
  */
 class CrawlerRepository extends Repository {
 
@@ -414,6 +415,7 @@ class CrawlerRepository extends Repository {
    *                                            interval is weekly or monthly (optional)
    * @param {Array} args.collections The additional collections
    * @param {String} args.timezone The time zone for which the timeslot applies
+   * @param {Number} args.project The project (id) that the crawl schedule should belongs to (optional)
    */
   async createCrawlSchedule(company, args: ICreateCrawlScheduleArguments): Promise<any> {
     const route = { path: 'crawler/company/{company}/schedules', method: 'POST', version: 1 }
