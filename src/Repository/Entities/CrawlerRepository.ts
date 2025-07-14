@@ -48,6 +48,10 @@ export interface ISetCheckStatusArguments {
   url: string
 }
 
+export interface IListCrawlSchedulesArguments {
+  project?: number
+}
+
 export interface ICreateCrawlScheduleArguments {
   path: string
   depth?: number
@@ -78,7 +82,7 @@ export interface IUpdateCrawlScheduleArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2025-07-11
+ * @created 2025-07-14
  */
 class CrawlerRepository extends Repository {
 
@@ -373,10 +377,11 @@ class CrawlerRepository extends Repository {
    *
    * @param company
    * @param {Object} args
+   * @param {Number} args.project Filter by project (id). (optional)
    */
-  async listCrawlSchedules(company): Promise<any> {
+  async listCrawlSchedules(company, args: IListCrawlSchedulesArguments): Promise<any> {
     const route = { path: 'crawler/company/{company}/schedules', method: 'GET', version: 1 }
-    const argList = Object.assign({ company }, {})
+    const argList = Object.assign({ company }, args)
 
     return this.connection.send(route, argList)
   }
