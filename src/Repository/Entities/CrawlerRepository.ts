@@ -29,6 +29,9 @@ export interface IRunCrawlArguments {
 export interface IListCrawlsArguments {
   checklist_name?: string
   system: number
+  pagination_enabled?: boolean
+  pagination_start?: number
+  pagination_size?: number
 }
 
 export interface IListCompanyCrawlsArguments {
@@ -82,7 +85,7 @@ export interface IUpdateCrawlScheduleArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2025-07-14
+ * @created 2025-07-15
  */
 class CrawlerRepository extends Repository {
 
@@ -201,6 +204,10 @@ class CrawlerRepository extends Repository {
    * @param {Object} args
    * @param {String} args.checklist_name The check lists name (optional)
    * @param {Number} args.system The systems id
+   * @param {Boolean} args.pagination_enabled If true the result will be paginated. (default: false)
+   * @param {Number} args.pagination_start  (default: 0)
+   * @param {Number} args.pagination_size The maximum number of crawls to return if pagination is
+   *                                       enabled. (default: 25)
    */
   async listCrawls(project, args: IListCrawlsArguments): Promise<any> {
     const route = { path: 'crawler/crawl/{project}/crawls', method: 'POST', version: 1 }
