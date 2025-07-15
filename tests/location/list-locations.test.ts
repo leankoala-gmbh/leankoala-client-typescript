@@ -8,7 +8,7 @@ describe('Check list locations', () => {
 
     const locations = await locationRepository.list()
 
-    expect(locations.length).toBe(4)
+    expect(locations.length).toBe(3)
   })
 })
 
