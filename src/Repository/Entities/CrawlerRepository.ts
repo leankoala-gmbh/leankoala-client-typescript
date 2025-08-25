@@ -56,7 +56,7 @@ export interface IListCrawlSchedulesArguments {
 }
 
 export interface ICreateCrawlScheduleArguments {
-  path: string
+  path?: string
   depth?: number
   parallel_requests?: number
   interval: 'daily' | 'weekly' | 'monthly'
@@ -85,7 +85,7 @@ export interface IUpdateCrawlScheduleArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2025-07-15
+ * @created 2025-08-25
  */
 class CrawlerRepository extends Repository {
 
@@ -418,7 +418,7 @@ class CrawlerRepository extends Repository {
    *
    * @param company
    * @param {Object} args
-   * @param {String} args.path The URL the crawler starts to crawl
+   * @param {String} args.path The URL the crawler starts to crawl (optional)
    * @param {Number} args.depth Number of URLs to be crawled (default: 50)
    * @param {Number} args.parallel_requests Number of parallel requests that can be done (default: 8)
    * @param {*} args.interval Interval at which a crawl is started
@@ -432,7 +432,7 @@ class CrawlerRepository extends Repository {
   async createCrawlSchedule(company, args: ICreateCrawlScheduleArguments): Promise<any> {
     const route = { path: 'crawler/company/{company}/schedules', method: 'POST', version: 1 }
     const argList = Object.assign({ company }, args)
-    const requiredArguments = ['path', 'interval', 'timeslot', 'collections', 'timezone']
+    const requiredArguments = ['interval', 'timeslot', 'collections', 'timezone']
     this._assertValidArguments(requiredArguments, argList)
 
     return this.connection.send(route, argList)
