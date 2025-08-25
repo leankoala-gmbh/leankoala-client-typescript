@@ -61,7 +61,7 @@ export interface IUpdateSubscriptionByProjectArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2024-04-03
+ * @created 2025-08-25
  */
 class SubscriptionRepository extends Repository {
 
@@ -272,6 +272,22 @@ class SubscriptionRepository extends Repository {
   async getQuota(company): Promise<any> {
     const route = { path: 'subscription/company/{company}/quota', method: 'GET', version: 1 }
     const argList = Object.assign({ company }, {})
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * Get current quota for the project.
+   *
+   * request url: /kapi/v1/subscription/project/{project}/quota
+   * request method: GET
+   *
+   * @param project
+   * @param {Object} args
+   */
+  async getQuotaByProject(project): Promise<any> {
+    const route = { path: 'subscription/project/{project}/quota', method: 'GET', version: 1 }
+    const argList = Object.assign({ project }, {})
 
     return this.connection.send(route, argList)
   }
