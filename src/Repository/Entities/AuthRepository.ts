@@ -29,7 +29,7 @@ export interface ICreateTokenByRefreshTokenArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-12
+ * @created 2025-09-15
  */
 class AuthRepository extends Repository {
 
@@ -39,14 +39,17 @@ class AuthRepository extends Repository {
     }
 
   /**
+   * This function creates an access token with all the permissions for the given user. The returned
+   * token has to be in the payload for every later request.
+   *
    * request url: /kapi/v1/auth/tokens/access
    * request method: POST
    *
    * @param {Object} args
-   * @param {String} args.username 
-   * @param {String} args.password 
-   * @param {Boolean} args.expire  (default: true)
-   * @param {Boolean} args.with_memories If true all Memory entities will be attached in the answer. (default: false)
+   * @param {String} args.username The username you want to log in with.
+   * @param {String} args.password The users password.
+   * @param {Boolean} args.expire If true the token will not expire (only available for admin users). (default: true)
+   * @param {Boolean} args.with_memories If true all memory entities will be attached in the answer. (default: false)
    *
    * @return ICreateTokenByCredentialsResult
    */
