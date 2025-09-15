@@ -51,10 +51,6 @@ export interface ISetCheckStatusArguments {
   url: string
 }
 
-export interface IListCrawlSchedulesArguments {
-  project?: number
-}
-
 export interface ICreateCrawlScheduleArguments {
   path?: string
   depth?: number
@@ -85,7 +81,7 @@ export interface IUpdateCrawlScheduleArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2025-08-25
+ * @created 2025-09-15
  */
 class CrawlerRepository extends Repository {
 
@@ -384,11 +380,26 @@ class CrawlerRepository extends Repository {
    *
    * @param company
    * @param {Object} args
-   * @param {Number} args.project Filter by project (id). (optional)
    */
-  async listCrawlSchedules(company, args: IListCrawlSchedulesArguments): Promise<any> {
+  async listCrawlSchedules(company): Promise<any> {
     const route = { path: 'crawler/company/{company}/schedules', method: 'GET', version: 1 }
-    const argList = Object.assign({ company }, args)
+    const argList = Object.assign({ company }, {})
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * List scheduled crawls by project
+   *
+   * request url: /kapi/v1/crawler/project/{project}/schedules
+   * request method: GET
+   *
+   * @param project
+   * @param {Object} args
+   */
+  async listCrawlSchedulesByProject(project): Promise<any> {
+    const route = { path: 'crawler/project/{project}/schedules', method: 'GET', version: 1 }
+    const argList = Object.assign({ project }, {})
 
     return this.connection.send(route, argList)
   }
