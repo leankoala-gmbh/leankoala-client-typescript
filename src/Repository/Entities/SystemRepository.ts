@@ -19,13 +19,17 @@ export interface IUpdateSystemArguments {
   base_url?: string
 }
 
+export interface IGetSystemTypesArguments {
+  system_size?: number
+}
+
 
 /**
  * This class was created by the LeanApiBundle.
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2022-05-12
+ * @created 2025-09-19
  */
 class SystemRepository extends Repository {
 
@@ -49,14 +53,16 @@ class SystemRepository extends Repository {
    * @param {Url} args.base_url The shops base url with scheme, subdomain and domain.
    * @param {Number} args.owner The shops owner (id).
    * @param {Number} args.system_type The shops system type (id).
+   * @param {Number} args.system_size The system size id
    * @param {Boolean} args.add_checklist_checks If true all checks of the checklist connected to the main
    *                                            system type are added. (default: true)
    * @param {Boolean} args.add_support_user Add the support user for support requests (default: true)
+   * @param {String} args.location Connect the system to a location (default: de)
    */
   async createSystem(args: ICreateSystemArguments): Promise<any> {
     const route = { path: 'project/systems/system', method: 'POST', version: 1 }
     const argList = Object.assign({  }, args)
-    const requiredArguments = ['name', 'base_url', 'owner', 'system_type']
+    const requiredArguments = ['name', 'base_url', 'owner', 'system_type', 'system_size']
     this._assertValidArguments(requiredArguments, argList)
 
     const result = await this.connection.send(route, argList)
@@ -99,6 +105,24 @@ class SystemRepository extends Repository {
   }
 
   /**
+   * Return all system types for the given provider.
+   *
+   * request url: /kapi/v1/project/systems/{providerIdentifier}/systemType/{system}
+   * request method: POST
+   *
+   * @param providerIdentifier
+   * @param system
+   * @param {Object} args
+   * @param {Number} args.system_size The system size id (optional)
+   */
+  async getSystemTypes(providerIdentifier, system, args: IGetSystemTypesArguments): Promise<any> {
+    const route = { path: 'project/systems/{providerIdentifier}/systemType/{system}', method: 'POST', version: 1 }
+    const argList = Object.assign({ providerIdentifier, system }, args)
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
    * Return all suggested component types for the given system.
    *
    * request url: /kapi/v1/project/systems/{system}/suggestions
@@ -132,6 +156,24 @@ class SystemRepository extends Repository {
   }
 
   /**
+   * Trigger the component finder for a given system.
+   *
+   * request url: /kapi/v1/project/{project}/componentfinder/{system}/{user}/trigger
+   * request method: POST
+   *
+   * @param project
+   * @param system
+   * @param user
+   * @param {Object} args
+   */
+  async triggerComponentFinder(project, system, user): Promise<any> {
+    const route = { path: 'project/{project}/componentfinder/{system}/{user}/trigger', method: 'POST', version: 1 }
+    const argList = Object.assign({ project, system, user }, {})
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
    * Return the approximated time in seconds when the next full check run is triggered.
    *
    * request url: /kapi/v1/project/systems/{system}/nextFullRun
@@ -148,23 +190,6 @@ class SystemRepository extends Repository {
   }
 
   /**
-   * Return all system types for the given provider.
-   *
-   * request url: /kapi/v1/project/systems/{providerIdentifier}/systemType
-   * request method: GET
-   *
-   * @param providerIdentifier
-   * @param {Object} args
-   * @param system_size The system size id. (optional)
-   */
-  async getSystemTypes(providerIdentifier, system_size): Promise<any> {
-    const route = { path: 'project/systems/{providerIdentifier}/systemType', method: 'POST', version: 1 }
-    const argList = Object.assign({ providerIdentifier, system_size }, {})
-
-    return this.connection.send(route, argList)
-  }
-
-  /**
    * Return the maximum number of components that can be added to the given system.
    *
    * request url: /kapi/v1/project/systems/{system}/component/limit
@@ -176,24 +201,6 @@ class SystemRepository extends Repository {
   async getComponentLimit(system): Promise<any> {
     const route = { path: 'project/systems/{system}/component/limit', method: 'GET', version: 1 }
     const argList = Object.assign({ system }, {})
-
-    return this.connection.send(route, argList)
-  }
-
-  /**
-   * Trigger the component finder for a given system.
-   *
-   * request url: /kapi/v1/project/{project}/componentfinder/{system}/{user}/trigger
-   * request method: POST
-   *
-   * @param project
-   * @param system
-   * @param user
-   * @param {Object} args
-   */
-  async triggerComponentFinder(project, system, user): Promise<any> {
-    const route = { path: 'project/{project}/componentfinder/{system}/{user}/trigger', method: 'POST', version: 1 }
-    const argList = Object.assign({ project, system, user }, {})
 
     return this.connection.send(route, argList)
   }
