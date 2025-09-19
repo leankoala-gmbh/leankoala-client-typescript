@@ -17,6 +17,7 @@ export interface ICreateSystemArguments {
 export interface IUpdateSystemArguments {
   name?: string
   base_url?: string
+  system_type?: number
 }
 
 export interface IGetSystemTypesArguments {
@@ -80,6 +81,7 @@ class SystemRepository extends Repository {
    * @param {Object} args
    * @param {String} args.name The shops name. (optional)
    * @param {Url} args.base_url The shops base url with scheme, subdomain and domain. (optional)
+   * @param {Number} args.system_type The system type (id). (optional)
    */
   async updateSystem(system, args: IUpdateSystemArguments): Promise<any> {
     const route = { path: 'project/systems/system/{system}', method: 'PUT', version: 1 }
