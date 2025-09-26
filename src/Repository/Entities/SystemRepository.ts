@@ -22,7 +22,6 @@ export interface IUpdateSystemArguments {
 
 export interface IGetSystemTypesArguments {
   system_size?: number
-  system?: number
 }
 
 
@@ -116,7 +115,6 @@ class SystemRepository extends Repository {
    * @param providerIdentifier
    * @param {Object} args
    * @param {Number} args.system_size The system size id (optional)
-   * @param {Number} args.system The system id (optional)
    */
   async getSystemTypes(providerIdentifier, args: IGetSystemTypesArguments): Promise<any> {
     const route = { path: 'project/systems/{providerIdentifier}/systemType', method: 'POST', version: 1 }
