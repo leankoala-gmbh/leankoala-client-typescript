@@ -22,6 +22,7 @@ export interface IUpdateSystemArguments {
 
 export interface IGetSystemTypesArguments {
   system_size?: number
+  system?: number
 }
 
 
@@ -30,7 +31,7 @@ export interface IGetSystemTypesArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2025-09-19
+ * @created 2025-09-26
  */
 class SystemRepository extends Repository {
 
@@ -109,17 +110,17 @@ class SystemRepository extends Repository {
   /**
    * Return all system types for the given provider.
    *
-   * request url: /kapi/v1/project/systems/{providerIdentifier}/systemType/{system}
+   * request url: /kapi/v1/project/systems/{providerIdentifier}/systemType
    * request method: POST
    *
    * @param providerIdentifier
-   * @param system
    * @param {Object} args
    * @param {Number} args.system_size The system size id (optional)
+   * @param {Number} args.system The system id (optional)
    */
-  async getSystemTypes(providerIdentifier, system, args: IGetSystemTypesArguments): Promise<any> {
-    const route = { path: 'project/systems/{providerIdentifier}/systemType/{system}', method: 'POST', version: 1 }
-    const argList = Object.assign({ providerIdentifier, system }, args)
+  async getSystemTypes(providerIdentifier, args: IGetSystemTypesArguments): Promise<any> {
+    const route = { path: 'project/systems/{providerIdentifier}/systemType', method: 'POST', version: 1 }
+    const argList = Object.assign({ providerIdentifier }, args)
 
     return this.connection.send(route, argList)
   }
