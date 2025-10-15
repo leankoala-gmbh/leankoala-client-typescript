@@ -6,6 +6,7 @@ export interface ISearchArguments {
   with_next_full_run?: boolean
   with_onboarding_status?: boolean
   with_features?: boolean
+  with_memories?: boolean
   owned_by_user?: boolean
   filter_empty_projects?: boolean
 }
@@ -25,7 +26,7 @@ export interface IUpdateArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2024-03-25
+ * @created 2025-10-15
  */
 class ProjectRepository extends Repository {
 
@@ -64,6 +65,7 @@ class ProjectRepository extends Repository {
    *                                              response. (default: false)
    * @param {Boolean} args.with_features If true the projects marketplace features are added to the
    *                                     response. (default: false)
+   * @param {Boolean} args.with_memories If true the projects memories are added to the response. (default: false)
    * @param {Boolean} args.owned_by_user If true the only projects owned by this user are returned. (default: false)
    * @param {Boolean} args.filter_empty_projects If true the only projects with systems are returned (default: false)
    */
