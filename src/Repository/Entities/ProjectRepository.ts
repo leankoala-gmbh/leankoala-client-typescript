@@ -26,7 +26,7 @@ export interface IUpdateArguments {
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2025-10-15
+ * @created 2025-10-20
  */
 class ProjectRepository extends Repository {
 
@@ -119,7 +119,7 @@ class ProjectRepository extends Repository {
    *
    * @param project
    * @param {Object} args
-   * @param {String} args.name 
+   * @param {String} args.name
    * @param {String} args.location The location the project should be monitored from (optional)
    */
   async update(project, args: IUpdateArguments): Promise<any> {
@@ -142,6 +142,22 @@ class ProjectRepository extends Repository {
    */
   async getUsers(project): Promise<any> {
     const route = { path: 'project/users/{project}', method: 'GET', version: 1 }
+    const argList = Object.assign({ project }, {})
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * Return all memories for the given project.
+   *
+   * request url: /kapi/v1/project/memories/{project}
+   * request method: GET
+   *
+   * @param project
+   * @param {Object} args
+   */
+  async getMemories(project): Promise<any> {
+    const route = { path: 'project/memories/{project}', method: 'GET', version: 1 }
     const argList = Object.assign({ project }, {})
 
     return this.connection.send(route, argList)
