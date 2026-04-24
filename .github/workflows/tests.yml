@@ -27,4 +27,4 @@ jobs:
           TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
         run: npm run test
-        if: ${{ !(contains(github.event.pull_request.labels.*.name, 'skip-tests') && (github.triggering_actor == 'saschafuchs' || github.triggering_actor == 'landschy')) }}
+        if: ${{ !(contains(github.event.pull_request.labels.*.name, 'skip-tests') && (github.triggering_actor == 'saschafuchs' || github.triggering_actor == 'Landschy')) }}

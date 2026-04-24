@@ -36,8 +36,7 @@ jobs:
           TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
         run: npm run test
-        if: ${{ !((github.event_name == 'workflow_dispatch' && inputs.skip_tests && github.triggering_actor == 'malteschlueter') || startsWith(github.ref_name, 'SQM-')) }}
-
+        if: ${{ !((github.event_name == 'workflow_dispatch' && inputs.skip_tests && contains(fromJSON('["malteschlueter","saschafuchs","Landschy"]'), github.triggering_actor)) || startsWith(github.ref_name, 'SQM-')) }}
       - run: npm run prePublish
         if: github.ref_name == 'main'
 
