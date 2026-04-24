@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 'main'
+      - 'SQM-*'
   workflow_dispatch:
     inputs:
       skip_tests:
