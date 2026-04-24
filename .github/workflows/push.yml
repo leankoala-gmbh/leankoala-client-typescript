@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 'main'
-      - 'SQM-*'
   workflow_dispatch:
     inputs:
       skip_tests:
@@ -36,11 +35,9 @@ jobs:
           TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
         run: npm run test
-        if: ${{ !((github.event_name == 'workflow_dispatch' && inputs.skip_tests && contains(fromJSON('["malteschlueter","saschafuchs","Landschy"]'), github.triggering_actor)) || startsWith(github.ref_name, 'SQM-')) }}
+        if: ${{ !((github.event_name == 'workflow_dispatch' && inputs.skip_tests && contains(fromJSON('["malteschlueter","saschafuchs","Landschy"]'), github.triggering_actor)) ) }}
       - run: npm run prePublish
-        if: github.ref_name == 'main'
 
       - run: npm publish --access public
-        if: github.ref_name == 'main'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
