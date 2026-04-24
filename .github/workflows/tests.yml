@@ -2,6 +2,12 @@ name: Build and test
 
 on:
   pull_request:
+  workflow_dispatch:
+    inputs:
+      skip_tests:
+        description: 'Skip tests (not allowed by everyone)'
+        type: boolean
+        required: false
 
 jobs:
   build:
@@ -27,3 +33,4 @@ jobs:
           TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
         run: npm run test
+        if: ${{ !((github.triggering_actor == 'saschafuchs' || github.triggering_actor == 'landschy') && inputs.skip_tests) }}
