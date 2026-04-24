@@ -36,10 +36,12 @@ jobs:
           TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
         run: npm run test
-        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.skip_tests && github.triggering_actor == 'malteschlueter') }}
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.skip_tests && github.triggering_actor == 'malteschlueter') || startsWith(github.ref_name, 'SQM-')) }}
 
       - run: npm run prePublish
+        if: github.ref_name == 'main'
 
       - run: npm publish --access public
+        if: github.ref_name == 'main'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
