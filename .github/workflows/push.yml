@@ -35,8 +35,7 @@ jobs:
           TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
         run: npm run test
-        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.skip_tests && github.triggering_actor == 'malteschlueter') }}
-
+        if: ${{ !((github.event_name == 'workflow_dispatch' && inputs.skip_tests && contains(fromJSON('["malteschlueter","saschafuchs","Landschy"]'), github.triggering_actor)) ) }}
       - run: npm run prePublish
 
       - run: npm publish --access public
