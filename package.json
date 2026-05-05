@@ -1,6 +1,6 @@
 {
   "name": "@webpros/360-api-client",
-  "version": "0.5.41",
+  "version": "0.6.0",
   "description": "JS API Client to connect to the Plesk 360 Monitoring Engine",
   "author": "Nils Langner (nils.langner@webpros.com)",
   "contributors": [
@@ -18,7 +18,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "engines": {
-    "node": "16.x"
+    "node": "22.x"
   },
   "scripts": {
     "test": "jest",
