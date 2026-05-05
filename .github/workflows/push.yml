@@ -11,10 +11,6 @@ on:
         type: boolean
         required: false
 
-permissions:
-  id-token: write
-  contents: read
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -40,7 +36,8 @@ jobs:
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
         run: npm run test
         if: ${{ !((github.event_name == 'workflow_dispatch' && inputs.skip_tests && contains(fromJSON('["malteschlueter","saschafuchs","Landschy"]'), github.triggering_actor)) ) }}
-
       - run: npm run prePublish
 
       - run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
