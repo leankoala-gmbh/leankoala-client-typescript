@@ -11,13 +11,18 @@ export interface IFindBySystemArguments {
   from?: string
 }
 
+export interface IUptimeAnalyticsArguments {
+  tool?: string
+  days?: '7' | '30'
+}
+
 
 /**
  * This class was created by the LeanApiBundle.
  *
  * All changes made in this file will be overwritten by the next create run.
  *
- * @created 2023-09-18
+ * @created 2026-06-23
  */
 class MetricRepository extends Repository {
 
@@ -50,6 +55,24 @@ class MetricRepository extends Repository {
    */
   async findBySystem(system, args: IFindBySystemArguments): Promise<any> {
     const route = { path: 'metric/eventidentifier/{system}/search', method: 'POST', version: 1 }
+    const argList = Object.assign({ system }, args)
+
+    return this.connection.send(route, argList)
+  }
+
+  /**
+   * Get uptime analytics (downtime, MTTR, incidents) for the given system.
+   *
+   * request url: /kapi/v1/metric/eventidentifier/{system}/uptime-analytics
+   * request method: POST
+   *
+   * @param system
+   * @param {Object} args
+   * @param {String} args.tool The tool identifier to analyze (default: koalaping)
+   * @param {Number} args.days Number of days to analyze. (default: 30)
+   */
+  async uptimeAnalytics(system, args: IUptimeAnalyticsArguments): Promise<any> {
+    const route = { path: 'metric/eventidentifier/{system}/uptime-analytics', method: 'POST', version: 1 }
     const argList = Object.assign({ system }, args)
 
     return this.connection.send(route, argList)
