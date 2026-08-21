@@ -8,21 +8,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22.x'
-          registry-url: 'https://registry.npmjs.org/'
-          scope: '@webpros'
+          # Safe to cache here: this workflow never publishes.
+          cache: 'npm'
 
       - name: Install Dependencies
-        working-directory: ./src
         run: npm ci
 
       - name: Run JEST tests
-        working-directory: ./src
         env:
           TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
