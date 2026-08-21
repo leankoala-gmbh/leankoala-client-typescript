@@ -12,32 +12,83 @@ on:
         required: false
 
 jobs:
+  # Builds and tests on Node 22 (npm 10.x), matching package.json engines.
+  # No id-token here, and no dependency cache: this job produces the exact
+  # bytes that get published under a provenance attestation.
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: Setup Node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v7
         with:
           node-version: '22.x'
-          registry-url: 'https://registry.npmjs.org/'
-          scope: '@webpros'
 
       - name: Install Dependencies
-        working-directory: ./src
         run: npm ci
 
       - name: Run JEST tests
-        working-directory: ./src
         env:
           TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
         run: npm run test
         if: ${{ !((github.event_name == 'workflow_dispatch' && inputs.skip_tests && contains(fromJSON('["malteschlueter","saschafuchs","Landschy"]'), github.triggering_actor)) ) }}
-      - run: npm run prePublish
 
-      - run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Build
+        run: npm run prePublish
+
+      - name: Upload build output
+        uses: actions/upload-artifact@v7
+        with:
+          name: dist
+          path: dist/
+          if-no-files-found: error
+          retention-days: 1
+
+  # Publishes on Node 24 (npm 11.x) because trusted publishing needs npm
+  # >= 11.5.1. Runs no npm ci, so no third-party code executes in the job
+  # that can mint a publish credential.
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # Required for npm trusted publishing
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org/'
+          scope: '@webpros'
+          # Recommended for publishing workflows: a poisoned dependency cache
+          # could expose the OIDC token to attacker-controlled code.
+          package-manager-cache: false
+
+      - name: Download build output
+        uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist
+
+      # npm publish treats missing files as nothing to pack rather than an
+      # error, so without this an empty dist/ would ship a broken package.
+      - name: Verify build output
+        run: |
+          test -f dist/360ApiClient.js
+          test -f dist/360ApiClient.esm.js
+          test -d dist/types
+
+      # No NODE_AUTH_TOKEN: auth is the OIDC exchange against the trusted
+      # publisher configured on npmjs.com. Provenance is attached automatically.
+      - name: Publish
+        run: npm publish --access public
