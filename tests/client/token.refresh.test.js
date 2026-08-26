@@ -1,6 +1,27 @@
 const LeankoalaClient = require('../../src/360ApiClient')
 const moxios = require('moxios')
 const axios = require('axios')
+const { createDummyToken } = require('../helpers/dummyToken')
+
+// Claim sets kept byte-for-byte identical to the fixtures they replace, so the
+// mocked exchange behaves exactly as before. Only the signature changed: these
+// are now signed locally with a dummy secret instead of being real tokens
+// captured from a live environment.
+const MOCK_ACCESS_TOKEN = createDummyToken({
+  access: { 'project.create': {} },
+  current_timestamp: 1595272393,
+  user_id: 163,
+  exp: 3000000003,
+  ttl: 900
+})
+
+const MOCK_REFRESH_TOKEN = createDummyToken({
+  access: { 'token.refresh': { user: [163] } },
+  current_timestamp: 1595272393,
+  user_id: 163,
+  exp: 1595358793,
+  ttl: 86400
+})
 
 /**
  * @author Nils Langner (nils.langner@leankoala.com)
@@ -31,8 +52,8 @@ describe('Refresh', () => {
         response: {
           status: 'success', data:
             {
-              token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2Nlc3MiOnsicHJvamVjdC5jcmVhdGUiOnt9fSwiY3VycmVudF90aW1lc3RhbXAiOjE1OTUyNzIzOTMsInVzZXJfaWQiOjE2MywiZXhwIjozMDAwMDAwMDAzLCJ0dGwiOjkwMH0.MPfR1BZTqXdcWVNSzO4WacXjsL8L-A-naJTX_2FYOeA',
-              refresh_token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2Nlc3MiOnsidG9rZW4ucmVmcmVzaCI6eyJ1c2VyIjpbMTYzXX19LCJjdXJyZW50X3RpbWVzdGFtcCI6MTU5NTI3MjM5MywidXNlcl9pZCI6MTYzLCJleHAiOjE1OTUzNTg3OTMsInR0bCI6ODY0MDB9.58ZmoPYm9TN66XEfwEStqDkD8Rhab7IoL_x6t8HrksY',
+              token: MOCK_ACCESS_TOKEN,
+              refresh_token: MOCK_ACCESS_TOKEN,
               user: { id: 163, username: 'demo', first_name: null, last_name: null }
             }
         }

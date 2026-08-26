@@ -1,10 +1,12 @@
 const LeankoalaClient = require('../../src/360ApiClient')
 const axios = require('axios')
+const { createDummyToken } = require('../helpers/dummyToken')
 
 /**
  * @author Nils Langner (nils.langner@leankoala.com)
  * @created 2020-07-20
  */
+
 describe('User', () => {
 
   /**
@@ -17,7 +19,15 @@ describe('User', () => {
     const client = new LeankoalaClient('stage')
 
     client.connect({
-      'accessToken': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2Nlc3MiOnsib3duZXIiOiJrb2FsaXR5XzEiLCJ1c2VyLmNyZWF0ZSI6eyJwcm92aWRlciI6WyJrb2FsaXR5Il19fSwiZXhwIjoxOTEyNjgyNjEzfQ.JVtOza0VPIbz0J8pkuR6jMrr7iCjX_Ee-9t8udFBRoU',
+      // Signed locally with a dummy secret — this token authenticates
+      // nowhere. It replaces a token taken from a live environment.
+      'accessToken': createDummyToken({
+        access: {
+          owner: 'test_owner',
+          'user.create': { provider: ['koality'] }
+        },
+        exp: Math.floor(Date.now() / 1000) + 3600
+      }),
       axios
     })
 
