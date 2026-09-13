@@ -1,11 +1,11 @@
 import {LeankoalaClient} from '../../src/360ApiClient'
 import BadRequestError from '../../src/Connection/BadRequestError'
 import 'dotenv/config'
+import {getTestCredentials} from '../helper/credentials'
 
 describe('Check badrequest', () => {
   test('Check if client handles bad requests correctly', async () => {
-    const username = process.env['TEST_USERNAME'] || 'features@leankoala.com'
-    const password = process.env['TEST_PASSWORD'] || 'langner'
+    const {username, password} = getTestCredentials()
 
     const client = new LeankoalaClient('stage')
     await client.connect({ username, password })

@@ -1,9 +1,9 @@
 import {LeankoalaClient} from '../../src/360ApiClient'
 import 'dotenv/config'
+import {getTestCredentials} from '../helper/credentials'
 
 export async function createClient() {
-  const username = process.env['TEST_USERNAME'] || 'features@leankoala.com'
-  const password = process.env['TEST_PASSWORD'] || 'langner'
+  const {username, password} = getTestCredentials()
   const client = new LeankoalaClient('stage')
   await client.connect({username, password, autoSelectCompany: true})
 
