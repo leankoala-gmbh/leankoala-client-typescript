@@ -1,11 +1,11 @@
 import {LeankoalaClient} from '../../src/360ApiClient'
 import {consoleLogger} from '../../src/EventHandler/consoleLogger'
 import 'dotenv/config'
+import {getTestCredentials} from '../helper/credentials'
 
 describe('Check Eventlistner', () => {
   test('Check if the events are published', async () => {
-    const username = process.env['TEST_USERNAME'] || 'demo'
-    const password = process.env['TEST_PASSWORD'] || 'demo'
+    const {username, password} = getTestCredentials()
 
     const client = new LeankoalaClient('stage')
     await client.connect({ username, password })

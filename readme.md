@@ -52,3 +52,18 @@ import { LeankoalaClient } from '@webpros/360-api-client'
 ```
 
 ## Repositories
+
+## Running the tests
+
+The test suite runs against the stage environment and needs a real account.
+Credentials come from the environment — they are deliberately not stored in this
+repository, and there is no fallback:
+
+```bash
+cp .env.example .env   # then fill in TEST_USERNAME and TEST_PASSWORD
+npm test
+```
+
+`.env` is gitignored. In CI both values are injected from the repository secrets
+of the same name. A missing variable fails the run with an explicit message
+rather than silently authenticating as a different account.
